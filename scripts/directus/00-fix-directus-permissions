@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e
+
+mkdir -p $WEBROOT/api/logs
+chown nginx.nginx $WEBROOT/api/logs
+chmod -R o-wrx $WEBROOT/api/logs
+
+mkdir -p $WEBROOT/media
+chown nginx.nginx $WEBROOT/media
+
+mkdir -p $WEBROOT/storage
+chown -R nginx.nginx $WEBROOT/storage
+
+if [ ! -f $WEBROOT/api/configuration.php ]; then
+    touch $WEBROOT/api/configuration.php
+fi
+
+chown nginx.nginx $WEBROOT/api/configuration.php
+chmod o-wrx $WEBROOT/api/configuration.php
+
+if [ ! -f $WEBROOT/api/config.php ]; then
+    touch $WEBROOT/api/config.php
+fi
+
+chown nginx.nginx $WEBROOT/api/config.php
+chmod o-wrx $WEBROOT/api/config.php
+
+chown nginx.nginx -R $WEBROOT/installation
