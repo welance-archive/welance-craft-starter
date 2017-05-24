@@ -1,0 +1,83 @@
+{#
+ # News entry template
+ # -------------------
+ #
+ # This template gets loaded whenever a News entry’s URL is
+ # requested. That’s because the News section’s Template setting is
+ # set to “news/_entry”, the path to this template.
+ #
+ # When this template is loaded, it will already have an ‘entry’
+ # variable, set to the requested News entry.
+ #
+ # See this page for more details on how Craft routes requests:
+ # http://craftcms.com/docs/routing
+ #}
+
+{% extends "_layout" %}
+
+
+{% block content %}
+
+
+	<article>
+		<h1>{{ entry.title }}</h1>
+		<p>Posted on {{ entry.postDate.format('F d, Y') }}</p>
+
+<h1>Category</h1>
+
+        <ul>
+            {% nav category in entry.analysisCategories %}
+                <li>
+                    <a href="{{ category.url }}">{{ category.title }}</a>
+                    {% ifchildren %}
+                        <ul>
+                            {% children %}
+                        </ul>
+                    {% endifchildren %}
+                </li>
+            {% endnav %}
+        </ul>
+
+<h1>Entry</h1>
+
+        {% for block in entry.pageBody %}
+            --------> Type: {{block.type}}
+
+            {% if block.type == "richContent" %}
+                {{ block.richContent }}
+            {% elseif block.type == "hero" %}
+                {{ block.text }}
+                {{ block.backgroundColor }}
+                {% set image = block.image.first() %}
+                {% if image %}
+                This is the image: {{ image.getUrl('imgSquared') }}
+                    <img src="{{ image.getUrl('imgSquared') }}">
+                {% else %}
+                no image
+                {% endif %}
+            {% elseif block.type == "image" %}
+                {% set image = block.image.first() %}
+                {% if image %}
+                    <img src="{{ image.getUrl('imgSquaredThumb') }}" width="{{ image.getWidth('imgSquaredThumb') }}" height="{{ image.getHeight('imgSquaredThumb') }}" alt="{{ image.title }}">
+                {% endif %}
+            {% elseif block.type == "quote" %}
+            {% endif %}
+
+        {% endfor %}
+
+
+<h1>Related by Tag</h1>
+
+    {% set tags = entry.tags %}
+    {% set relatedEntries = craft.entries.relatedTo(tags).order('score').find() %}
+
+    <ul>
+    {% for related in relatedEntries %}
+        {% if related.id != entry.id %}
+        <li>{{related.title}}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+	</article>
+{% endblock %}
