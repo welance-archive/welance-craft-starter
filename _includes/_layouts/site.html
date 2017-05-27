@@ -36,50 +36,40 @@
 
 
 {% block body %}
-	<div id="bar">
-		<div class="flex">
-			<div class="g1-flex4 g2-flex6 g3-flex12">
-				<div id="social">
-					<a href="https://dribbble.com/" data-icon="dribbble" title="Happy Lager on Dribbble"></a>
-					<a href="https://twitter.com/" data-icon="twitter" title="Happy Lager on Twitter"></a>
-					<a href="https://www.facebook.com/" data-icon="facebook" title="Happy Lager on Facebook"></a>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<header id="header">
-		<div class="flex">
-			<div class="g1-flex4 g2-flex6 g3-flex12">
-				<h1><a href="{{ siteUrl }}"></a></h1>
-				<nav>
-					<ul>
-						{% for slug, item in nav %}
-							<li>
-								<a href="{{ url(slug) }}" {% if craft.request.firstSegment == slug %}class="sel"{% endif %}>
-									<strong>{{ item.title }}</strong>
-									<span>-</span>
-									<em>{{ item.desc }}</em>
-								</a>
-							</li>
-						{% endfor %}
-					</ul>
-				</nav>
-			</div>
+	<header>
+		<div class="wrap  wrap--contained">
+			<div class="row">
+        <div class="col col--12-12">
+				  <h5><strong><a href="{{ siteUrl }}">Website Title</a></strong></h5>
+        </div>
+      </div>
+      <nav>
+        <ul class="row">
+          {% for slug, item in nav %}
+            <li class="col col--3-12@lg col--6-12@md col--12-12@xs">
+              <a href="{{ url(slug) }}" {% if craft.request.firstSegment == slug %}class="sel"{% endif %}>
+                <strong>{{ item.title }}</strong>
+                <span>-</span>
+                <em>{{ item.desc }}</em>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
 		</div>
 	</header>
 
-	<main id="main" role="main">
+	<main role="main" class="wrap  wrap--contained">
 		{% block main %}{% endblock %}
 	</main>
 
-	<footer id="footer">
-		<div class="flex">
-			<div class="g1-flex4 g2-flex3 g3-flex6">
-				<p class="copyright">footer.copyrightNotice|replace('{year}', now|date('Y'))</p>
+	<footer class="wrap wrap--contained">
+		<div class="row">
+			<div class="col col--6-12">
+				<p>welance © 2017</p>
 			</div>
-			<div class="g1-flex4 g2-flex3 g3-flex6">
-				<a class="contact" href="mailto:global.contactUsEmail">global.contactUsLabel</a>
+			<div  class="col col--6-12">
+				<a href="mailto:global.contactUsEmail">global.contactUsLabel</a>
 			</div>
 		</div>
 	</footer>

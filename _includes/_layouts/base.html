@@ -38,6 +38,14 @@
  #                     {{ parent() }}
  #                     <!-- additional stuff -->
  #                 {% endblock %}
+ #   * `socialhead`:    This block wraps the entire default contents of our `<head>` tag.
+ #                      If a child template wishes to add more to the head, they can do so
+ #                      like this:
+ #
+ #                       {% block socialhead %}
+ #                          {{ parent() }}
+ #                          <!-- additional stuff -->
+ #                       {% endblock %}
  #
  #             Calling `{{ parent() }}` will output the contents of the `head`
  #             block that are already defined in this template.
@@ -49,21 +57,64 @@
  #             Child templates can use this to include Javascript files, etc.
 -#}
 
+{% set baseUrl = craft.config.environmentVariables.baseUrl %}
+{% set basePath = craft.config.environmentVariables.basePath %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+
     <head>
         {% block head %}
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta charset="utf-8">
             <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" type="text/css" href="{{ siteUrl }}assets/styles/main.css">
+            <meta name="title" content="{% if entry.seoTitle is defined and entry.seoTitle != '' %}{{ entry.seoTitle }}{% elseif entry.title is defined and entry.title != '' %}{{ entry.title }}{% elseif seo.orgName is defined and seo.orgName != '' %}{{ seo.orgName }} {% else %}{{ siteName }}{% endif %}">
+            <meta name="description" content="{% if entry.seoDescription is defined and entry.seoDescription != '' %}{{ entry.seoDescription }}{% elseif seo.orgDescription is defined and seo.orgDescription != '' %}{{ seo.orgDescription }}{% else %}{{ siteName }} © Official Website{% endif %}">
+
+            {% if craft.config.devMode %}
+              <link async rel="stylesheet" type="text/css" href="{{ siteUrl }}assets/styles/main.css">
+            {% else %}
+              <link async rel="stylesheet" type="text/css" href="{{ siteUrl }}assets/styles/main.min.css">
+            {% endif %}
+
+        {% endblock %}
+
+        {% block socialhead %}
+            <!-- Open Graph -->
+            <meta property="og:title" content="{% if entry.seoTitle is defined and entry.seoTitle != '' %}{{ entry.seoTitle }}{% elseif entry.title is defined and entry.title != '' %}{{ entry.title }}{% elseif seo.orgName is defined and seo.orgName != '' %}{{ seo.orgName }} {% else %}{{ siteName }}{% endif %}"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:url" content="{{craft.request.getUrl()}}"/>
+            <meta property="og:image" content="{% if social.facebookImage.first() is not empty %}{{baseUrl}}{{ social.facebookImage.first().getUrl() }}{% elseif seo.orgLogo.first() is not empty %}{{ seo.orgLogo.first().getUrl() }} {% else %}{{'https://placeholdit.co/i/1200x630?text='}}{{siteName}} {% endif %}"/>
+            <!-- Twitter Card -->
+            <meta name="twitter:title" content="{% if entry.seoTitle is defined and entry.seoTitle != '' %}{{ entry.seoTitle }}{% elseif entry.title is defined and entry.title != '' %}{{ entry.title }}{% elseif seo.orgName is defined and seo.orgName != '' %}{{ seo.orgName }} {% else %}{{ siteName }}{% endif %}">
+            <meta name="twitter:description" content="{% if entry.seoDescription is defined %}{{ entry.seoDescription }}{% elseif seo.orgDescription is defined %}{{ seo.orgDescription }}{% else %}{{ siteName }} © Official Website{% endif %}">
+            <meta name="twitter:image" content="{% if social.twitterImage.first() is not empty %}{{baseUrl}}{{ social.twitterImage.first().getUrl() }}{% elseif seo.orgLogo.first() is not empty %}{{ seo.orgLogo.first().getUrl() }} {% else %}{{'https://placeholdit.co/i/506x253?text='}}{{siteName}}{% endif %}">
+            <meta name="twitter:card" content="summary_large_image">
         {% endblock %}
     </head>
+
     <body {% if bodyClass is defined %}class="{{ bodyClass }}"{% endif %}>
+
+        <!--[if lte IE 9]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p><![endif]-->
+
         {% block body %}{% endblock %}
         {% block foot %}{% endblock %}
+
+        {% if services.GA %}
+            <!-- Google Analytics simple integration -->
+            <script>
+                window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+                ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
+            </script>
+            <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+        {% endif %}
     </body>
 
-    <link rel="stylesheet" type="text/css" href="{{ siteUrl }}assets/scripts/main.js">
+    {% if craft.config.devMode %}
+      <script async src="{{ siteUrl }}assets/scripts/main.js"/>
+    {% else %}
+      <script async src="{{ siteUrl }}assets/scripts/main.min.js"/>
+    {% endif %}
+
 </html>
