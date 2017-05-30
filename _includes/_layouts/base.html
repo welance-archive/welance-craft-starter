@@ -60,6 +60,12 @@
 {% set baseUrl = craft.config.environmentVariables.baseUrl %}
 {% set basePath = craft.config.environmentVariables.basePath %}
 
+{% if currentUser.isInGroup('admins') or currentUser.isInGroup('editors') or currentUser.isInGroup('mainEditors') %}
+  {% set editClass = "editguide" %}
+{% else %}
+  {% set editClass = "" %}
+{% endif %}
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 
@@ -95,7 +101,6 @@
     </head>
 
     <body {% if bodyClass is defined %}class="{{ bodyClass }}"{% endif %}>
-
         <!--[if lte IE 9]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p><![endif]-->
 
         {% block body %}{% endblock %}
