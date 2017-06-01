@@ -1,0 +1,78 @@
+.vertical-align-wrap{
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+
+  .valign--center{
+    width: 100%;
+    align-self: center;
+    margin: 0 auto;
+  }
+  .valign--top{
+    width: 100%;
+    align-self: flex-start;
+    margin: 0 auto;
+  }
+  .valign--bottom{
+    width: 100%;
+    margin: 0 auto;
+    align-self: flex-end;
+  }
+
+}
+
+.a-center{
+  text-align: center;
+}
+.a-left{
+  text-align: left;
+}
+.a-right{
+  text-align: right;
+}
+.a-justify{
+  text-align: justify;
+}
+
+.full-height{
+  min-height: 50vh; //95 because most of the time there is a menu on top
+  overflow-y: scroll;
+}
+
+// IMAGES
+
+//...coming from redactor (WYSIWYG)
+figure{
+  margin: 1rem 0 1rem;
+  img{
+    max-width: 100%;
+  }
+  figcaption{
+    @include pt(3);
+  }
+}
+//...others
+.caption{
+  @include pt(3);
+}
+video{
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+.editguide {
+  div[class*='col-']{
+      box-sizing: border-box;
+      //background: rgba(200,200,200,.3);
+      border: 1px dashed rgba(200,200,200,1);
+  }
+  &:hover{
+      div[class*='col-']{
+        border: none;
+    }
+  }
+}

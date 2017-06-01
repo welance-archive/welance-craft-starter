@@ -2,35 +2,5 @@
 @import './helpers/variables';
 @import '../../_entries/pages/page';
 @import '../../_entries/posts/post';
-
-//images coming from redactor (WYSIWYG)
-figure{
-  img{
-    max-width: 100%;
-  }
-  figcaption{
-    @include pt(1);
-  }
-}
-
-.editguide {
-  div[class*='col-']{
-      box-sizing: border-box;
-      //background: rgba(200,200,200,.3);
-      border: 1px solid rgba(200,200,200,1);
-  }
-  background: repeating-linear-gradient(
-    to right,
-    white,
-    white 8px,
-    rgba(200,200,200,.1) 8px,
-    rgba(200,200,200,.1) 16px
-  );
-  &:hover{
-    background: none;
-      div[class*='col-']{
-        background: none;
-        border: 1px solid transparent;
-    }
-  }
-}
+@import 'layout/general';
+@import 'components/hero';

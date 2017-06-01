@@ -20,34 +20,75 @@
   {% elseif loop.first and (block.colWidth | full_width) %}
     <div class="wrap">
       <div class="row">
-  {% elseif not loop.first and (block.colWidth | full_width) and (prevBlock.colWidth | full_width) %}
-    <!-- nothing -->
   {% elseif not loop.first and (prevBlock.colWidth | full_width) and not (block.colWidth | full_width) %}
       </div> <!-- close the row before -->
     </div> <!-- close the wrap before -->
     <div class="wrap wrap--contained">
       <div class="row">
+  {% elseif not loop.first and (prevBlock.colWidth | full_width) and (block.colWidth | full_width) %}
+    <!-- nothing -->
+  {% elseif not loop.first and not (prevBlock.colWidth | full_width) and (block.colWidth | full_width) %}
+      </div> <!-- close the row before -->
+    </div> <!-- close the wrap before -->
+    <div class="wrap wrap">
+      <div class="row">
   {% endif %}
 
-
-
-
-
-  {% if (block.colWidth | new_row) and not loop.first %}
+  {% if not loop.first and (block.colWidth | new_row) %}
     </div> <!-- close row -->
     <div class="row"> <!-- re-open row -->
   {% endif %}
 
 
+  <div class=" {{block.colWidth|mobile_class("sm")}} {{block.colWidth|desktop_class("lg")}} {{block.colWidth|tablet_class("md")}} {{block.colWidth|wide_class("xl")}}">
+
+    <div class="vertical-align-wrap">
+      <div class="valign--{{block.colWidth|v_align}}">
+
+        {% switch block.type %}
+          {# --------------------------------------------- RICH CONTENT -------- #}
+          {% case 'richContent' %}
+            {{ block.richContent }}
+
+          {# --------------------------------------------- HERO ---------------- #}
+          {% case 'hero' %}
+            <div class="row hero
+                        {{ block.mode == "bordered" ? "hero--bordered" : "hero--full" }} {{ block.backgroundColor | dark_or_light("hero") }} {{ (block.mediasPosition == "left") ? "hero--inverted" : "" }}" style="background-color:{{ block.backgroundColor }}">
+              {% if block.mainTitle %}
+              <div class="col col--12-12@xs hero-text-title">
+                {{ block.mainTitle }}
+              </div>
+              {% endif %}
+              <div class="hero-text col col--6-12@md col--12-12@xs">
+                {{ block.text }}
+              </div>
+              <div class="hero-medias {{ (block.medias|length > 1) ? "hero-medias--gallery" : "hero-medias--single" }} col--6-12@md col--12-12@xs">
+
+                {% for i, media in block.medias %}
+                  {% if media.kind == 'image' %}
+                    <div class="img img--ratio-{{block.mediaRatio}}" style="background-image: url({{ media.getUrl('imgSquared') }});"></div>
+                  {% elseif media.kind == 'video' %}
+                    {#Ignoring video for now#}
+                    {#<video controls>
+                      <source src="{{ media.getUrl()}}">
+                    Your browser does not support the video tag.
+                    </video>#}
+                  {% endif %}
+                {% endfor %}
+
+              </div>
+            </div>
+
+          {# --------------------------------------------- OTHER --------------- #}
+          {% case 'image' %}
+            <div class="img img--ratio-{{block.mediaRatio}}" style="background-image: url({{ block.image.first().getUrl() }});"></div>
+            <p class="caption">{{block.image.first().title}}</p>
 
 
-  <div class="{{block.colWidth|mobile_class("sm")}} {{block.colWidth|desktop_class("lg")}} {{block.colWidth|tablet_class("md")}} {{block.colWidth|wide_class("xl")}}">
-    {% switch block.type %}
-      {% case 'richContent' %}
-        {{ block.richContent }}
-      {% case 'hero' %}
-        print hero here
-    {% endswitch %}
+        {% endswitch %}
+
+      </div>
+    </div>
   </div>
 
 
@@ -55,7 +96,7 @@
 
   {% if loop.last %}
       </div> <!-- close first opened row -->
-    </div> <!-- close <main> -->
+    </div> <!-- close wrap -->
   {% endif %}
 
 {% endfor %}
