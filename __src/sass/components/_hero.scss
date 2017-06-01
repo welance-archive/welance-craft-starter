@@ -1,0 +1,37 @@
+.hero{
+  &--margins{
+    padding: 5vw 4vw;
+  }
+  &--contained-margins{
+    @include pb(6);
+    @include pt(6);
+    .hero-text-title{
+      margin-bottom:0!important;
+      margin-top:0!important;
+    }
+  }
+  &--full{
+    //not much
+  }
+  &--light{
+    color: white;
+  }
+  &--dark{
+    color: black;
+  }
+  &--inverted{
+    flex-direction: row-reverse;
+  }
+  .hero-medias{
+    :not(:first-child){
+      display: none; //ignoring all medias apart for fist (for now)
+    }
+  }
+  .hero-text{
+    align-self: center;
+  }
+  .hero-text-title{
+    @include mb(2);
+    @include mt(2);
+  }
+}
