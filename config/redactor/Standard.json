@@ -1,0 +1,23 @@
+{
+	"buttons": ["formatting","bold","italic","lists","link","file","horizontalrule"],
+	"plugins": ["source","fullscreen"],
+    "maxHeight": 350,
+    "formattingAdd": {
+        "a-left": {
+            "title": "Align Left",
+            "args": ["p","class","a-left"]
+        },
+        "a-right": {
+            "title": "Align Right",
+            "args": ["p","class","a-right"]
+        },
+        "a-center": {
+            "title": "Align Center",
+            "args": ["p","class","a-center"]
+        },
+        "a-justify": {
+            "title": "Justify",
+            "args": ["p","class","a-justify"]
+        }
+    }
+}

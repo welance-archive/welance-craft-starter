@@ -1,0 +1,1242 @@
+locales:
+  - en_us
+assetSources:
+  uploads:
+    type: Local
+    name: uploads
+    sortOrder: '1'
+    settings:
+      path: uploads/
+      publicURLs: '1'
+      url: uploads/
+    fieldLayout:
+      fields: {  }
+assetTransforms:
+  imgPortrait:
+    name: img-portrait
+    width: '900'
+    height: '600'
+    format: jpg
+    mode: crop
+    position: center-center
+    quality: '60'
+  imgSquared:
+    name: img-squared
+    width: '600'
+    height: '600'
+    format: jpg
+    mode: crop
+    position: center-center
+    quality: '60'
+  imgSquaredThumb:
+    name: img-squared-thumb
+    width: '400'
+    height: '400'
+    format: jpg
+    mode: crop
+    position: center-center
+    quality: '60'
+  imgWide:
+    name: img-wide
+    width: '1600'
+    height: '900'
+    format: jpg
+    mode: crop
+    position: center-center
+    quality: '60'
+fields:
+  Default:
+    attachment:
+      name: Attachment
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: Matrix
+      settings:
+        maxBlocks: null
+      context: global
+      blockTypes:
+        attachment:
+          name: Attachment
+          fields:
+            attachments:
+              name: Attachment(s)
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: Assets
+              settings:
+                useSingleFolder: '1'
+                sources: '*'
+                defaultUploadLocationSource: uploads
+                defaultUploadLocationSubpath: ''
+                singleUploadLocationSource: uploads
+                singleUploadLocationSubpath: ''
+                restrictFiles: '1'
+                allowedKinds:
+                  - audio
+                  - compressed
+                  - html
+                  - image
+                  - pdf
+                  - text
+                  - video
+                  - word
+                limit: ''
+                viewMode: list
+                selectionLabel: 'Add one or more attachments'
+            attachmentLabel:
+              name: 'Attachment Label'
+              required: '1'
+              instructions: 'eg. "download this Attachment (PDF)"'
+              translatable: '0'
+              type: PlainText
+              settings:
+                placeholder: ''
+                maxLength: ''
+                multiline: ''
+                initialRows: '4'
+    extenalUrl:
+      name: 'Extenal URL'
+      required: false
+      instructions: 'This is and external link which will open in a new page'
+      translatable: '0'
+      type: Matrix
+      settings:
+        maxBlocks: null
+      context: global
+      blockTypes:
+        externalUrl:
+          name: 'External URL'
+          fields:
+            externalUrl:
+              name: URL
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: PlainText
+              settings:
+                placeholder: 'http://example.com'
+                maxLength: ''
+                multiline: ''
+                initialRows: '4'
+            urlText:
+              name: 'URL Text'
+              required: '0'
+              instructions: "A text to show instead of the URL itself.\r\nIf you leave this black, the URL will be shown."
+              translatable: '0'
+              type: PlainText
+              settings:
+                placeholder: 'eg. "See the Article on Washington Post"'
+                maxLength: ''
+                multiline: ''
+                initialRows: '4'
+    featuredImage:
+      name: 'Featured Image'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: Assets
+      settings:
+        useSingleFolder: ''
+        sources: '*'
+        defaultUploadLocationSource: uploads
+        defaultUploadLocationSubpath: featured/
+        singleUploadLocationSource: uploads
+        singleUploadLocationSubpath: ''
+        restrictFiles: '1'
+        allowedKinds:
+          - image
+        limit: '1'
+        viewMode: large
+        selectionLabel: ''
+      context: global
+    pageBody:
+      name: 'Page Body'
+      required: false
+      instructions: 'Select any component available to add it to the page, and reorder it by drag-and-dropping it'
+      translatable: '0'
+      type: Matrix
+      settings:
+        maxBlocks: null
+      context: global
+      blockTypes:
+        richContent:
+          name: Content
+          fields:
+            colWidth:
+              name: 'Column Width'
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: WelanceGrid_BlockPosition
+              settings:
+                breakpointOptions:
+                  - desktop
+                  - mobile
+            richContent:
+              name: 'Text Content'
+              required: '1'
+              instructions: 'Add rich text (bold, titles, etc.)'
+              translatable: '0'
+              type: RichText
+              settings:
+                configFile: Advanced.json
+                availableAssetSources: '*'
+                availableTransforms: '*'
+                cleanupHtml: '1'
+                purifyHtml: ''
+                purifierConfig: ''
+                columnType: mediumtext
+        hero:
+          name: Hero
+          fields:
+            colWidth:
+              name: 'Hero Width'
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: WelanceGrid_BlockPosition
+              settings:
+                breakpointOptions:
+                  - desktop
+                  - mobile
+            mode:
+              name: 'Hero Mode'
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: 'Full Fluid'
+                    value: full
+                    default: ''
+                  -
+                    label: 'Full Fluid w/ Margins'
+                    value: margins
+                    default: ''
+                  -
+                    label: Contained
+                    value: contained
+                    default: ''
+                  -
+                    label: 'Contained w/ Margins'
+                    value: contained-margins
+                    default: '1'
+            backgroundColor:
+              name: 'Text Background'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Color
+              settings: null
+            mainTitle:
+              name: 'Hero Title'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: RichText
+              settings:
+                configFile: Standard.json
+                availableAssetSources: '*'
+                availableTransforms: '*'
+                cleanupHtml: '1'
+                purifyHtml: '1'
+                purifierConfig: ''
+                columnType: text
+            text:
+              name: Text
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: RichText
+              settings:
+                configFile: Advanced.json
+                availableAssetSources: '*'
+                availableTransforms: '*'
+                cleanupHtml: '1'
+                purifyHtml: '1'
+                purifierConfig: ''
+                columnType: text
+            medias:
+              name: Medias
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Assets
+              settings:
+                useSingleFolder: ''
+                sources: '*'
+                defaultUploadLocationSource: uploads
+                defaultUploadLocationSubpath: ''
+                singleUploadLocationSource: uploads
+                singleUploadLocationSubpath: ''
+                restrictFiles: '1'
+                allowedKinds:
+                  - audio
+                  - image
+                  - video
+                limit: ''
+                viewMode: list
+                selectionLabel: 'Add media...'
+            mediasPosition:
+              name: 'Medias Position'
+              required: '1'
+              instructions: 'Where would you like your medias to be placed?'
+              translatable: '0'
+              type: PositionSelect
+              settings:
+                options:
+                  - left
+                  - right
+                  - full
+            mediaRatio:
+              name: 'Media Ratio'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: '2:3 Portrait (vertical)'
+                    value: 2-3
+                    default: ''
+                  -
+                    label: '3:2 Landscape'
+                    value: 3-2
+                    default: ''
+                  -
+                    label: '3:4 Portrait (vertical)'
+                    value: 3-4
+                    default: ''
+                  -
+                    label: '4:3 Landscape'
+                    value: 4-3
+                    default: ''
+                  -
+                    label: '16:9 Wide Landscape'
+                    value: 16-9
+                    default: ''
+                  -
+                    label: '9:16 Tower Image (vertical)'
+                    value: 9-16
+                    default: ''
+                  -
+                    label: '1:1 Squared'
+                    value: 1-1
+                    default: '1'
+        image:
+          name: Image
+          fields:
+            colWidth:
+              name: 'Image Width'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: WelanceGrid_BlockPosition
+              settings:
+                breakpointOptions:
+                  - desktop
+                  - mobile
+            mediaRatio:
+              name: 'Image Ratio'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: '2:3 Portrait (vertical)'
+                    value: 2-3
+                    default: ''
+                  -
+                    label: '3:2 Landscape'
+                    value: 3-2
+                    default: ''
+                  -
+                    label: '3:4 Portrait (vertical)'
+                    value: 3-4
+                    default: ''
+                  -
+                    label: '4:3 Landscape'
+                    value: 4-3
+                    default: ''
+                  -
+                    label: '16:9 Wide Landscape'
+                    value: 16-9
+                    default: ''
+                  -
+                    label: '9:16 Tower Image'
+                    value: 9-16
+                    default: ''
+                  -
+                    label: '1:1 Squared'
+                    value: 1-1
+                    default: '1'
+            image:
+              name: Image
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: Assets
+              settings:
+                useSingleFolder: '1'
+                sources: '*'
+                defaultUploadLocationSource: uploads
+                defaultUploadLocationSubpath: ''
+                singleUploadLocationSource: uploads
+                singleUploadLocationSubpath: ''
+                restrictFiles: '1'
+                allowedKinds:
+                  - image
+                limit: '1'
+                viewMode: list
+                selectionLabel: 'Add an image...'
+            position:
+              name: position
+              required: '1'
+              instructions: 'Where would you like your Image?'
+              translatable: '0'
+              type: PositionSelect
+              settings:
+                options:
+                  - center
+                  - full
+        faq:
+          name: FAQ
+          fields:
+            colWidth:
+              name: 'FAQs Width'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: WelanceGrid_BlockPosition
+              settings:
+                breakpointOptions:
+                  - desktop
+                  - mobile
+            faqs:
+              name: 'Question & Answers'
+              required: '1'
+              instructions: 'Question: Heading 4 - Answer: Paragraph'
+              translatable: '0'
+              type: RichText
+              settings:
+                configFile: Simple.json
+                availableAssetSources: '*'
+                availableTransforms: '*'
+                cleanupHtml: '1'
+                purifyHtml: '1'
+                purifierConfig: ''
+                columnType: text
+        usersList:
+          name: 'Users List'
+          fields:
+            colWidth:
+              name: 'Users List Width'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: WelanceGrid_BlockPosition
+              settings:
+                breakpointOptions:
+                  - desktop
+                  - mobile
+            users:
+              name: Users
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Users
+              settings:
+                sources: '*'
+                limit: ''
+                selectionLabel: ''
+            usersDisplayMode:
+              name: 'Users Display Mode'
+              required: '1'
+              instructions: Mode
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: 'Accordion (open-close, no picture)'
+                    value: side-no-pic
+                    default: ''
+                  -
+                    label: 'Name + Profession + Photo (centered)'
+                    value: centered
+                    default: '1'
+            usersPerRow:
+              name: 'Users displayed for each row'
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: '1 user'
+                    value: '1'
+                    default: ''
+                  -
+                    label: '2 users'
+                    value: '2'
+                    default: ''
+                  -
+                    label: '3 users'
+                    value: '3'
+                    default: ''
+                  -
+                    label: '4 users'
+                    value: '4'
+                    default: '1'
+                  -
+                    label: '6 users'
+                    value: '6'
+                    default: ''
+                  -
+                    label: '12 users'
+                    value: '12'
+                    default: ''
+    postsCategories:
+      name: 'Posts Categories'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: Categories
+      settings:
+        source: 'group:newsCategories'
+        limit: ''
+        selectionLabel: ''
+      context: global
+    seoDescription:
+      name: 'SEO Description'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'The Description that Google and friends will use for indexing this content goes here...'
+        maxLength: '160'
+        multiline: ''
+        initialRows: '4'
+      context: global
+    seoTitle:
+      name: 'SEO Title'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: ''
+        maxLength: '60'
+        multiline: ''
+        initialRows: '4'
+      context: global
+    tags:
+      name: Tags
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: Tags
+      settings:
+        source: 'taggroup:default'
+        selectionLabel: ''
+      context: global
+  Globals:
+    address:
+      name: 'Address (line 1 and 2)'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'Tamarind Street, 68'
+        maxLength: ''
+        multiline: '1'
+        initialRows: '2'
+      context: global
+    ceo:
+      name: 'CEO / Main Officer'
+      required: false
+      instructions: 'Who''s the main responsible person?'
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'Jane Doe'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    city:
+      name: City
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: Stuttgart
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    country:
+      name: Country
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: Germany
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    orgEMailAddress:
+      name: 'Customer Support Name and e-Mail Address'
+      required: false
+      instructions: 'In this Format: "Jane from Website Name <email@address.com>"'
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'Jane Doe <email@address.com>'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    facebookImage:
+      name: 'Facebook (Share) Image'
+      required: false
+      instructions: 'Recommended: 1200 x 630 pixels'
+      translatable: '0'
+      type: Assets
+      settings:
+        useSingleFolder: '1'
+        sources: '*'
+        defaultUploadLocationSource: uploads
+        defaultUploadLocationSubpath: social/fb
+        singleUploadLocationSource: uploads
+        singleUploadLocationSubpath: social
+        restrictFiles: '1'
+        allowedKinds:
+          - image
+        limit: '1'
+        viewMode: large
+        selectionLabel: ''
+      context: global
+    facebookPage:
+      name: 'Facebook URL'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'https://facebook.com/yourPageHere'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    GA:
+      name: 'Google Analytics Code'
+      required: false
+      instructions: 'Enter your Google Analytics code (eg. UA-XXXXX-Y)'
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: UA-XXXXX-Y
+        maxLength: '10'
+        multiline: ''
+        initialRows: '4'
+      context: global
+    googleUrl:
+      name: 'Google+ URL'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'https://plus.google.com/u/0/+yourPageHere'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    imprint:
+      name: Imprint
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: RichText
+      settings:
+        configFile: Standard.json
+        availableAssetSources: '*'
+        availableTransforms: '*'
+        cleanupHtml: '1'
+        purifyHtml: '1'
+        purifierConfig: ''
+        columnType: text
+      context: global
+    instagramUrl:
+      name: 'Instagram URL'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'https://instagram.com/yourPageHere'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    linkedinUrl:
+      name: 'Linkedin URL'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'https://linkedin.com/yourPageHere'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    mediumUrl:
+      name: 'Medium URL'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'https://medium.com/yourNameHere'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    orgDescription:
+      name: 'Organisation Description'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'Insert here a cool description about your company, possibly unique text of maximum 160 character'
+        maxLength: '160'
+        multiline: ''
+        initialRows: '4'
+      context: global
+    orgEstablishmentYear:
+      name: 'Organisation Establishment Year'
+      required: false
+      instructions: 'Since which year does this organisation exist?'
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: '1923'
+        maxLength: '4'
+        multiline: ''
+        initialRows: '4'
+      context: global
+    orgFax:
+      name: 'Organisation Fax'
+      required: false
+      instructions: "international format. \r\nEg. +49 176 79797699"
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: '+49 176 79797699'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    orgGpsPosition:
+      name: 'Organisation GPS Position'
+      required: false
+      instructions: "(latitude, longitude)\r\neg. 52.520000, 13.405000"
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: '52.520000, 13.405000'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    orgTags:
+      name: 'Organisation Industries / Subjects / Tags'
+      required: false
+      instructions: 'Comma separated industries (eg. fashion, e-commerce, retail, ...)'
+      translatable: '0'
+      type: Tags
+      settings:
+        source: 'taggroup:default'
+        selectionLabel: Retail
+      context: global
+    orgLogo:
+      name: 'Organisation Logo'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: Assets
+      settings:
+        useSingleFolder: ''
+        sources: '*'
+        defaultUploadLocationSource: uploads
+        defaultUploadLocationSubpath: logo
+        singleUploadLocationSource: uploads
+        singleUploadLocationSubpath: ''
+        restrictFiles: '1'
+        allowedKinds:
+          - image
+        limit: '1'
+        viewMode: large
+        selectionLabel: ''
+      context: global
+    orgName:
+      name: 'Organisation Name'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'Your company name and maybe your slogan. (max 60 chars)'
+        maxLength: '60'
+        multiline: ''
+        initialRows: '4'
+      context: global
+    orgPhoneNumber:
+      name: 'Organisation Phone Number'
+      required: false
+      instructions: "international format.\r\nEg. +49 176 79797699"
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: '+49 176 79797699'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    pinterestUrl:
+      name: 'Pinterest URL'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'https://pinterest.com/yourPageHere'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    privacyPolicies:
+      name: 'Privacy Policies'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: RichText
+      settings:
+        configFile: Standard.json
+        availableAssetSources: '*'
+        availableTransforms: '*'
+        cleanupHtml: '1'
+        purifyHtml: '1'
+        purifierConfig: ''
+        columnType: text
+      context: global
+    state:
+      name: 'Province / State'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: Baden-Württemberg
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    termsConditions:
+      name: 'Terms & Conditions'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: RichText
+      settings:
+        configFile: Standard.json
+        availableAssetSources: '*'
+        availableTransforms: '*'
+        cleanupHtml: '1'
+        purifyHtml: '1'
+        purifierConfig: ''
+        columnType: text
+      context: global
+    twitterImage:
+      name: 'Twitter (Share) Image'
+      required: false
+      instructions: 'Recommended: 506 x 253 pixels'
+      translatable: '0'
+      type: Assets
+      settings:
+        useSingleFolder: '1'
+        sources: '*'
+        defaultUploadLocationSource: uploads
+        defaultUploadLocationSubpath: /social
+        singleUploadLocationSource: uploads
+        singleUploadLocationSubpath: social
+        restrictFiles: '1'
+        allowedKinds:
+          - image
+        limit: '1'
+        viewMode: large
+        selectionLabel: ''
+      context: global
+    twitterUrl:
+      name: 'Twitter URL'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'https://twitter.com/yourHandleHere'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    vatNr:
+      name: 'VAT / Tax Nr.'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: 'DE 12345678'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    zip:
+      name: ZIP
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: '10141'
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+globalSets:
+  main:
+    name: '01. Main'
+    fieldLayout:
+      tabs:
+        Content:
+          ceo: '0'
+          orgEstablishmentYear: '0'
+          vatNr: '0'
+  contactInfo:
+    name: '02. Contact Info'
+    fieldLayout:
+      tabs:
+        Content:
+          orgEMailAddress: '0'
+          address: '0'
+          zip: '0'
+          city: '0'
+          state: '0'
+          country: '0'
+          orgGpsPosition: '0'
+          orgPhoneNumber: '0'
+          orgFax: '0'
+  services:
+    name: '03. External Services'
+    fieldLayout:
+      tabs:
+        Content:
+          GA: '0'
+  social:
+    name: '04. Social'
+    fieldLayout:
+      tabs:
+        Content:
+          facebookPage: '0'
+          facebookImage: '0'
+          twitterUrl: '0'
+          twitterImage: '0'
+          googleUrl: '0'
+          instagramUrl: '0'
+          pinterestUrl: '0'
+          linkedinUrl: '0'
+          mediumUrl: '0'
+  seo:
+    name: '05. SEO'
+    fieldLayout:
+      tabs:
+        Content:
+          orgTags: '0'
+          orgName: '0'
+          orgDescription: '0'
+          orgLogo: '0'
+  privacyAndTerms:
+    name: '06. Privacy and Terms'
+    fieldLayout:
+      tabs:
+        Content:
+          privacyPolicies: '0'
+          termsConditions: '0'
+          imprint: '0'
+plugins:
+  SproutImport:
+    isInstalled: true
+    isEnabled: true
+    settings:
+      pluginNameOverride: ''
+  WelanceGrid:
+    isInstalled: true
+    isEnabled: true
+    settings: {  }
+sections:
+  homepage:
+    name: Homepage
+    type: single
+    hasUrls: '1'
+    template: _entries/pages/page
+    maxLevels: null
+    enableVersioning: '1'
+    locales:
+      en_us:
+        enabledByDefault: '1'
+        urlFormat: __home__
+        nestedUrlFormat: null
+    entryTypes:
+      homepage:
+        name: Homepage
+        hasTitleField: '1'
+        titleLabel: Title
+        titleFormat: null
+        fieldLayout:
+          tabs:
+            Content:
+              pageBody: '0'
+            SEO:
+              seoTitle: '0'
+              seoDescription: '0'
+  pages:
+    name: Pages
+    type: structure
+    hasUrls: '1'
+    template: _entries/pages/page
+    maxLevels: null
+    enableVersioning: '1'
+    locales:
+      en_us:
+        enabledByDefault: '1'
+        urlFormat: '{slug}'
+        nestedUrlFormat: '{parent.uri}/{slug}'
+    entryTypes:
+      homepage:
+        name: 'Content Page'
+        hasTitleField: '1'
+        titleLabel: Title
+        titleFormat: null
+        fieldLayout:
+          tabs:
+            Content:
+              pageBody: '0'
+              tags: '0'
+            SEO:
+              seoTitle: '0'
+              seoDescription: '0'
+  posts:
+    name: Posts
+    type: channel
+    hasUrls: '1'
+    template: _entries/posts/post
+    maxLevels: null
+    enableVersioning: '1'
+    locales:
+      en_us:
+        enabledByDefault: '1'
+        urlFormat: 'news/{slug}'
+        nestedUrlFormat: null
+    entryTypes:
+      posts:
+        name: Posts
+        hasTitleField: '1'
+        titleLabel: Title
+        titleFormat: null
+        fieldLayout:
+          tabs:
+            Content:
+              featuredImage: '0'
+              pageBody: '0'
+              extenalUrl: '0'
+              tags: '0'
+              attachment: '0'
+            Relations:
+              postsCategories: '0'
+            SEO:
+              seoTitle: '0'
+              seoDescription: '0'
+userGroups:
+  admins:
+    name: Admins
+    permissions:
+      - accessCp
+      - accessCpWhenSystemIsOff
+      - accessPlugin-SproutImport
+      - accessSiteWhenSystemIsOff
+      - administrateUsers
+      - assignUserPermissions
+      - changeUserEmails
+      - 'createEntries:pages'
+      - 'createEntries:posts'
+      - 'createSubfoldersInAssetSource:uploads'
+      - 'deleteEntries:pages'
+      - 'deleteEntries:posts'
+      - 'deletePeerEntries:pages'
+      - 'deletePeerEntries:posts'
+      - 'deletePeerEntryDrafts:homepage'
+      - 'deletePeerEntryDrafts:pages'
+      - 'deletePeerEntryDrafts:posts'
+      - deleteUsers
+      - 'editCategories:newsCategories'
+      - 'editEntries:homepage'
+      - 'editEntries:pages'
+      - 'editEntries:posts'
+      - 'editGlobalSet:contactInfo'
+      - 'editGlobalSet:main'
+      - 'editGlobalSet:privacyAndTerms'
+      - 'editGlobalSet:seo'
+      - 'editGlobalSet:services'
+      - 'editGlobalSet:social'
+      - 'editPeerEntries:pages'
+      - 'editPeerEntries:posts'
+      - 'editPeerEntryDrafts:homepage'
+      - 'editPeerEntryDrafts:pages'
+      - 'editPeerEntryDrafts:posts'
+      - editUsers
+      - performUpdates
+      - 'publishEntries:homepage'
+      - 'publishEntries:pages'
+      - 'publishEntries:posts'
+      - 'publishPeerEntries:pages'
+      - 'publishPeerEntries:posts'
+      - 'publishPeerEntryDrafts:homepage'
+      - 'publishPeerEntryDrafts:pages'
+      - 'publishPeerEntryDrafts:posts'
+      - registerUsers
+      - 'removeFromAssetSource:uploads'
+      - 'uploadToAssetSource:uploads'
+      - 'viewAssetSource:uploads'
+  editors:
+    name: Editors
+    permissions:
+      - accessCp
+      - 'createEntries:pages'
+      - 'createEntries:posts'
+      - 'deleteEntries:posts'
+      - 'editEntries:homepage'
+      - 'editEntries:pages'
+      - 'editEntries:posts'
+      - 'editGlobalSet:contactInfo'
+      - 'editGlobalSet:main'
+      - 'editGlobalSet:privacyAndTerms'
+      - 'editGlobalSet:seo'
+      - 'editGlobalSet:services'
+      - 'editGlobalSet:social'
+      - 'editPeerEntries:pages'
+      - 'editPeerEntryDrafts:homepage'
+      - 'editPeerEntryDrafts:pages'
+      - 'publishEntries:pages'
+      - 'publishEntries:posts'
+      - 'uploadToAssetSource:uploads'
+      - 'viewAssetSource:uploads'
+  mainEditors:
+    name: 'Main Editors'
+    permissions:
+      - accessCp
+      - administrateUsers
+      - assignUserPermissions
+      - changeUserEmails
+      - 'createEntries:pages'
+      - 'createEntries:posts'
+      - 'createSubfoldersInAssetSource:uploads'
+      - 'deleteEntries:pages'
+      - 'deleteEntries:posts'
+      - 'deletePeerEntries:pages'
+      - 'deletePeerEntries:posts'
+      - 'deletePeerEntryDrafts:homepage'
+      - 'deletePeerEntryDrafts:pages'
+      - 'deletePeerEntryDrafts:posts'
+      - deleteUsers
+      - 'editCategories:newsCategories'
+      - 'editEntries:homepage'
+      - 'editEntries:pages'
+      - 'editEntries:posts'
+      - 'editGlobalSet:contactInfo'
+      - 'editGlobalSet:main'
+      - 'editGlobalSet:privacyAndTerms'
+      - 'editGlobalSet:seo'
+      - 'editGlobalSet:services'
+      - 'editGlobalSet:social'
+      - 'editPeerEntries:pages'
+      - 'editPeerEntries:posts'
+      - 'editPeerEntryDrafts:homepage'
+      - 'editPeerEntryDrafts:pages'
+      - 'editPeerEntryDrafts:posts'
+      - editUsers
+      - 'publishEntries:homepage'
+      - 'publishEntries:pages'
+      - 'publishEntries:posts'
+      - 'publishPeerEntries:pages'
+      - 'publishPeerEntries:posts'
+      - 'publishPeerEntryDrafts:homepage'
+      - 'publishPeerEntryDrafts:pages'
+      - 'publishPeerEntryDrafts:posts'
+      - registerUsers
+      - 'removeFromAssetSource:uploads'
+      - 'uploadToAssetSource:uploads'
+      - 'viewAssetSource:uploads'
+users:
+  fieldLayout:
+    fields: {  }
+elementIndexSettings:
+  Category:
+    sources:
+      '':
+        tableAttributes:
+          1: link
+      'group:newsCategories':
+        tableAttributes:
+          1: link
+  User:
+    sources:
+      '*':
+        tableAttributes:
+          1: fullName
+          2: lastLoginDate
+          3: dateCreated
+          4: email
+pluginData: {  }
+categoryGroups:
+  newsCategories:
+    name: 'Posts Categories'
+    hasUrls: '1'
+    template: ''
+    maxLevels: null
+    locales:
+      en_us:
+        urlFormat: 'news-categories/{slug}'
+        nestedUrlFormat: '{parent.uri}/{slug}'
+    fieldLayout:
+      fields: {  }
+tagGroups:
+  default:
+    name: Default
+    fieldLayout:
+      fields: {  }
