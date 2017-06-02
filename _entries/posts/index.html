@@ -27,7 +27,7 @@
       <div class="row">
       {% for entry in craft.entries.section('posts').find() %}
         <div class="col col--3-12">
-          <div class="r16-9">
+          <div class="img--r1-1">
             <picture class="ratio-content">
               <source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">
               <img src="{{ entry.featuredImage.first().getUrl() }}" alt="{{ entry.title }}"/>

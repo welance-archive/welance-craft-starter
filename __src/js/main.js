@@ -1,5 +1,6 @@
 // import jquery from node_modules
 import $ from 'jquery';
+import objectFitImages from 'object-fit-images';
 // import specific JS for the templates
 import '../../_entries/pages/page.js';
 import '../../_entries/posts/post.js';

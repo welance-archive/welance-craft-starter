@@ -71,7 +71,12 @@
 
                     {% for i, media in block.medias %}
                       {% if media.kind == 'image' %}
-                        <div class="img img--ratio-{{block.mediaRatio}}" style="background-image: url({{ media.getUrl('imgSquared') }});"></div>
+                        <div class="img--r{{block.mediaRatio}}">
+                          <picture class="ratio-content">
+                            {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
+                            <img src="{{ media.getUrl('imgSquared') }}" alt="{{ media.title }}"/>
+                          </picture>
+                        </div>
                       {% elseif media.kind == 'video' %}
                         {#Ignoring video for now#}
                         {#<video controls>
@@ -92,9 +97,13 @@
 
           {# --------------------------------------------- OTHER --------------- #}
           {% case 'image' %}
-            <div class="img img--ratio-{{block.mediaRatio}}" style="background-image: url({{ block.image.first().getUrl() }});"></div>
-            <p class="caption">{{block.image.first().title}}</p>
-
+              <div class="img--r{{block.mediaRatio}}">
+                <picture class="ratio-content">
+                  {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
+                  <img src="{{ block.image.first().getUrl() }}" alt="{{ block.image.first().title }}"/>
+                </picture>
+              </div>
+              <p class="caption">{{block.image.first().title}}</p>
 
         {% endswitch %}
 
