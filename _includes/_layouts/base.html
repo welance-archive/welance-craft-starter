@@ -59,11 +59,12 @@
 
 {% set baseUrl = craft.config.environmentVariables.baseUrl %}
 {% set basePath = craft.config.environmentVariables.basePath %}
+{% set editClass = "" %}
 
-{% if currentUser.isInGroup('admins') or currentUser.isInGroup('editors') or currentUser.isInGroup('mainEditors') %}
-  {% set editClass = "editguide" %}
-{% else %}
-  {% set editClass = "" %}
+{% if currentUser is not empty %}
+  {% if currentUser.isInGroup('admins') or currentUser.isInGroup('editors') or currentUser.isInGroup('mainEditors') %}
+    {% set editClass = "editguide" %}
+  {% endif %}
 {% endif %}
 
 <!DOCTYPE html>
