@@ -105,6 +105,24 @@
               </div>
               <p class="caption">{{block.image.first().title}}</p>
 
+          {# --------------------------------------------- OTHER --------------- #}
+          {% case 'faq' %}
+              <div class="wc-accordion">
+                {{block.faqs}}
+              </div>
+
+          {# --------------------------------------------- OTHER --------------- #}
+          {% case 'usersList' %}
+            {% switch block.usersDisplayMode %}
+              {% case 'accordion-no-pic' %}
+                <div class="wc-accordion">
+                  {% for i, user in block.users %}
+                    <h4 class="wc-accordion-title">{{user.username}}</h4>
+                    <p class="wc-accordion-content">{{user.fullname}}</p>
+                  {% endfor %}
+                </div>
+            {% endswitch %}
+
         {% endswitch %}
 
       </div>
