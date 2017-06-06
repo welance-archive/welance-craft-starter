@@ -37,11 +37,15 @@ $.fn.wc_accordion = function() {
   $first_title.next().addClass('wc-accordion-content--active');
 
   $title.on("click", function(ev){
+    let isOpen = $(ev.target).hasClass('wc-accordion-title--active');
+
     $title.removeClass('wc-accordion-title--active');
     $content.removeClass('wc-accordion-content--active');
 
-    $(ev.target).addClass('wc-accordion-title--active');
-    $(ev.target).next().addClass('wc-accordion-content--active');
+    if(!isOpen){
+      $(ev.target).addClass('wc-accordion-title--active');
+      $(ev.target).next().addClass('wc-accordion-content--active');
+    }
 
   });
 };
