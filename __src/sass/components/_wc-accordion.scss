@@ -25,7 +25,6 @@ $second-animation-time: .4s;
       transition: all $second-animation-time ease-in;
     }
     &--active{
-      cursor: auto;
       border-bottom: 1px solid transparent;
       &::after {
         margin-top: .1rem;
