@@ -1,0 +1,28 @@
+{% switch block.usersDisplayMode %}
+  {% case 'accordion-no-pic' %}
+    <div class="wc-accordion">
+      {% for i, user in block.users %}
+        <h4 class="wc-accordion-title">{{user.username}}</h4>
+        <p class="wc-accordion-content">{{user.fullname}}</p>
+      {% endfor %}
+    </div>
+  {% case 'squared' %}
+    <div class="row">
+      {% for i, user in block.users %}
+        <div class="col col--{{block.usersPerRow}}-12">
+          <div class="img--r1-1">
+            <picture class="ratio-content">
+              <source srcset="{{user.photoUrl() ? user.photoUrl() : "https://via.placeholder.com/600x600?text=" ~ user.fullname | url_encode}}" media="(min-width: 600px)">
+              <img src="{{user.photoUrl() ? user.photoUrl() : "https://via.placeholder.com/600x600?text=image+here" ~ user.fullname | url_encode}}" alt="{{user.fullname}} profile picture"/>
+            </picture>
+          </div>
+
+          <h3>{{user.fullname}}</h3>
+          {% autoescape false %}
+            <p>{{user.bio ? user.bio | slice(0, 60) ~ "..." : "<p>" ~ user.fullname ~ "has no Biography.</p>" }}</p>
+          {% endautoescape %}
+        </div>
+      {% endfor %}
+    </div>
+
+{% endswitch %}

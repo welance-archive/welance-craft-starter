@@ -1,0 +1,34 @@
+{% switch block.galleryDisplayMode %}
+  {% case 'squared' %}
+    <div class="row">
+      {% for i, media in block.medias %}
+        <div class="col col--{{block.mediasPerRow}}-12">
+          <div class="img--r{{block.mediaRatio}}">
+            {% if media.kind == 'image' %}
+                <picture class="ratio-content">
+                  <a href="{{media.url}}">
+                    <source srcset="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
+                    <img src="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{media.title}} media object"/>
+                  </a>
+                </picture>
+            {% elseif media.kind == 'video' %}
+                <video class="ratio-content" controls controls="controls">
+                  {% if media.filename | split('.') | last == "mp4" %}
+                    <source src="{{media.getUrl()}}" type="video/mp4" />
+                  {% elseif media.filename | split('.') | last == "webm" %}
+                    <source src="linktovideo.webm" type="video/webm" />
+                  {% elseif media.filename | split('.') | last == "ogg" %}
+                    <source src="linktovideo.ogv" type="video/ogg" />
+                  {% endif %}
+                  <!-- Fallback image for browser without <video> support -->
+                  <img src="https://via.placeholder.com/600x600/DB1919/000000/?text=Video+Not+Supported" alt="Video not supported.">
+                  <p>Video not supported.</p>
+                </video>
+            {% endif %}
+          </div> {# close img--r-XX-XX #}
+          <p class="caption"><a href="{{media.url}}">{{media.title}}</a></p>
+        </div> {# close col--XX-XX #}
+      {% endfor %}
+    </div>
+
+{% endswitch %}

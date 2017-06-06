@@ -1,0 +1,42 @@
+<div class="row hero {{ block.backgroundColor | dark_or_light("hero") }} {{ (block.mediasPosition == "left") ? "hero--inverted" : "" }} {{ block.mode == "margins" ? "hero--margins" : "" }} {{ block.mode == "contained-margins" ? "hero--contained-margins" : "" }}" style="background-color:{{ block.backgroundColor }}">
+
+  {% if block.mode == "contained" or block.mode == "contained-margins" %}
+    <div class="wrap wrap--contained">
+      <div class="row hero {{ block.backgroundColor | dark_or_light("hero") }} {{ (block.mediasPosition == "left") ? "hero--inverted" : "" }}" style="background-color:{{ block.backgroundColor }}">
+  {% endif %}
+
+      {% if block.mainTitle %}
+      <div class="col col--12-12@xs hero-text-title">
+        {{ block.mainTitle }}
+      </div>
+      {% endif %}
+      <div class="hero-text col col--6-12@md col--12-12@xs">
+        {{ block.text }}
+      </div>
+      <div class="hero-medias {{ (block.medias|length > 1) ? "hero-medias--gallery" : "hero-medias--single" }} col--6-12@md col--12-12@xs">
+
+        {% for i, media in block.medias %}
+          {% if media.kind == 'image' %}
+            <div class="img--r{{block.mediaRatio}}">
+              <picture class="ratio-content">
+                {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
+                <img src="{{ media.getUrl('imgSquared') }}" alt="{{ media.title }}"/>
+              </picture>
+            </div>
+          {% elseif media.kind == 'video' %}
+            {#Ignoring video for now#}
+            {#<video controls>
+              <source src="{{ media.getUrl()}}">
+            Your browser does not support the video tag.
+            </video>#}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+  {% if block.mode == "contained" or block.mode == "contained-margins" %}
+      </div>
+    </div>
+  {% endif %}
+
+
+</div>

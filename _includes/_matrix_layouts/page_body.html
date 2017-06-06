@@ -56,142 +56,38 @@
 
           {# --------------------------------------------- HERO ---------------- #}
           {% case 'hero' %}
-            <div class="row hero {{ block.backgroundColor | dark_or_light("hero") }} {{ (block.mediasPosition == "left") ? "hero--inverted" : "" }} {{ block.mode == "margins" ? "hero--margins" : "" }} {{ block.mode == "contained-margins" ? "hero--contained-margins" : "" }}" style="background-color:{{ block.backgroundColor }}">
-
-              {% if block.mode == "contained" or block.mode == "contained-margins" %}
-                <div class="wrap wrap--contained">
-                  <div class="row hero {{ block.backgroundColor | dark_or_light("hero") }} {{ (block.mediasPosition == "left") ? "hero--inverted" : "" }}" style="background-color:{{ block.backgroundColor }}">
-              {% endif %}
-
-                  {% if block.mainTitle %}
-                  <div class="col col--12-12@xs hero-text-title">
-                    {{ block.mainTitle }}
-                  </div>
-                  {% endif %}
-                  <div class="hero-text col col--6-12@md col--12-12@xs">
-                    {{ block.text }}
-                  </div>
-                  <div class="hero-medias {{ (block.medias|length > 1) ? "hero-medias--gallery" : "hero-medias--single" }} col--6-12@md col--12-12@xs">
-
-                    {% for i, media in block.medias %}
-                      {% if media.kind == 'image' %}
-                        <div class="img--r{{block.mediaRatio}}">
-                          <picture class="ratio-content">
-                            {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
-                            <img src="{{ media.getUrl('imgSquared') }}" alt="{{ media.title }}"/>
-                          </picture>
-                        </div>
-                      {% elseif media.kind == 'video' %}
-                        {#Ignoring video for now#}
-                        {#<video controls>
-                          <source src="{{ media.getUrl()}}">
-                        Your browser does not support the video tag.
-                        </video>#}
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-
-              {% if block.mode == "contained" or block.mode == "contained-margins" %}
-                  </div>
-                </div>
-              {% endif %}
-
-
-            </div>
+            {% include "_includes/_matrix_layouts/page_body/hero" %}
 
           {# --------------------------------------------- OTHER --------------- #}
           {% case 'image' %}
-              <div class="img--r{{block.mediaRatio}}">
-                <picture class="ratio-content">
-                  {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
-                  <img src="{{ block.image.first().getUrl() }}" alt="{{ block.image.first().title }}"/>
-                </picture>
-              </div>
-              <p class="caption">{{block.image.first().title}}</p>
+            {% include "_includes/_matrix_layouts/page_body/image" %}
 
           {# --------------------------------------------- FAQ --------------- #}
           {% case 'faq' %}
-              <!-- interaction with this works thanks to the wc-accordion plugin -->
-              <div class="wc-accordion">
-                {{block.faqs}}
-              </div>
+            {% include "_includes/_matrix_layouts/page_body/faq" %}
 
           {# --------------------------------------------- Users List --------------- #}
           {% case 'usersList' %}
-            {% switch block.usersDisplayMode %}
-              {% case 'accordion-no-pic' %}
-                <div class="wc-accordion">
-                  {% for i, user in block.users %}
-                    <h4 class="wc-accordion-title">{{user.username}}</h4>
-                    <p class="wc-accordion-content">{{user.fullname}}</p>
-                  {% endfor %}
-                </div>
-              {% case 'squared' %}
-                <div class="row">
-                  {% for i, user in block.users %}
-                    <div class="col col--{{block.usersPerRow}}-12">
-                      <div class="img--r1-1">
-                        <picture class="ratio-content">
-                          <source srcset="{{user.photoUrl()}}" media="(min-width: 600px)">
-                          <img src="{{user.photoUrl()}}" alt="{{user.fullname}} profile picture"/>
-                        </picture>
-                      </div>
-
-                      <h3>{{user.fullname}}</h3>
-                      {% autoescape false %}
-                        <p>{{user.bio ? user.bio | slice(0, 60) ~ "..." : "<p>" ~ user.fullname ~ "has no Biography.</p>" }}</p>
-                      {% endautoescape %}
-                    </div>
-                  {% endfor %}
-                </div>
-
-            {% endswitch %}
+            {% include "_includes/_matrix_layouts/page_body/users_list" %}
 
           {# --------------------------------------------- Entries List --------------- #}
           {% case 'entriesList' %}
-            {% switch block.entriesDisplayMode %}
-              {% case 'accordion-no-pic' %}
-                <div class="wc-accordion">
-                  {% for i, element in block.entries %}
-                    <h4 class="wc-accordion-title">{{element.title}}</h4>
-                    <p class="wc-accordion-content"><a href="{{element.url}}">{{element.introText ? element.introText : "Read more about " ~ element.title}}</a></p>
-                  {% endfor %}
-                </div>
-              {% case 'squared' %}
-                <div class="row">
-                  {% for i, element in block.entries %}
-                    <div class="col col--{{block.entriesPerRow}}-12">
-                      <div class="img--r1-1">
-                        <picture class="ratio-content">
-                          <a href="{{element.url}}">
-                            <source srcset="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
-                            <img src="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{element.title}} profile picture"/>
-                          </a>
-                        </picture>
-                      </div>
+            {% include "_includes/_matrix_layouts/page_body/entries_list" %}
 
-                      <h3><a href="{{element.url}}">{{element.title}}</a></h3>
-                      {% autoescape false %}
-                        <p>{{element.introText ? element.introText | slice(0, 60) ~ "..." : "" }}</p>
-                      {% endautoescape %}
-                    </div>
-                  {% endfor %}
-                </div>
-
-            {% endswitch %}
+          {# --------------------------------------------- Media Gallery --------------- #}
+          {% case 'gallery' %}
+            {% include "_includes/_matrix_layouts/page_body/gallery" %}
 
         {% endswitch %}
 
-      </div>
-    </div>
-  </div>
 
-
-
+      </div> <!-- close valign -->
+    </div>  <!-- close vertical-align-wrap -->
+  </div> <!-- close col block -->
 
   {% if loop.last %}
       </div> <!-- close first opened row -->
-    </div> <!-- close wrap -->
+    </div> <!-- close first opened wrap -->
   {% endif %}
 
 {% endfor %}
