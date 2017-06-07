@@ -16,9 +16,9 @@
                   {% if media.filename | split('.') | last == "mp4" %}
                     <source src="{{media.getUrl()}}" type="video/mp4" />
                   {% elseif media.filename | split('.') | last == "webm" %}
-                    <source src="linktovideo.webm" type="video/webm" />
+                    <source src="{{media.getUrl()}}" type="video/webm" />
                   {% elseif media.filename | split('.') | last == "ogg" %}
-                    <source src="linktovideo.ogv" type="video/ogg" />
+                    <source src="{{media.getUrl()}}" type="video/ogg" />
                   {% endif %}
                   <!-- Fallback image for browser without <video> support -->
                   <img src="https://via.placeholder.com/600x600/DB1919/000000/?text=Video+Not+Supported" alt="Video not supported.">
