@@ -1,5 +1,10 @@
 .gallery{
   &--logos{
+    @include mq($from: xs, $until: md) {
+      .col{
+        width: 33.33%;
+      }
+    }
     div[class^="img--"]{
       img, video{
         object-fit: contain;
