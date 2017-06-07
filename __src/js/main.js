@@ -1,4 +1,7 @@
 // JS from vendors from node_modules (installed with NPM)
+if (!global._babelPolyfill) {
+  require("babel-polyfill") //workaround to make this work with the iFrame refresh of CraftCMS preview
+}
 import $ from 'jquery';
 import objectFitImages from 'object-fit-images';
 //import whateverOtherJqueryPlugin from 'whateverJqueryPlugin';

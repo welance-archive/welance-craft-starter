@@ -124,7 +124,6 @@ const plugins = process.env.NODE_ENV === 'prod' ? prod_plugins : dev_plugins;
 module.exports = {
 	entry: {
      main: [
-      'babel-polyfill',
       mainJSPath,
       mainCSSPath
     ]
