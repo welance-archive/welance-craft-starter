@@ -4,4 +4,6 @@
     <img src="{{ block.image.first().getUrl() }}" alt="{{ block.image.first().title }}"/>
   </picture>
 </div>
+{% if block.showCaption %}
 <p class="caption">{{block.image.first().title}}</p>
+{% endif %}
