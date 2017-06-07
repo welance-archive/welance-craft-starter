@@ -1,6 +1,6 @@
 {% switch block.galleryDisplayMode %}
   {% case 'squared' %}
-    <div class="row">
+    <div class="row gallery">
       {% for i, media in block.medias %}
         <div class="col col--{{block.mediasPerRow}}-12">
           <div class="img--r{{block.mediaRatio}}">
@@ -28,6 +28,22 @@
           </div> {# close img--r-XX-XX #}
           <p class="caption"><a href="{{media.url}}">{{media.title}}</a></p>
         </div> {# close col--XX-XX #}
+      {% endfor %}
+    </div>
+  {% case 'list-logos' %}
+    <div class="row gallery gallery--logos">
+      {% for i, media in block.medias %}
+        {% if media.kind == 'image' %}
+          <div class="col col--{{block.mediasPerRow}}-12">
+            <div class="img--r{{block.mediaRatio}}">
+              <picture class="ratio-content">
+                <source srcset="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
+                <img src="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{media.title}} media object"/>
+              </picture>
+            </div> {# close img--r-XX-XX #}
+            <p class="caption"><a href="{{media.url}}">{{media.title}}</a></p>
+          </div> {# close col--XX-XX #}
+        {% endif %}
       {% endfor %}
     </div>
 

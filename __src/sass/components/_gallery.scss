@@ -1,0 +1,13 @@
+.gallery{
+  &--logos{
+    div[class^="img--"]{
+      img, video{
+        object-fit: contain;
+        padding: 30% 0;
+      }
+    }
+    .caption{
+      display: none;
+    }
+  }
+}
