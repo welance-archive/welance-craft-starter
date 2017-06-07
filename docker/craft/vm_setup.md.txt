@@ -1,0 +1,42 @@
+# vm setup
+
+enable community repository : `vim /etc/apk/repositories`
+
+install apache2 and modules:
+```
+apk add --no-cache \
+apache2 \
+apache2-ssl \
+php7 \
+php7-apache2 \
+php7-pdo \
+php7-pdo_mysql \
+php7-mcrypt \
+php7-gd \
+php7-openssl \
+php7-mbstring \
+php7-json \
+php7-curl \
+php7-phar \
+php7-mysqli \
+php7-session \
+php7-iconv \
+php7-ctype \
+unzip \
+coreutils \
+wget 
+
+# run apache2 by default
+rc-update add apache2 default
+
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+apk add mysql mysql-client
+
+/usr/bin/mysql_install_db --user=mysql
+/etc/init.d/mariadb start  && rc-update add mariadb default
+/usr/bin/mysqladmin -u root password 'puravida'
+
+
+```
