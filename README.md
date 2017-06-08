@@ -8,9 +8,17 @@ Basic template to jump start the Front-End of your next CraftCMS Front-End.
 This is a starter template that helps you build a CraftCMS basic website (Front-End) that integrates with [welance-bs](https://github.com/welance/welance-bs) Design System and [welance-craft-grid-plugin](https://github.com/welance/welance-craft-grid-plugin/).
 
 #### This project features:
-* *[TODO]*CraftCMS Welance scaffolding and inclusions of templates, macros, etc.
-* *[TODO]* Simple navigation (header + footer) using (Structured+Single) Pages
-* *[TODO]* Basic front-end opinionated workflow using webpack (to work with SASS, JS, CSS, etc.)
+* Opinionated CraftCMS scaffolding
+	* **__src** for general JS, assets and SASS (using [SASS Guidelines](https://sass-guidelin.es/))
+	* **_includes** for general templates layouts (base, site, footer, header, etc.)
+	* **_entries** for custom entries layouts with their own SASS, JS
+
+* Basic front-end opinionated workflow using webpack
+	* Javascript ES6 with Babel
+	* JS concatenation, minification, etc
+	* SASS compilation, concatenation, minification, postCSS
+	* Static Assets compression
+	* Multi-environment Favicons generation
 
 ## Software Requirements
 * Any PHP environment to work with CraftCMS
