@@ -1,1 +1,0 @@
-drop database if exists craft;create database craft;grant all privileges on craft.* to craft identified by 'craft';

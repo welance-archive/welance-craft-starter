@@ -1,38 +1,52 @@
-web:
-  image: welance/craft
-  ports:
-    - 80:80
-  volumes:
-    - /var/log
-    - ~/workspaces/project/config:/var/www/localhost/craft/config
-    - ~/workspaces/project/templates:/var/www/localhost/craft/templates
-    - ~/workspaces/project/plugins:/var/www/localhost/craft/plugins
-    - ~/workspaces/project/public:/var/www/localhost/htdocs
-  links:
-    - database
-  # env vars are replaced in /craft/config
-  environment:
-    # Set locale to UTF-8 (https://oncletom.io/2015/docker-encoding/)
-    LANG: C.UTF-8
-
-    # DB is linked
-    DB_HOST: database
-    DB_NAME: craft
-    DB_PORT: 3306
-    DB_USER: craft
-    DB_PASS: craft
-
-database:
-    image: mysql:5.5
-    container_name: mysql
-    restart: always
+version: "2.1"
+services:
+  craft:
+    image: welance/craft
+    ports: # host_port:container_port
+      - "80:80"
+      - "1443:443"
+    volumes:
+      - /var/log
+      - ./craft/conf/apache2:/etc/apache2
+      - ./craft/logs/apache2:/var/log/apache2
+      - ../config:/data/craft/config
+      - ../templates:/data/craft/templates
+      - ../plugins:/data/craft/plugins
+      - ../public:/data/public
+      
+    links:
+      - database
+      - redis
+    # tty: true
+    # env vars are replaced in /data/craft/config
     environment:
-      - MYSQL_ROOT_PASSWORD=craft
-      - MYSQL_DATABASE=craft
-      - MYSQL_USER=craft
-      - MYSQL_PASSWORD=craft
+      # Set locale to UTF-8 
+      LANG: C.UTF-8
+      # DB is linked
+      DB_HOST: database
+      DB_NAME: craft
+      DB_PORT: 3306
+      DB_USER: craft
+      DB_PASS: craft
+      CRAFT_USERNAME : admin
+      CRAFT_EMAIL : admin@welance.de
+      CRAFT_PASSWORD : welance
+      CRAFT_SITENAME : example.com
+      CRAFT_SITEURL : //localhost"
+      CRAFT_LOCALE : en_us
+      CRAFT_ENVIRONMENT : .dev
+      PROJECT_BASEPATH : "/asdas/"
+      HTTPD_OPTIONS : "-e debug"
+  database:
+      image: mysql:5.6
+      restart: always
+      environment:
+        - MYSQL_ROOT_PASSWORD=craft
+        - MYSQL_DATABASE=craft
+        - MYSQL_USER=craft
+        - MYSQL_PASSWORD=craft
+      volumes:
+      - /var/lib/mysql
 
-redis:
-  image: redis:3.2.8-alpine
-  volumes:
-    - /data:/data
+  redis:
+    image: redis:3.2.8-alpine

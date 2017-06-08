@@ -5,7 +5,7 @@ MAINTAINER Enrico Icardi "enrico@welance.com"
 
 # Set craft cms version
 ENV CRAFT_VERSION=2.6 
-ENV CRAFT_BUILD=2980
+ENV CRAFT_BUILD=2982
 ENV CRAFT_ZIP=Craft-$CRAFT_VERSION.$CRAFT_BUILD.zip
 
 # install php/apache2/sha256sum
@@ -30,9 +30,15 @@ php7-ctype \
 unzip \
 coreutils \
 wget; \
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
+php composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
+mkdir -p /data; mkdir -p /run/apache2; \
+cd /data; \
+composer require nerds-and-company/schematic:3.8.*
 
-RUN mkdir /data; 
+
+# create the folder if not exists or apache will not start
+
 
 # Download the latest Craft (https://craftcms.com/support/download-previous-versions)
 ADD https://download.buildwithcraft.com/craft/$CRAFT_VERSION/$CRAFT_VERSION.$CRAFT_BUILD/$CRAFT_ZIP /tmp/$CRAFT_ZIP
@@ -48,11 +54,11 @@ RUN unzip -qo /tmp/$CRAFT_ZIP -d /data
 RUN rm /tmp/$CRAFT_ZIP 
 #&& chown -Rf www-data:www-data $CRAFTROOT
 
-ADD scripts/run-craft.sh /data/run-craft.sh
-RUN chmod +x /data/run-craft.sh
+ADD scripts /data/scripts
+RUN chmod +x /data/scripts/*.sh
 # this script will be used to orchestrate the startup of the containers
-ADD scripts/poll-db.php /data/poll-db.php
+ADD scripts/poll-db.php /data/scripts/poll-db.php
 
 EXPOSE 80
-CMD ["/data/run-craft.sh"]
+CMD ["/data/scripts/run-craft.sh"]
 
