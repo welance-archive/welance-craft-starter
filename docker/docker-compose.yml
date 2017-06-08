@@ -4,7 +4,7 @@ services:
     image: welance/craft
     ports: # host_port:container_port
       - "80:80"
-      - "1443:443"
+      - "443:443"
     volumes:
       - /var/log
       - ./craft/conf/apache2:/etc/apache2
@@ -36,6 +36,7 @@ services:
       CRAFT_LOCALE : en_us
       CRAFT_ENVIRONMENT : .dev
       PROJECT_BASEPATH : "/asdas/"
+      PLUGIN_WELANCE_GRID_VERSION : "1.0.0"
       HTTPD_OPTIONS : "-e debug"
   database:
       image: mysql:5.6
@@ -48,5 +49,5 @@ services:
       volumes:
       - /var/lib/mysql
 
-  redis:
-    image: redis:3.2.8-alpine
+#  redis:
+#    image: redis:3.2.8-alpine

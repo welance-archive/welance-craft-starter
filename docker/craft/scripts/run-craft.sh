@@ -25,41 +25,12 @@ export CRAFT_TRANSLATIONS_PATH="$CRAFT_BASE_PATH/translations/"
 export CRAFT_PUBLIC_PATH=$WEBROOT
 export ENV_LIVE=$CRAFT_CONFIG_PATH/.live
 
-
-WELANCE_GRID_VERSION=1.0.0
-WELANCE_TPL_VERSION=0.0.0
-SCHEMATIC_VERSION=^3.8
-
-# install schematic
-# echo "installing schematic"
-# cd $CRAFT_PLUGINS_PATH
-# echo "{\"require\": {\"nerds-and-company/schematic\": \"$SCHEMATIC_VERSION\"}}" > composer.json
-# composer install
-
-## download sproutimport
-#if [ ! -d "$CRAFT_PLUGINS_PATH/sproutimport" ]; then
-# SPROUT_FILE=sprout_import.zip
-# wget -nv https://sprout.barrelstrengthdesign.com/craft-plugins/import/download?v= -O $SPROUT_FILE
-# unzip -q $SPROUT_FILE
-# rm $SPROUT_FILE
-#fi
-
 ## download welance-craft-grid-plugin
 if [ ! -d "$CRAFT_PLUGINS_PATH/welancegrid" ]; then
- wget -nv https://github.com/welance/welance-craft-grid-plugin/archive/$WELANCE_GRID_VERSION.zip 
- unzip -q $WELANCE_GRID_VERSION.zip
- mv welance-craft-grid-plugin-$WELANCE_GRID_VERSION welancegrid
- rm $WELANCE_GRID_VERSION.zip
-fi
-
-# download the template
-cd $CRAFT_TEMPLATES_PATH
-if [ ! -f "$CRAFT_TEMPLATES_PATH/package.json" ]; then
- wget -nv https://github.com/welance/welance-craft-base-template/archive/$WELANCE_TPL_VERSION.zip 
- unzip -q $WELANCE_TPL_VERSION.zip
- mv welance-craft-base-template-$WELANCE_TPL_VERSION/* .
- rm -rf  $WELANCE_TPL_VERSION.zip welance-craft-base-template-$WELANCE_TPL_VERSION
- #ln -s assets $DATA_CRAFT_PUBLIC/
+ wget -nv https://github.com/welance/welance-craft-grid-plugin/archive/$PLUGIN_WELANCE_GRID_VERSION.zip 
+ unzip -q $PLUGIN_WELANCE_GRID_VERSION.zip
+ mv welance-craft-grid-plugin-$PLUGIN_WELANCE_GRID_VERSION welancegrid
+ rm $PLUGIN_WELANCE_GRID_VERSION.zip
 fi
 
 # if is a live environment (not docker build run schematic)
