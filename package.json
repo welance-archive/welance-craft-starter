@@ -1,6 +1,6 @@
 {
   "name": "welance-craft-base-template",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Basic template scaffolding to use craft with welance-bs Design System within Matrix Blocks (welance-craft-grid-plugin).",
   "main": "main.js",
   "dependencies": {
