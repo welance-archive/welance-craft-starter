@@ -28,7 +28,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV='dev' env UV_THREADPOOL_SIZE=100 webpack  --display-error-details -d --watch",
-    "prod": "NODE_ENV='prod' env UV_THREADPOOL_SIZE=100  webpack -p --optimize-minimize; cp -r ../../public/assets built_assets;"
+    "prod": "NODE_ENV='prod' env UV_THREADPOOL_SIZE=100  webpack -p --optimize-minimize; rm -rf built_assets; cp -r ../../public/assets built_assets; zip -r -X -m built_assets.zip built_assets"
   },
   "repository": {
     "type": "git",
