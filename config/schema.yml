@@ -8,9 +8,11 @@ assetSources:
     settings:
       path: uploads/
       publicURLs: '1'
-      url: uploads/
+      url: /uploads/
     fieldLayout:
-      fields: {  }
+      tabs:
+        Content:
+          linkUrl: '0'
 assetTransforms:
   imgPortrait:
     name: img-portrait
@@ -96,41 +98,6 @@ fields:
                 maxLength: ''
                 multiline: ''
                 initialRows: '4'
-    extenalUrl:
-      name: 'Extenal URL'
-      required: false
-      instructions: 'This is and external link which will open in a new page'
-      translatable: '0'
-      type: Matrix
-      settings:
-        maxBlocks: null
-      context: global
-      blockTypes:
-        externalUrl:
-          name: 'External URL'
-          fields:
-            externalUrl:
-              name: URL
-              required: '1'
-              instructions: ''
-              translatable: '0'
-              type: PlainText
-              settings:
-                placeholder: 'http://example.com'
-                maxLength: ''
-                multiline: ''
-                initialRows: '4'
-            urlText:
-              name: 'URL Text'
-              required: '0'
-              instructions: "A text to show instead of the URL itself.\r\nIf you leave this black, the URL will be shown."
-              translatable: '0'
-              type: PlainText
-              settings:
-                placeholder: 'eg. "See the Article on Washington Post"'
-                maxLength: ''
-                multiline: ''
-                initialRows: '4'
     featuredImage:
       name: 'Featured Image'
       required: false
@@ -151,6 +118,63 @@ fields:
         viewMode: large
         selectionLabel: ''
       context: global
+    introText:
+      name: 'Intro Text'
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: PlainText
+      settings:
+        placeholder: ''
+        maxLength: ''
+        multiline: ''
+        initialRows: '4'
+      context: global
+    linkUrl:
+      name: Link
+      required: false
+      instructions: 'This is and external link which will open in a new page'
+      translatable: '0'
+      type: Matrix
+      settings:
+        maxBlocks: null
+      context: global
+      blockTypes:
+        link:
+          name: link
+          fields:
+            urlText:
+              name: 'URL Text'
+              required: '0'
+              instructions: "A text to show instead of the URL itself.\r\nIf you leave this black, the URL will be shown."
+              translatable: '0'
+              type: PlainText
+              settings:
+                placeholder: 'eg. "See the Article on Washington Post"'
+                maxLength: ''
+                multiline: ''
+                initialRows: '4'
+            externalUrl:
+              name: 'External URL'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: PlainText
+              settings:
+                placeholder: 'http://example.com'
+                maxLength: ''
+                multiline: ''
+                initialRows: '4'
+            internalUrl:
+              name: internalUrl
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Entries
+              settings:
+                sources: '*'
+                limit: '1'
+                selectionLabel: ''
     pageBody:
       name: 'Page Body'
       required: false
@@ -333,7 +357,7 @@ fields:
           fields:
             colWidth:
               name: 'Image Width'
-              required: '0'
+              required: '1'
               instructions: ''
               translatable: '0'
               type: WelanceGrid_BlockPosition
@@ -406,12 +430,20 @@ fields:
                 options:
                   - center
                   - full
+            showCaption:
+              name: 'Show Caption'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Lightswitch
+              settings:
+                default: ''
         faq:
           name: FAQ
           fields:
             colWidth:
               name: 'FAQs Width'
-              required: '0'
+              required: '1'
               instructions: ''
               translatable: '0'
               type: WelanceGrid_BlockPosition
@@ -426,7 +458,7 @@ fields:
               translatable: '0'
               type: RichText
               settings:
-                configFile: Simple.json
+                configFile: Accordion.json
                 availableAssetSources: '*'
                 availableTransforms: '*'
                 cleanupHtml: '1'
@@ -434,11 +466,11 @@ fields:
                 purifierConfig: ''
                 columnType: text
         usersList:
-          name: 'Users List'
+          name: Users
           fields:
             colWidth:
               name: 'Users List Width'
-              required: '0'
+              required: '1'
               instructions: ''
               translatable: '0'
               type: WelanceGrid_BlockPosition
@@ -466,14 +498,69 @@ fields:
                 options:
                   -
                     label: 'Accordion (open-close, no picture)'
-                    value: side-no-pic
-                    default: ''
-                  -
-                    label: 'Name + Profession + Photo (centered)'
-                    value: centered
+                    value: accordion-no-pic
                     default: '1'
+                  -
+                    label: 'List (Name + Short Bio + Photo)'
+                    value: squared
+                    default: ''
             usersPerRow:
               name: 'Users displayed for each row'
+              required: '0'
+              instructions: 'only working with "List" as Display Mode'
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: '1 user per row'
+                    value: '12'
+                    default: ''
+                  -
+                    label: '2 users per row'
+                    value: '6'
+                    default: ''
+                  -
+                    label: '3 users per row'
+                    value: '4'
+                    default: ''
+                  -
+                    label: '4 users per row'
+                    value: '3'
+                    default: '1'
+                  -
+                    label: '6 users per row'
+                    value: '2'
+                    default: ''
+                  -
+                    label: '12 users per row'
+                    value: '1'
+                    default: ''
+        entriesList:
+          name: Entries
+          fields:
+            colWidth:
+              name: 'Entries List Width'
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: WelanceGrid_BlockPosition
+              settings:
+                breakpointOptions:
+                  - desktop
+                  - mobile
+            entries:
+              name: Entries
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Entries
+              settings:
+                sources: '*'
+                limit: ''
+                selectionLabel: 'Pick Content Entries'
+            entriesDisplayMode:
+              name: 'Entries Display Mode'
               required: '1'
               instructions: ''
               translatable: '0'
@@ -481,28 +568,161 @@ fields:
               settings:
                 options:
                   -
-                    label: '1 user'
-                    value: '1'
+                    label: 'Accordion (open-close, no picture)'
+                    value: accordion-no-pic
                     default: ''
                   -
-                    label: '2 users'
-                    value: '2'
+                    label: 'List (Title + Description + Photo)'
+                    value: squared
+                    default: ''
+            entriesPerRow:
+              name: 'Entries displayed for each row'
+              required: '0'
+              instructions: 'only working with "List" as Display Mode'
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: '1 entry per row'
+                    value: '12'
                     default: ''
                   -
-                    label: '3 users'
-                    value: '3'
-                    default: ''
-                  -
-                    label: '4 users'
-                    value: '4'
-                    default: '1'
-                  -
-                    label: '6 users'
+                    label: '2 entries per row'
                     value: '6'
                     default: ''
                   -
-                    label: '12 users'
+                    label: '3 entries per row'
+                    value: '4'
+                    default: ''
+                  -
+                    label: '4 entries per row'
+                    value: '3'
+                    default: '1'
+                  -
+                    label: '6 entires per row'
+                    value: '2'
+                    default: ''
+                  -
+                    label: '12 entries per row'
+                    value: '1'
+                    default: ''
+        gallery:
+          name: Gallery
+          fields:
+            colWidth:
+              name: 'Gallery Width'
+              required: '1'
+              instructions: ''
+              translatable: '0'
+              type: WelanceGrid_BlockPosition
+              settings:
+                breakpointOptions:
+                  - desktop
+                  - mobile
+            medias:
+              name: Medias
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Assets
+              settings:
+                useSingleFolder: ''
+                sources: '*'
+                defaultUploadLocationSource: uploads
+                defaultUploadLocationSubpath: /gallery
+                singleUploadLocationSource: uploads
+                singleUploadLocationSubpath: ''
+                restrictFiles: '1'
+                allowedKinds:
+                  - image
+                  - video
+                limit: ''
+                viewMode: large
+                selectionLabel: 'Add medias'
+            galleryDisplayMode:
+              name: 'Gallery Display Mode'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: 'List (Photo + Caption)'
+                    value: regular
+                    default: '1'
+                  -
+                    label: 'List (Logos)'
+                    value: list-logos
+                    default: ''
+            mediaRatio:
+              name: 'Medias Ratio'
+              required: '0'
+              instructions: ''
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: '2:3 Portrait (vertical)'
+                    value: 2-3
+                    default: ''
+                  -
+                    label: '3:2 Landscape'
+                    value: 3-2
+                    default: ''
+                  -
+                    label: '3:4 Portrait (vertical)'
+                    value: 3-4
+                    default: ''
+                  -
+                    label: '4:3 Landscape'
+                    value: 4-3
+                    default: ''
+                  -
+                    label: '16:9 Wide Landscape'
+                    value: 16-9
+                    default: ''
+                  -
+                    label: '9:16 Tower Image'
+                    value: 9-16
+                    default: ''
+                  -
+                    label: '1:1 Squared'
+                    value: 1-1
+                    default: '1'
+            mediasPerRow:
+              name: 'Medias displayed for each row'
+              required: '0'
+              instructions: 'only working with "List" as Display Mode'
+              translatable: '0'
+              type: Dropdown
+              settings:
+                options:
+                  -
+                    label: '1 image per row'
                     value: '12'
+                    default: ''
+                  -
+                    label: '2 images per row'
+                    value: '6'
+                    default: ''
+                  -
+                    label: '3 images per row'
+                    value: '4'
+                    default: ''
+                  -
+                    label: '4 images per row'
+                    value: '3'
+                    default: '1'
+                  -
+                    label: '6 images per row'
+                    value: '2'
+                    default: ''
+                  -
+                    label: '12 images per row'
+                    value: '1'
                     default: ''
     postsCategories:
       name: 'Posts Categories'
@@ -929,6 +1149,22 @@ fields:
         multiline: ''
         initialRows: '4'
       context: global
+  Users:
+    bio:
+      name: Bio
+      required: false
+      instructions: ''
+      translatable: '0'
+      type: RichText
+      settings:
+        configFile: Standard.json
+        availableAssetSources: '*'
+        availableTransforms: '*'
+        cleanupHtml: '1'
+        purifyHtml: '1'
+        purifierConfig: ''
+        columnType: text
+      context: global
 globalSets:
   main:
     name: '01. Main'
@@ -990,11 +1226,6 @@ globalSets:
           termsConditions: '0'
           imprint: '0'
 plugins:
-  SproutImport:
-    isInstalled: true
-    isEnabled: true
-    settings:
-      pluginNameOverride: ''
   WelanceGrid:
     isInstalled: true
     isEnabled: true
@@ -1022,9 +1253,13 @@ sections:
           tabs:
             Content:
               pageBody: '0'
+            'Listable Content':
+              featuredImage: '0'
+              introText: '0'
             SEO:
               seoTitle: '0'
               seoDescription: '0'
+              tags: '0'
   pages:
     name: Pages
     type: structure
@@ -1038,8 +1273,8 @@ sections:
         urlFormat: '{slug}'
         nestedUrlFormat: '{parent.uri}/{slug}'
     entryTypes:
-      homepage:
-        name: 'Content Page'
+      contentPage:
+        name: 'iContent Page'
         hasTitleField: '1'
         titleLabel: Title
         titleFormat: null
@@ -1047,10 +1282,13 @@ sections:
           tabs:
             Content:
               pageBody: '0'
-              tags: '0'
+            'Listable Content':
+              featuredImage: '0'
+              introText: '0'
             SEO:
               seoTitle: '0'
               seoDescription: '0'
+              tags: '0'
   posts:
     name: Posts
     type: channel
@@ -1072,23 +1310,23 @@ sections:
         fieldLayout:
           tabs:
             Content:
-              featuredImage: '0'
+              linkUrl: '0'
               pageBody: '0'
-              extenalUrl: '0'
-              tags: '0'
-              attachment: '0'
+            'Listable Content':
+              featuredImage: '0'
+              introText: '0'
             Relations:
               postsCategories: '0'
             SEO:
               seoTitle: '0'
               seoDescription: '0'
+              tags: '0'
 userGroups:
   admins:
     name: Admins
     permissions:
       - accessCp
       - accessCpWhenSystemIsOff
-      - accessPlugin-SproutImport
       - accessSiteWhenSystemIsOff
       - administrateUsers
       - assignUserPermissions
@@ -1204,7 +1442,9 @@ userGroups:
       - 'viewAssetSource:uploads'
 users:
   fieldLayout:
-    fields: {  }
+    tabs:
+      Profile:
+        bio: '0'
 elementIndexSettings:
   Category:
     sources:
