@@ -16,7 +16,7 @@ services:
       
     links:
       - database
-      - redis
+    #  - redis
     # tty: true
     # env vars are replaced in /data/craft/config
     environment:
