@@ -14,12 +14,12 @@ return array(
     ),
     '.dev' => array(
         // Base site URL – particularly important for languages
-        'siteUrl' => 'https://welance-craft.dev/',
+        'siteUrl' => getenv('CRAFT_SITEURL'),
         // Environment-specific variables (see https://craftcms.com/docs/multi-environment-configs#environment-specific-variables)
         'environmentVariables' => array(
-            'basePath' => '/Applications/MAMP/htdocs/welance-craft/public/',
-            'baseUrl'  => 'https://welance-craft.dev/',
-            'assetsBaseUrl'  => 'https://welance-craft.dev/assets'
+            'basePath' => getenv('PROJECT_BASEPATH'),
+            'baseUrl'  => getenv('CRAFT_SITEURL'),
+            'assetsBaseUrl'  => getenv('CRAFT_SITEURL')+"/assets"
         ),
         // Default Week Start Day (0 = Sunday, 1 = Monday...)
         'defaultWeekStartDay' => 0,
@@ -34,12 +34,12 @@ return array(
     ),
     '.net' => array(
         // Base site URL – particularly important for languages
-        'siteUrl' => 'https://welance-craft.net/',
+        'siteUrl' => getenv('CRAFT_SITEURL'),
         // Environment-specific variables (see https://craftcms.com/docs/multi-environment-configs#environment-specific-variables)
         'environmentVariables' => array(
-            'basePath' => '/Applications/MAMP/htdocs/welance-craft/public/',
-            'baseUrl'  => 'https://welance-craft.net/',
-            'assetsBaseUrl'  => 'https://welance-craft.net/assets'
+            'basePath' => getenv('PROJECT_BASEPATH'),
+            'baseUrl'  => getenv('CRAFT_SITEURL'),
+            'assetsBaseUrl'  => getenv('CRAFT_SITEURL')+"/assets"
         ),
         // Default Week Start Day (0 = Sunday, 1 = Monday...)
         'defaultWeekStartDay' => 0,

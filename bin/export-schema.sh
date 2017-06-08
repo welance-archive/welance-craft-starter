@@ -1,0 +1,1 @@
+docker exec -it docker_craft_1 /data/scripts/schematic-export.sh

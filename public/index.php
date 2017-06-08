@@ -2,7 +2,7 @@
 
 // Path to your craft/ folder
 $craftPath = '../craft';
-define("CRAFT_ENVIRONMENT", env("CRAFT_ENVIRONMENT"));
+define("CRAFT_ENVIRONMENT", getenv("CRAFT_ENVIRONMENT"));
 
 // Do not edit below this line
 $path = rtrim($craftPath, '/').'/app/index.php';

@@ -13,7 +13,7 @@ return array(
     ),
     '.dev' => array(
         // The database server name or IP address. Usually this is 'localhost' or '127.0.0.1'.
-        'server' => 'localhost',
+        'server' => 'database',
         // The name of the database to select.
         'database' => 'craft',
         // The database username to connect with.
@@ -23,7 +23,7 @@ return array(
     ),
     '.net' => array(
         // The database server name or IP address. Usually this is 'localhost' or '127.0.0.1'.
-        'server' => 'localhost',
+        'server' => 'database',
         // The name of the database to select.
         'database' => 'craft',
         // The database username to connect with.
