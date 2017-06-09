@@ -1,5 +1,4 @@
-$first-animation-time: .2s;
-$second-animation-time: .4s;
+$animation-time: .2s;
 
 .wc-accordion{
   .wc-accordion-title{
@@ -18,18 +17,17 @@ $second-animation-time: .4s;
       font-size: 1.5rem;
       cursor: pointer;
       content: "+";
-      position: absolute;
+      float: right;
       right: 1rem;
       line-height: 27px;
-      align-self: center;
-      transition: all $second-animation-time ease-in;
+      transition: all $animation-time ease-in;
     }
     &--active{
       border-bottom: 1px solid transparent;
       &::after {
         margin-top: .1rem;
         margin-right: -.15rem;
-        transform: rotate(135deg);
+        transform: rotate(45deg);
       }
     }
   }
@@ -39,7 +37,7 @@ $second-animation-time: .4s;
     max-height: 0px;
     opacity: 0;
     border-bottom: none;
-    transition: all $first-animation-time ease-in-out;
+    transition: all $animation-time ease-in-out;
     &--active{
       @include pb(8);
       max-height: 30rem;

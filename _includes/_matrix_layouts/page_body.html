@@ -20,27 +20,27 @@
 
   {% if loop.first and not (colWidth | full_width) %}
     <div class="wrap wrap--contained">
-      <div class="row">
+      <div class="row row--block">
   {% elseif loop.first and (colWidth | full_width) %}
     <div class="wrap">
-      <div class="row">
+      <div class="row row--block">
   {% elseif not loop.first and (prevColWidth | full_width) and not (colWidth | full_width) %}
       </div> <!-- close the row before -->
     </div> <!-- close the wrap before -->
     <div class="wrap wrap--contained">
-      <div class="row">
+      <div class="row row--block">
   {% elseif not loop.first and (prevColWidth | full_width) and (colWidth | full_width) %}
     <!-- nothing -->
   {% elseif not loop.first and not (prevColWidth | full_width) and (colWidth | full_width) %}
       </div> <!-- close the row before -->
     </div> <!-- close the wrap before -->
     <div class="wrap wrap">
-      <div class="row">
+      <div class="row row--block">
   {% endif %}
 
   {% if not loop.first and (colWidth | new_row) %}
     </div> <!-- close row -->
-    <div class="row"> <!-- re-open row -->
+    <div class="row row--block"> <!-- re-open row -->
   {% endif %}
 
 
@@ -48,6 +48,7 @@
 
     <div class="vertical-align-wrap">
       <div class="valign--{{colWidth|v_align}}">
+        <div class="block--{{block.type}}">
 
         {% switch block.type %}
           {# --------------------------------------------- RICH CONTENT -------- #}
@@ -80,7 +81,7 @@
 
         {% endswitch %}
 
-
+        </div> <!-- close block--type -->
       </div> <!-- close valign -->
     </div>  <!-- close vertical-align-wrap -->
   </div> <!-- close col block -->
