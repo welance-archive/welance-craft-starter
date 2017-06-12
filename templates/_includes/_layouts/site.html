@@ -1,0 +1,74 @@
+{#
+
+ # The site layout template
+ # ------------------------
+ #
+ # This layout template extends the _layouts/base.html layout, and defines the
+ # main site layout: the header, footer, and main content area.
+ #
+ # It’s never accessed directly. Instead it is extended by all of our main site
+ # templates.
+ #
+ # This template defines one block region, `main`, which should be extended by
+ # child templates to define the main contents for the page.
+-#}
+
+{% extends "_includes/_layouts/base" %}
+
+{# Define the site navigation #}
+{% set nav = {
+  "/":     { title: "HomePage", desc: "The Homepage" },
+	news:     { title: "News", desc: "Read something!" }
+} %}
+
+{# Set the `bodyClass` variable to the entry's section handle if there is one,
+   or the first URI segment (this is used by the parent template) #}
+{% if bodyClass is not defined %}
+	{% set bodyClass = entry is defined ? entry.section.handle : craft.request.firstSegment %}
+{% endif %}
+
+{# Set the `title` variable to the nav item that matches the first segment #}
+{% if nav[bodyClass] is defined %}
+	{% set title %}{% if title is defined %}{{ title }} - {% endif %}{{ nav[bodyClass].title }}{% endset %}
+{% endif %}
+
+
+{% block body %}
+	<header>
+		<div class="wrap  wrap--contained">
+			<div class="row">
+        <div class="col col--12-12">
+				  <h5><strong><a href="{{ siteUrl }}">Website Title</a></strong></h5>
+        </div>
+      </div>
+      <nav>
+        <ul class="row">
+          {% for slug, item in nav %}
+            <li class="col col--3-12@lg col--6-12@md col--12-12@xs">
+              <a href="{{ url(slug) }}" {% if craft.request.firstSegment == slug %}class="sel"{% endif %}>
+                <strong>{{ item.title }}</strong>
+                <span>-</span>
+                <em>{{ item.desc }}</em>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+		</div>
+	</header>
+
+	<main role="main" class="{{ editClass }}">
+		{% block main %}{% endblock %}
+	</main>
+
+	<footer class="wrap wrap--contained">
+		<div class="row">
+			<div class="col col--6-12">
+				<p>welance © 2017</p>
+			</div>
+			<div  class="col col--6-12">
+				<a href="mailto:global.contactUsEmail">global.contactUsLabel</a>
+			</div>
+		</div>
+	</footer>
+{% endblock %}

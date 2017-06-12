@@ -1,0 +1,94 @@
+{#
+ # Page Body include template
+ # -----------------------------
+ #
+ # This template is used to output HTML for an "Page Body" Matrix field.
+ #
+ # An `entry` variable is expected to be defined.
+-#}
+
+{% set blocks = entry.pageBody %}
+
+{% for i, block in blocks %}
+
+  {% set nextBlock = not loop.last ? blocks[i+1] : false %}
+  {% set prevBlock = not loop.first ? blocks[i-1] : false %}
+
+  {% set colWidth = block.colWidth ? block.colWidth : false %}
+  {% set prevColWidth = prevBlock ? prevBlock.colWidth : false %}
+
+
+  {% if loop.first and not (colWidth | full_width) %}
+    <div class="wrap wrap--contained">
+      <div class="row row--block">
+  {% elseif loop.first and (colWidth | full_width) %}
+    <div class="wrap">
+      <div class="row row--block">
+  {% elseif not loop.first and (prevColWidth | full_width) and not (colWidth | full_width) %}
+      </div> <!-- close the row before -->
+    </div> <!-- close the wrap before -->
+    <div class="wrap wrap--contained">
+      <div class="row row--block">
+  {% elseif not loop.first and (prevColWidth | full_width) and (colWidth | full_width) %}
+    <!-- nothing -->
+  {% elseif not loop.first and not (prevColWidth | full_width) and (colWidth | full_width) %}
+      </div> <!-- close the row before -->
+    </div> <!-- close the wrap before -->
+    <div class="wrap wrap">
+      <div class="row row--block">
+  {% endif %}
+
+  {% if not loop.first and (colWidth | new_row) %}
+    </div> <!-- close row -->
+    <div class="row row--block"> <!-- re-open row -->
+  {% endif %}
+
+
+  <div class="{{colWidth|mobile_class("xs")}} {{colWidth|desktop_class("lg")}} {{colWidth|tablet_class("md")}} {{colWidth|wide_class("xl")}}">
+
+    <div class="vertical-align-wrap">
+      <div class="valign--{{colWidth|v_align}}">
+        <div class="block--{{block.type}}">
+
+        {% switch block.type %}
+          {# --------------------------------------------- RICH CONTENT -------- #}
+          {% case 'richContent' %}
+            {{ block.richContent }}
+
+          {# --------------------------------------------- HERO ---------------- #}
+          {% case 'hero' %}
+            {% include "_includes/_matrix_layouts/page_body/hero" %}
+
+          {# --------------------------------------------- OTHER --------------- #}
+          {% case 'image' %}
+            {% include "_includes/_matrix_layouts/page_body/image" %}
+
+          {# --------------------------------------------- FAQ --------------- #}
+          {% case 'faq' %}
+            {% include "_includes/_matrix_layouts/page_body/faq" %}
+
+          {# --------------------------------------------- Users List --------------- #}
+          {% case 'usersList' %}
+            {% include "_includes/_matrix_layouts/page_body/users_list" %}
+
+          {# --------------------------------------------- Entries List --------------- #}
+          {% case 'entriesList' %}
+            {% include "_includes/_matrix_layouts/page_body/entries_list" %}
+
+          {# --------------------------------------------- Media Gallery --------------- #}
+          {% case 'gallery' %}
+            {% include "_includes/_matrix_layouts/page_body/gallery" %}
+
+        {% endswitch %}
+
+        </div> <!-- close block--type -->
+      </div> <!-- close valign -->
+    </div>  <!-- close vertical-align-wrap -->
+  </div> <!-- close col block -->
+
+  {% if loop.last %}
+      </div> <!-- close first opened row -->
+    </div> <!-- close first opened wrap -->
+  {% endif %}
+
+{% endfor %}

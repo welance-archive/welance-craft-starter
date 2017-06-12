@@ -1,0 +1,49 @@
+$animation-time: .2s;
+
+.wc-accordion{
+  .wc-accordion-title{
+    @include m(0);
+    cursor: pointer;
+    @include pt(4);
+    @include pb(4);
+    border-bottom: 1px solid $black;
+    transition: all .2s ease-in;
+
+    &:first-child{
+      border-top: 1px solid $black;
+    }
+
+    &::after {
+      font-size: 1.5rem;
+      cursor: pointer;
+      content: "+";
+      float: right;
+      right: 1rem;
+      line-height: 27px;
+      transition: all $animation-time ease-in;
+    }
+    &--active{
+      border-bottom: 1px solid transparent;
+      &::after {
+        margin-top: .1rem;
+        margin-right: -.15rem;
+        transform: rotate(45deg);
+      }
+    }
+  }
+  .wc-accordion-content{
+    @include m(0);
+    overflow: hidden;
+    max-height: 0px;
+    opacity: 0;
+    border-bottom: none;
+    transition: all $animation-time ease-in-out;
+    &--active{
+      @include pb(8);
+      max-height: 30rem;
+      overflow: scroll;
+      opacity: 1;
+      border-bottom: 1px solid $black;
+    }
+  }
+}

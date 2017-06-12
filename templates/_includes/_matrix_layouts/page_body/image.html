@@ -1,0 +1,9 @@
+<div class="img--r{{block.mediaRatio}}">
+  <picture class="ratio-content">
+    {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
+    <img src="{{ block.image.first().getUrl() }}" alt="{{ block.image.first().title }}"/>
+  </picture>
+</div>
+{% if block.showCaption %}
+<p class="caption">{{block.image.first().title}}</p>
+{% endif %}
