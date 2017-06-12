@@ -25,11 +25,13 @@ export CRAFT_TRANSLATIONS_PATH="$CRAFT_BASE_PATH/translations/"
 export CRAFT_PUBLIC_PATH=$WEBROOT
 export ENV_LIVE=$CRAFT_CONFIG_PATH/.live
 
+## move to the plugins folder
+cd $CRAFT_PLUGINS_PATH
 ## download welance-craft-grid-plugin
 if [ ! -d "$CRAFT_PLUGINS_PATH/welancegrid" ]; then
  wget -nv https://github.com/welance/welance-craft-grid-plugin/archive/$PLUGIN_WELANCE_GRID_VERSION.zip 
  unzip -q $PLUGIN_WELANCE_GRID_VERSION.zip
- mv welance-craft-grid-plugin-$PLUGIN_WELANCE_GRID_VERSION welancegrid
+ mv welance-craft-grid-plugin-$PLUGIN_WELANCE_GRID_VERSION $CRAFT_PLUGINS_PATH/welancegrid
  rm $PLUGIN_WELANCE_GRID_VERSION.zip
 fi
 
