@@ -1,2 +1,2 @@
 docker/craft/logs/apache2
-node_modules
+templates/node_modules
