@@ -13,9 +13,15 @@ $database = $db[$environment]['database'];
 $username = $db[$environment]['user'];
 $password = $db[$environment]['password'];
 echo "testing connection [$environment]: $db_type://$server/$database;user=$username;password=*****  ... ";
+
 // test connection
-$mysqlConnection = @mysqli_connect($server, $username, $password);
-if (!$mysqlConnection) {
+$dbConnection = false;
+if($db_type == "mysql") {
+  $dbConnection = @mysqli_connect($server, $username, $password);
+}
+// TODO add postgres configuration
+
+if (!$dbConnection) {
   exit(1); // connection failed
 }
 exit(0); // connection ok

@@ -7,7 +7,7 @@ let FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const mainJSPath = path.resolve(__dirname, '__src/js', 'main.js');
 const mainCSSPath = path.resolve(__dirname, '__src/sass', 'main.scss');
-const publicPath = path.resolve(__dirname, '../../public/assets');
+const publicPath = path.resolve(__dirname, '../public/assets');
 
 const prod_plugins = [
 		//about SASS compilation
@@ -17,7 +17,7 @@ const prod_plugins = [
 		// Copy the images folder and optimize all the images
 		new CopyWebpackPlugin([{
 			from: './__src/images/',
-			to: '../../public/assets/images/'
+			to: '../public/assets/images/'
 		}]),
 		new ImageminWebpackPlugin({
 			test: /\.(jpe?g|png|gif|svg)$/i,
@@ -39,7 +39,7 @@ const prod_plugins = [
 			// Your source logo
 			logo: './__src/images/favicon.svg',
 			// The prefix for all image files (might be a folder or a name)
-			prefix: '../../public/assets/images/icons-[hash]/',
+			prefix: '../public/assets/images/icons-[hash]/',
 			// Emit all stats of the generated icons
 			emitStats: false,
 			// The name of the json containing all favicon information
@@ -81,13 +81,13 @@ const dev_plugins = [
 		// Copy the images folder and optimize all the images
 		new CopyWebpackPlugin([{
 			from: './__src/images/',
-			to: '../../public/assets/images/'
+			to: '../public/assets/images/'
 		}]),
 		new FaviconsWebpackPlugin({
 			// Your source logo
 			logo: './__src/images/favicon.svg',
 			// The prefix for all image files (might be a folder or a name)
-			prefix: 'images/icons-[hash]/',
+			prefix: '../public/assets/images/icons-[hash]/',
 			// Emit all stats of the generated icons
 			emitStats: false,
 			// The name of the json containing all favicon information

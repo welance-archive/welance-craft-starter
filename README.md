@@ -92,6 +92,9 @@ run the `bin/install.sh` script. the script will ask for
 and will generate the following files:
 
 ```
+./bin/start.sh
+./bin/stop.sh
+./bin/uninstall.sh
 ./bin/schema-import.sh
 ./bin/schema-export.sh
 ./docker/docker-compose.yml
@@ -109,6 +112,8 @@ The development phase of the project will involve 3 main resources:
 - the `templates`folder
 - the `condfig/schema.yaml`
 - the `plugins` folder
+
+to start and stop the system the command `bin/start.sh` and `bin/stop.sh` can be used.
 
 
 ### Staging

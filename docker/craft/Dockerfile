@@ -27,6 +27,8 @@ php7-mysqli \
 php7-session \
 php7-iconv \
 php7-ctype \
+php7-zip \
+php7-xml \
 unzip \
 coreutils \
 wget; \

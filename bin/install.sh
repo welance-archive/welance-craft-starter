@@ -106,7 +106,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     '# start docker for specific project'   \
     'SCRIPT_HOME=`dirname $0 | while read a; do cd $a && pwd && break; done`' \
     'cd $SCRIPT_HOME/../docker' \
-    "docker-compose --project-name $PROJECT_COORDINATES restart" \
+    "docker-compose --project-name $PROJECT_COORDINATES up -d" \
     > $SCRIPT_HOME/start.sh
     # stop script
     printf "%s\n" \
