@@ -7,7 +7,6 @@
 
 SCRIPT_HOME=`dirname $0 | while read a; do cd $a && pwd && break; done`
 cd $SCRIPT_HOME/../docker
-echo "project home is `pwd`"
 
 echo -n "This action will remove all containers including data, do you want to continue (YES/NO)? [NO] "
 read answer

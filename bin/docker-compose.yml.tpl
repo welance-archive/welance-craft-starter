@@ -1,7 +1,8 @@
 version: "2.1"
 services:
   craft:
-    image: welance/craft
+    image: welance/craft:2.6
+    container_name: craft_%%PROJECTCOORDS%%
     ports: # host_port:container_port
       - "80:80"
       - "443:443"
@@ -31,16 +32,17 @@ services:
       CRAFT_USERNAME : admin
       CRAFT_EMAIL : admin@welance.de
       CRAFT_PASSWORD : welance
-      CRAFT_SITENAME : example.com
-      CRAFT_SITEURL : //localhost"
+      CRAFT_SITENAME : %%SITENAME%%
+      CRAFT_SITEURL : %%SITEURL%%
       CRAFT_LOCALE : en_us
-      CRAFT_ENVIRONMENT : .dev
+      CRAFT_ENVIRONMENT : %%SITEENV%%
       PROJECT_BASEPATH : "/asdas/"
       PLUGIN_WELANCE_GRID_VERSION : "1.0.0"
       HTTPD_OPTIONS : ""
   database:
       image: mysql:5.6
       restart: always
+      container_name: database_%%PROJECTCOORDS%%
       environment:
         - MYSQL_ROOT_PASSWORD=craft
         - MYSQL_DATABASE=craft
