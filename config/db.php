@@ -13,23 +13,23 @@ return array(
     ),
     '.dev' => array(
         // The database server name or IP address. Usually this is 'localhost' or '127.0.0.1'.
-        'server' => 'database',
+        'server' => getenv('DB_HOST'),
         // The name of the database to select.
-        'database' => 'craft',
+        'database' => getenv('DB_NAME'),
         // The database username to connect with.
-        'user' => 'craft',
+        'user' => getenv('DB_USER'),
         // The database password to connect with.
-        'password' => 'craft',
+        'password' =>  getenv('DB_PASS'),
     ),
     '.net' => array(
         // The database server name or IP address. Usually this is 'localhost' or '127.0.0.1'.
-        'server' => 'database',
+        'server' => getenv('DB_HOST'),
         // The name of the database to select.
-        'database' => 'craft',
+        'database' => getenv('DB_NAME'),
         // The database username to connect with.
-        'user' => 'craft',
+        'user' => getenv('DB_USER'),
         // The database password to connect with.
-        'password' => 'craft',
+        'password' =>  getenv('DB_PASS'),
     ),
 
 );
