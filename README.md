@@ -145,6 +145,13 @@ The urls are:
 - [http://HOST/db](http://localhost/db) 
 - [https://HOST/db](https://localhost/db). 
 
+The parameters to log in are:
+- System: MySQL
+- Server: database
+- Username: craft
+- Password: craft
+- Database: craft
+
 ## Apache configuration and .htaccess
 The website apache configuration is stored in `./docker/craft/conf/apache2/conf.d/welance.conf`.
 The welance.conf contains all the settings for the installation to work and should be taken as a reference
@@ -162,5 +169,6 @@ and CSRF protection. To solve the issue clear the browser application data and r
 **Adminer**: if you log in using HTTPS login with HTTP fails. This has someting to do with sessions
 and CSRF protection. To solve the issue clear the browser application data and retry.
 
+for other enquiries contact _enrico@welance.de_
 
 
