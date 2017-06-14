@@ -10,6 +10,7 @@ services:
       - /var/log
       - ./craft/conf/apache2:/etc/apache2
       - ./craft/logs/apache2:/var/log/apache2
+      - ./craft/adminer:/data/adminer
       - ../config:/data/craft/config
       - ../templates:/data/craft/templates
       - ../plugins:/data/craft/plugins

@@ -70,6 +70,7 @@ for full reference consult the [docker documentation](https://docs.docker.com/en
 - list running containers `docker ps`
 - list all containers `docker ps --all`
 - stop all running containers `docker stop $(docker ps -q)`
+- open a shell into the craft container `docker exec -it [CONTAINER_ID/CONTAINR_NAME] /bin/sh`
 
 
 ## Workflow 
@@ -135,11 +136,31 @@ run `docker-compose -f ./docker/docker-compose-stage.yml -d up`
 Once the project is finished to remove the resources associated with the project (containers and data) 
 the `bin/uninstall.sh`script is provided.
 
+## Accessing the database
+Since the database use in the containers is not accessible from outside docker a database web interface
+is provided to dump/load/edit the database directly. The interface of the database is [Adminer](https://www.adminer.org/) and 
+is available via http or https.
+
+The urls are:
+- [http://HOST/db](http://localhost/db) 
+- [https://HOST/db](https://localhost/db). 
+
+## Apache configuration and .htaccess
+The website apache configuration is stored in `./docker/craft/conf/apache2/conf.d/welance.conf`.
+The welance.conf contains all the settings for the installation to work and should be taken as a reference
+for production installation. By default .htaccess is _DISABLED_, [because](https://nystudio107.com/blog/stop-using-htaccess-files-no-really).
+Changes to the apache configuration require to restart the environment (`bin/stop.sh`, `bin/start.sh`) to be enabled.
 
 ## Troubleshooting
 
-the project folder must be located in one of the **Docker File Sharing** paths. 
+**Docker**: the project folder must be located in one of the **Docker File Sharing** paths. 
 You can add a folder (for example the mamp one) by edit the prefernces of your docker installation
+
+**CraftCMS**: if you log in using HTTPS login with HTTP fails. This has someting to do with sessions
+and CSRF protection. To solve the issue clear the browser application data and retry.
+
+**Adminer**: if you log in using HTTPS login with HTTP fails. This has someting to do with sessions
+and CSRF protection. To solve the issue clear the browser application data and retry.
 
 
 
