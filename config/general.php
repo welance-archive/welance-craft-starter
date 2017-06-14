@@ -17,7 +17,6 @@ return array(
         'siteUrl' => getenv('CRAFT_SITEURL'),
         // Environment-specific variables (see https://craftcms.com/docs/multi-environment-configs#environment-specific-variables)
         'environmentVariables' => array(
-            'basePath' => getenv('PROJECT_BASEPATH'),
             'baseUrl'  => getenv('CRAFT_SITEURL'),
             'assetsBaseUrl'  => getenv('CRAFT_SITEURL')+"/assets"
         ),
@@ -37,7 +36,6 @@ return array(
         'siteUrl' => getenv('CRAFT_SITEURL'),
         // Environment-specific variables (see https://craftcms.com/docs/multi-environment-configs#environment-specific-variables)
         'environmentVariables' => array(
-            'basePath' => getenv('PROJECT_BASEPATH'),
             'baseUrl'  => getenv('CRAFT_SITEURL'),
             'assetsBaseUrl'  => getenv('CRAFT_SITEURL')+"/assets"
         ),

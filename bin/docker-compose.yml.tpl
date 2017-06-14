@@ -37,7 +37,6 @@ services:
       CRAFT_SITEURL : %%SITEURL%%
       CRAFT_LOCALE : en_us
       CRAFT_ENVIRONMENT : %%SITEENV%%
-      PROJECT_BASEPATH : "/asdas/"
       PLUGIN_WELANCE_GRID_VERSION : "1.0.0"
       HTTPD_OPTIONS : ""
   database:
