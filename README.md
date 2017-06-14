@@ -108,12 +108,20 @@ commit the chagnes to the repository, in particular the changes reated to:
 
 
 ### Development
+
+to start and stop the system the command `bin/start.sh` and `bin/stop.sh` can be used.
+
+Once the containers are started the following ports are available:
+- 80   for http
+- 443  https with a self signed certificate
+- 3306 mysql database
+
+The default credentials (user/pass) for mysql are `craft`/`craft`.
+
 The development phase of the project will involve 3 main resources:
 - the `templates`folder
 - the `condfig/schema.yaml`
 - the `plugins` folder
-
-to start and stop the system the command `bin/start.sh` and `bin/stop.sh` can be used.
 
 
 ### Staging
