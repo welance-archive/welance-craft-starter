@@ -85,7 +85,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     -e "s/%%SITEURL%%/\/\/$STAGE_URL/" \
     -e "s/%%SITEENV%%/$STAGE_ENVIRONMENT/" \
     -e "s/%%PROJECTCOORDS%%/$PROJECT_COORDINATES/" \
-    $SCRIPT_HOME/docker-compose.yml.tpl > $SCRIPT_HOME/../docker/docker-compose-stage.yml
+    $SCRIPT_HOME/docker-compose-stage.yml.tpl > $SCRIPT_HOME/../docker/docker-compose-stage.yml
     # add env vars to bin/export-schema.yaml
     echo "generating projects scripts"
     # schema export
