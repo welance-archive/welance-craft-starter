@@ -20,6 +20,7 @@ The following is the directory layout
   bin/                  - contains scripts to start/stop the development environment
   docker/               - contains the configuration/scripts/resources for docker
     craft/              - definition of the container for CraftCMS 
+      adminer/          - php mysql frontend
       conf/             
         apache2/        - apache2 configuration files for CraftCMS
       logs/
@@ -84,7 +85,7 @@ create a fork of the latest release of the base repo : [https://github.com/welan
 ##### Run the setup script
 first make sure that you have docker installed and running, you can download docker from [here](https://www.docker.com/community-edition).
 
-run the `bin/install.sh` script. the script will ask for
+run the `bin/setup.sh` script. the script will ask for
   - customer number
   - project number
   - site name
@@ -93,13 +94,16 @@ run the `bin/install.sh` script. the script will ask for
 and will generate the following files:
 
 ```
-./bin/start.sh
-./bin/stop.sh
-./bin/uninstall.sh
 ./bin/schema-import.sh
 ./bin/schema-export.sh
+./bin/local-start.sh
+./bin/local-stop.sh
+./bin/local-teardown.sh
 ./docker/docker-compose.yml
-./docker/docker-compose-stage.yml
+./bin/staging-start.sh
+./bin/staging-stop.sh
+./bin/staging-teardown.sh
+./docker/docker-compose-staging.yml
 ```
 
 after the setup is completed the command will crate and launch the containers. 
@@ -110,12 +114,11 @@ commit the chagnes to the repository, in particular the changes reated to:
 
 ### Development
 
-to start and stop the system the command `bin/start.sh` and `bin/stop.sh` can be used.
+to start and stop the system the command `bin/local-start.sh` and `bin/local-stop.sh` can be used.
 
 Once the containers are started the following ports are available:
 - 80   for http
 - 443  https with a self signed certificate
-- 3306 mysql database
 
 The default credentials (user/pass) for mysql are `craft`/`craft`.
 
@@ -132,13 +135,18 @@ from [here](https://github.com/jwilder/nginx-proxy).
 
 The staging environment is composed by a `nginx-proxy`container that registers automatically the new containers that are started having the environment variable `VIRTUAL_HOST`set. 
 
+to run the containers in the staging environment the scripts:
+
+- `bin/staging-start.sh`
+- `bin/staging-stop.sh`
+- `bin/staging-teardown.sh`
 
 ### Release
 [TODO more infoz]
 
 ### Project removal
 Once the project is finished to remove the resources associated with the project (containers and data) 
-the `bin/uninstall.sh`script is provided.
+the `bin/local-teardown.sh`script is provided.
 
 ## Accessing the database
 Since the database use in the containers is not accessible from outside docker a database web interface
@@ -160,7 +168,7 @@ The parameters to log in are:
 The website apache configuration is stored in `./docker/craft/conf/apache2/conf.d/welance.conf`.
 The welance.conf contains all the settings for the installation to work and should be taken as a reference
 for production installation. By default .htaccess is _DISABLED_, [because](https://nystudio107.com/blog/stop-using-htaccess-files-no-really).
-Changes to the apache configuration require to restart the environment (`bin/stop.sh`, `bin/start.sh`) to be enabled.
+Changes to the apache configuration require to restart the environment (`bin/local-stop.sh`, `bin/local-start.sh`) to be enabled.
 
 ## Troubleshooting
 
