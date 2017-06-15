@@ -1,4 +1,4 @@
-version: "2.1"
+version: '2'
 services:
   craft:
     image: welance/craft:2.6
@@ -19,7 +19,6 @@ services:
     links:
       - database
     #  - redis
-    # tty: true
     # env vars are replaced in /data/craft/config
     environment:
       # Set locale to UTF-8 
@@ -44,10 +43,10 @@ services:
       restart: always
       container_name: database_%%PROJECTCOORDS%%
       environment:
-        - MYSQL_ROOT_PASSWORD=craft
-        - MYSQL_DATABASE=craft
-        - MYSQL_USER=craft
-        - MYSQL_PASSWORD=craft
+        MYSQL_ROOT_PASSWORD: craft
+        MYSQL_DATABASE: craft
+        MYSQL_USER: craft
+        MYSQL_PASSWORD: craft
       volumes:
       - /var/lib/mysql
 

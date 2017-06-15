@@ -1,4 +1,4 @@
-version: "2.1"
+version: '2'
 services:
   craft:
     image: welance/craft:2.6
@@ -18,6 +18,8 @@ services:
     links:
       - database
     #  - redis
+    # set the network_mode to make the proxying in staging env working
+    network_mode: bridge
     # env vars are replaced in /data/craft/config
     environment:
       # Set locale to UTF-8 
@@ -37,16 +39,18 @@ services:
       CRAFT_ENVIRONMENT: %%SITEENV%%
       PLUGIN_WELANCE_GRID_VERSION: "1.0.0"
       HTTPD_OPTIONS: ""
-      VIRTUAL_HOST: %%SITEURL%%
+      VIRTUAL_HOST: %%SITEHOST%%
   database:
       image: mysql:5.6
       restart: always
       container_name: database_%%PROJECTCOORDS%%
+      # set the network_mode to make the proxying in staging env working
+      network_mode: bridge
       environment:
-        - MYSQL_ROOT_PASSWORD=craft
-        - MYSQL_DATABASE=craft
-        - MYSQL_USER=craft
-        - MYSQL_PASSWORD=craft
+        MYSQL_ROOT_PASSWORD: craft
+        MYSQL_DATABASE: craft
+        MYSQL_USER: craft
+        MYSQL_PASSWORD: craft
       volumes:
       - /var/lib/mysql
 

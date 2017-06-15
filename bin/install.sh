@@ -23,7 +23,7 @@ echo "Welcome to welance-craft project setup."
 
 echo -n "Please enter the customer number: "
 read answer
-if echo "$answer" | grep -qe "^\d\+$" ;then
+if echo "$answer" | grep -qe "^[0-9]\+$" ;then
     CUSTOMER_NUMBER=$answer
 else
     echo "invalid customer number $answer, aborting"
@@ -33,7 +33,7 @@ fi
 # read project number from command line
 echo -n "Now enter the project number: "
 read answer
-if echo "$answer" | grep -q "^\d\+$" ;then
+if echo "$answer" | grep -q "^[0-9]\+$" ;then
     PROJECT_NUMBER=$answer
 else
     echo "invalid project number $answer, aborting"
@@ -83,6 +83,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     sed \
     -e "s/%%SITENAME%%/$SITE_NAME/" \
     -e "s/%%SITEURL%%/\/\/$STAGE_URL/" \
+    -e "s/%%SITEHOST%%/$STAGE_URL/" \
     -e "s/%%SITEENV%%/$STAGE_ENVIRONMENT/" \
     -e "s/%%PROJECTCOORDS%%/$PROJECT_COORDINATES/" \
     $SCRIPT_HOME/docker-compose-stage.yml.tpl > $SCRIPT_HOME/../docker/docker-compose-stage.yml
@@ -134,9 +135,10 @@ if echo "$confirm" | grep -q "^YES" ;then
     # change permissions
     chmod +x $SCRIPT_HOME/schema-*.sh $SCRIPT_HOME/start.sh $SCRIPT_HOME/stop.sh $SCRIPT_HOME/unistall.sh
     # all done 
-    echo "starting docker"
+    echo "crating docker containers"
     cd $SCRIPT_HOME/../docker
-    docker-compose --project-name $PROJECT_COORDINATES up -d
+    docker-compose --project-name $PROJECT_COORDINATES create
+    echo "done, use bin/start.sh script to start the containers."
 else
     echo "setup canceled, bye!"
 fi
