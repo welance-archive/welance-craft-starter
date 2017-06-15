@@ -126,8 +126,12 @@ The development phase of the project will involve 3 main resources:
 
 
 ### Staging
-run `docker-compose -f ./docker/docker-compose-stage.yml -d up`
-[TODO more infoz]
+
+The staging enviroment is setup using the technique described [here](https://blog.florianlopes.io/host-multiple-websites-on-single-host-docker/) and the docker image
+from [here](https://github.com/jwilder/nginx-proxy).
+
+The staging environment is composed by a `nginx-proxy`container that registers automatically the new containers that are started having the environment variable `VIRTUAL_HOST`set. 
+
 
 ### Release
 [TODO more infoz]
@@ -171,4 +175,29 @@ and CSRF protection. To solve the issue clear the browser application data and r
 
 for other enquiries contact _enrico@welance.de_
 
+## SSL
 
+the certificate shipped with the project has been created using:
+
+```
+localhost:/# openssl req -x509 -nodes -days 1825 -newkey rsa:2048 -keyout welance.ssl.key -out welance.ssl.crt
+Generating a 2048 bit RSA private key
+....................+++
+....................................................................+++
+writing new private key to 'welance.ssl.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) []:DE
+State or Province Name (full name) []:Berlin
+Locality Name (eg, city) []:Berlin
+Organization Name (eg, company) []:Welance
+Organizational Unit Name (eg, section) []:
+Common Name (eg, fully qualified host name) []:
+Email Address []:info@welance.de
+```
