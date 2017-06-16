@@ -135,14 +135,32 @@ from [here](https://github.com/jwilder/nginx-proxy).
 
 The staging environment is composed by a `nginx-proxy`container that registers automatically the new containers that are started having the environment variable `VIRTUAL_HOST`set. 
 
-to run the containers in the staging environment the scripts:
+To run the proxy crate on the target server a `docker-compose.yml` file with the content posted below, 
+and start it with the command `docker-compose up -d`
+
+Content `docker-compose.yml` for the proxy:
+
+```
+version: '2'
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    network_mode: bridge
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+```
+
+When the proxy is up you can run the containers using the project scripts:
 
 - `bin/staging-start.sh`
 - `bin/staging-stop.sh`
 - `bin/staging-teardown.sh`
 
 ### Release
-[TODO more infoz]
+The release process is out of the scope of this project and has to be carried on manually.
 
 ### Project removal
 Once the project is finished to remove the resources associated with the project (containers and data) 
@@ -209,3 +227,8 @@ Organizational Unit Name (eg, section) []:
 Common Name (eg, fully qualified host name) []:
 Email Address []:info@welance.de
 ```
+
+## Acknowledgements
+
+The project (docker/scripts/procedures/etc.) has been realized by [Andrea Giacobino](http://about.almost.cc) 
+from a request of [Enrico Icardi](mailto:enrico@welance.de).
