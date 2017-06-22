@@ -193,8 +193,46 @@ if echo "$confirm" | grep -q "^YES" ;then
     'fi' \
     > $SCRIPT_HOME/${SCRIPT_STAGE_PREFIX}teardown.sh
     
+    # make release script for deploy
+    printf "%s\n" \
+    '#!/bin/bash' \
+    'DATE=`date +%H_%M_%S-%d-%m-%Y`' \
+    'MY_PATH="`dirname \"$0\"`"' \
+    'if [ "$MY_PATH" == . ] ; then' \
+    '# check if release folder is presend and if not create it' \
+    'if( test -e ../release ); then' \
+    ' :' \
+    'else' \
+    ' mkdir -p ../release' \
+    'fi' \
+    '# make file tar' \
+    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft --exclude=/data/craft/node_modules --exclude=/data/craft/npm-shrinkwrap.json --exclude=/data/craft/package.json --exclude=/data/craft/README.md --exclude=/data/craft/webpack.config.js" \
+    '# copy tar out and remove it inside the container' \
+    "docker cp craft_$PROJECT_COORDINATES:/release.tgz ../release/release-\"\$DATE\".tgz" \
+    "docker exec craft_$PROJECT_COORDINATES rm /release.tgz" \
+    '# make mysqldump' \
+    "docker exec database_$PROJECT_COORDINATES /usr/bin/mysqldump -u craft --password=craft craft > ../release/release-\"\$DATE\".sql" \
+    'else' \
+    'if [ "$MY_PATH" == ./bin ] ; then' \
+    '# check if release folder is presend and if not create it' \
+    'if( test -e release ); then' \
+    ' :' \
+    'else' \
+    ' mkdir -p release' \
+    'fi' \
+    '# make file tar' \
+    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft --exclude=/data/craft/node_modules --exclude=/data/craft/npm-shrinkwrap.json --exclude=/data/craft/package.json --exclude=/data/craft/README.md --exclude=/data/craft/webpack.config.js" \
+    '# copy tar out and remove it inside the container' \
+    "docker cp craft_$PROJECT_COORDINATES:/release.tgz release/release-\"\$DATE\".tgz" \
+    "docker exec craft_$PROJECT_COORDINATES rm /release.tgz" \
+    '# make mysqldump' \
+    "docker exec database_$PROJECT_COORDINATES /usr/bin/mysqldump -u craft --password=craft craft > release/release-\"\$DATE\".sql" \
+    'fi' \
+    'fi' \
+    > $SCRIPT_HOME/make-release.sh
+
     # change permissions
-    chmod +x $SCRIPT_HOME/schema-*.sh $SCRIPT_HOME/${SCRIPT_STAGE_PREFIX}*.sh $SCRIPT_HOME/${SCRIPT_LOCAL_PREFIX}*.sh
+    chmod +x $SCRIPT_HOME/schema-*.sh $SCRIPT_HOME/${SCRIPT_STAGE_PREFIX}*.sh $SCRIPT_HOME/${SCRIPT_LOCAL_PREFIX}*.sh $SCRIPT_HOME/make-release.sh
     
     # all done 
     echo "crating docker containers"
