@@ -193,8 +193,27 @@ if echo "$confirm" | grep -q "^YES" ;then
     'fi' \
     > $SCRIPT_HOME/${SCRIPT_STAGE_PREFIX}teardown.sh
     
+    # make release script for deploy
+    printf "%s\n" \
+    '#!/bin/bash' \
+    'DATE=`date +%H_%M_%S-%d-%m-%Y`' \
+    '# check if release folder is presend and if not create it' \
+    'if( test -e ../release ); then' \
+    '     :' \
+    '    else' \
+    '     mkdir -p ../release' \
+    'fi' \
+    '# make file tar' \
+    'docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft' \
+    '# copy tar out and remove it inside the container' \
+    'docker cp craft_001_01:/release.tgz ../release/release-$DATE.tgz' \
+    'docker exec craft_001_01 rm /release.tgz' \
+    '# make mysqldump' \
+    'docker exec database_001_01 /usr/bin/mysqldump -u craft --password=craft craft > ../release/release-$DATE.sql' \
+    > $SCRIPT_HOME/make-release.sh
+
     # change permissions
-    chmod +x $SCRIPT_HOME/schema-*.sh $SCRIPT_HOME/${SCRIPT_STAGE_PREFIX}*.sh $SCRIPT_HOME/${SCRIPT_LOCAL_PREFIX}*.sh
+    chmod +x $SCRIPT_HOME/schema-*.sh $SCRIPT_HOME/${SCRIPT_STAGE_PREFIX}*.sh $SCRIPT_HOME/${SCRIPT_LOCAL_PREFIX}*.sh $SCRIPT_HOME/make-release.sh
     
     # all done 
     echo "crating docker containers"
