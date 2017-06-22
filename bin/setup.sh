@@ -206,12 +206,12 @@ if echo "$confirm" | grep -q "^YES" ;then
     ' mkdir -p ../release' \
     'fi' \
     '# make file tar' \
-    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft" \
+    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft --exclude=/data/craft/node_modules --exclude=/data/craft/npm-shrinkwrap.json --exclude=/data/craft/package.json --exclude=/data/craft/README.md --exclude=/data/craft/webpack.config.js" \
     '# copy tar out and remove it inside the container' \
-    "docker cp craft_$PROJECT_COORDINATES:/release.tgz ../release/release-"$DATE".tgz" \
+    "docker cp craft_$PROJECT_COORDINATES:/release.tgz ../release/release-\"\$DATE\".tgz" \
     "docker exec craft_$PROJECT_COORDINATES rm /release.tgz" \
     '# make mysqldump' \
-    "docker exec database_$PROJECT_COORDINATES /usr/bin/mysqldump -u craft --password=craft craft > ../release/release-"$DATE".sql" \
+    "docker exec database_$PROJECT_COORDINATES /usr/bin/mysqldump -u craft --password=craft craft > ../release/release-\"\$DATE\".sql" \
     'else' \
     'if [ "$MY_PATH" == ./bin ] ; then' \
     '# check if release folder is presend and if not create it' \
@@ -221,12 +221,12 @@ if echo "$confirm" | grep -q "^YES" ;then
     ' mkdir -p release' \
     'fi' \
     '# make file tar' \
-    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft" \
+    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft --exclude=/data/craft/node_modules --exclude=/data/craft/npm-shrinkwrap.json --exclude=/data/craft/package.json --exclude=/data/craft/README.md --exclude=/data/craft/webpack.config.js" \
     '# copy tar out and remove it inside the container' \
-    "docker cp craft_$PROJECT_COORDINATES:/release.tgz release/release-"$DATE".tgz" \
+    "docker cp craft_$PROJECT_COORDINATES:/release.tgz release/release-\"\$DATE\".tgz" \
     "docker exec craft_$PROJECT_COORDINATES rm /release.tgz" \
     '# make mysqldump' \
-    "docker exec database_$PROJECT_COORDINATES /usr/bin/mysqldump -u craft --password=craft craft > release/release-"$DATE".sql" \
+    "docker exec database_$PROJECT_COORDINATES /usr/bin/mysqldump -u craft --password=craft craft > release/release-\"\$DATE\".sql" \
     'fi' \
     'fi' \
     > $SCRIPT_HOME/make-release.sh
