@@ -30,6 +30,7 @@ php7-ctype \
 php7-zip \
 php7-xml \
 unzip \
+tar \
 coreutils \
 wget; \
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
