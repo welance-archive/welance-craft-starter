@@ -206,7 +206,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     ' mkdir -p ../release' \
     'fi' \
     '# make file tar' \
-    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft --exclude=/data/craft/node_modules --exclude=/data/craft/npm-shrinkwrap.json --exclude=/data/craft/package.json --exclude=/data/craft/README.md --exclude=/data/craft/webpack.config.js" \
+    "docker exec craft_$PROJECT_COORDINATES /usr/bin/tar -czf release.tgz --exclude=/data/craft/templates/node_modules --exclude=/data/craft/templates/npm-shrinkwrap.json --exclude=/data/craft/templates/package.json --exclude=/data/craft/templates/README.md --exclude=/data/craft/templates/webpack.config.js /data/craft" \
     '# copy tar out and remove it inside the container' \
     "docker cp craft_$PROJECT_COORDINATES:/release.tgz ../release/release-\"\$DATE\".tgz" \
     "docker exec craft_$PROJECT_COORDINATES rm /release.tgz" \
@@ -221,7 +221,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     ' mkdir -p release' \
     'fi' \
     '# make file tar' \
-    "docker exec craft_$PROJECT_COORDINATES tar -czf release.tgz /data/craft --exclude=/data/craft/node_modules --exclude=/data/craft/npm-shrinkwrap.json --exclude=/data/craft/package.json --exclude=/data/craft/README.md --exclude=/data/craft/webpack.config.js" \
+    "docker exec craft_$PROJECT_COORDINATES /usr/bin/tar -czf release.tgz --exclude=/data/craft/templates/node_modules --exclude=/data/craft/templates/npm-shrinkwrap.json --exclude=/data/craft/templates/package.json --exclude=/data/craft/templates/README.md --exclude=/data/craft/templates/webpack.config.js /data/craft" \
     '# copy tar out and remove it inside the container' \
     "docker cp craft_$PROJECT_COORDINATES:/release.tgz release/release-\"\$DATE\".tgz" \
     "docker exec craft_$PROJECT_COORDINATES rm /release.tgz" \
