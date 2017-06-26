@@ -108,6 +108,10 @@ and will generate the following files:
 
 after the setup is completed the command will crate and launch the containers. 
 
+> **!!! ATTENTION !!!** 
+> customer and project number are used to setup the containers environment, 
+> they cannot be easily changed once the project is on-going.
+
 ##### Commit
 commit the chagnes to the repository, in particular the changes reated to:
 
