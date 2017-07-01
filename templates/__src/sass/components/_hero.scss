@@ -29,9 +29,26 @@
   }
   .hero-text{
     align-self: center;
+    @include mq($until: md){
+      @include pt(6);
+      @include pb(6);
+    }
+    p{
+      @include pr(10);
+      a{
+        color: $white;
+        text-decoration: underline;
+      }
+    }
   }
   .hero-text-title{
     @include mb(2);
     @include mt(2);
+  }
+}
+
+.block--hero{
+  @include mq($from: md){
+    @include mb(10);
   }
 }

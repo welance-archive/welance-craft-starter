@@ -1,8 +1,13 @@
 .gallery{
   &--logos{
-    @include mq($from: xs, $until: md) {
+    @include mq($until: md) {
       .col{
         width: 33.33%;
+      }
+    }
+    @include mq($from: xs, $until: sm) {
+      .col{
+        width: 50%;
       }
     }
     div[class^="img--"]{

@@ -6,6 +6,7 @@ $animation-time: .2s;
     cursor: pointer;
     @include pt(4);
     @include pb(4);
+    @include pr(4);
     border-bottom: 1px solid $black;
     transition: all .2s ease-in;
 
@@ -13,20 +14,22 @@ $animation-time: .2s;
       border-top: 1px solid $black;
     }
 
-    &::after {
+    &::before {
       font-size: 1.5rem;
       cursor: pointer;
       content: "+";
       float: right;
       right: 1rem;
+      top: 0;
+      margin-right: -1rem;
       line-height: 27px;
       transition: all $animation-time ease-in;
     }
     &--active{
       border-bottom: 1px solid transparent;
-      &::after {
-        margin-top: .1rem;
-        margin-right: -.15rem;
+      &::before {
+        @include ml(4);
+        margin-right: -1rem;
         transform: rotate(45deg);
       }
     }

@@ -6,10 +6,8 @@
           <div class="img--r{{block.mediaRatio}}">
             {% if media.kind == 'image' %}
                 <picture class="ratio-content">
-                  <a href="{{media.url}}">
-                    <source srcset="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
-                    <img src="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{media.title}} media object"/>
-                  </a>
+                  <source srcset="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
+                  <img src="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{media.title}} media object"/>
                 </picture>
             {% elseif media.kind == 'video' %}
                 <video class="ratio-content" controls controls="controls">
@@ -26,7 +24,7 @@
                 </video>
             {% endif %}
           </div> {# close img--r-XX-XX #}
-          <p class="caption"><a href="{{media.url}}">{{media.title}}</a></p>
+          <p class="caption">{{media.title}}</p>
         </div> {# close col--XX-XX #}
       {% endfor %}
     </div>

@@ -1,10 +1,34 @@
 // Fonts
-$font-family-sans-serif: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
-$font-family-monospace:  Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
-$font-weight-normal: normal !default;
-$font-weight-bold: bold !default;
 
-$font-family-base:      $font-family-sans-serif !default;
+// NOTE: futura-PT is using typekit (JS embed in base.html)
+
+@font-face{
+  font-family: "Chronicle Text G1 A";
+  src: url("/assets/fonts/ChronicleTextG1-Roman-Pro.otf");
+  font-weight:400;
+  font-style:normal;
+}
+@font-face{
+  font-family: "Chronicle Text G1 A";
+  src: url("/assets/fonts/ChronicleTextG1-Bold-Pro.otf");
+  font-weight:800;
+  font-style:bold;
+}
+@font-face{
+  font-family: "Chronicle Text G1 A";
+  src: url("/assets/fonts/ChronicleTextG1-Italic-Pro.otf");
+  font-weight:400;
+  font-style:italic;
+}
+
+$font-family-sans-serif: "futura-pt", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-serif: "Chronicle Text G1 A" serif;
+$font-family-monospace:  Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-weight-normal: normal;
+$font-weight-bold: normal;
+
+$font-family-headings:  $font-family-sans-serif;
+$font-family-base:      $font-family-serif;
 $font-size-base:        1em !default; // Assumes the browser default, typically `16px`
 $font-weight-base:      $font-weight-normal !default;
 $dt-font-weight:        $font-weight-bold !default;
@@ -33,7 +57,7 @@ $gray-lightest:             #f7f7f9 !default;
 
 // Reassign color vars to semantic color scheme
 
-$brand-primary:             $blue !default;
+$brand-primary:             #009793 !default;
 $brand-success:             $green !default;
 $brand-info:                $teal !default;
 $brand-warning:             $orange !default;
@@ -133,7 +157,7 @@ $im-columns-class: '.col' !default;
 // this is a list of grids to create in the CSS
 // It creates helper classes for all the grids listed
 // considering our mq-breakpoints (for grid and gutters)
-$grids: (1, 5, 7, 8, 12);
+$grids: (12);
 // Usage is similar to twitter bootstrap:
 // <div class="col col--1-12 col--6-12@md col--1-1@sm">col-1-12 cia</div>
 // It generates something like:
@@ -191,7 +215,20 @@ $spacing-sizes: (
   20: 10.5rem,
   21: 11rem,
   22: 11.5rem,
-  23: 12rem
+  23: 12rem,
+  24: 12.5rem,
+  25: 13rem,
+  26: 13.5rem,
+  27: 14rem,
+  28: 14.5rem,
+  29: 15rem,
+  30: 15.5rem,
+  31: 16rem,
+  32: 16.5rem,
+  33: 17rem,
+  34: 17.5rem,
+  35: 18rem,
+  36: 18.5rem
 );
 
 $spacing-important: false;

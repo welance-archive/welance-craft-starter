@@ -1,0 +1,78 @@
+h1, h2, h3, h4, h5, h6{
+  font-family: $font-family-headings;
+}
+body{
+  font-family: "Chronicle Text G1 A";
+}
+// body{
+//   font-size: $font-size-base;
+//   line-height: $line-height-base;
+//   font-family: $font-family-base;
+//   font-weight: $font-weight-normal;
+//   text-rendering: optimizeLegibility;
+//   text-rendering: geometricPrecision;
+// }
+
+// h1{
+//     @include ms-respond(font-size, 7);
+//     line-height: $line-height-h1;
+//     font-weight: $font-weight-normal;
+//     letter-spacing: -0.0225em;
+// }
+
+h2{
+//    @include ms-respond(font-size, 6);
+    font-weight: 800;
+    @include mb(6);
+//    line-height: $line-height-base;
+}
+
+h3{
+//     @include ms-respond(font-size, 4);
+    font-weight: 800;
+    @include pb(2);
+//     line-height: $line-height-base;
+}
+
+h4{
+      font-weight: 800;
+//     @include ms-respond(font-size, 2);
+//     font-weight: $font-weight-normal;
+//     line-height: $line-height-base;
+  &.subtitle{
+    font-weight: 400;
+    @include mb(6);
+    a{
+      text-decoration: underline;
+    }
+  }
+  a{
+    text-decoration: underline;
+  }
+}
+
+// h5{
+//     @include ms-respond(font-size, 1);
+//     font-weight: $font-weight-normal;
+//     line-height: $line-height-base;
+// }
+
+// h6{
+//     @include ms-respond(font-size, 0);
+//     font-weight: $font-weight-normal;
+//     line-height: $line-height-base;
+// }
+
+p{
+//     @include ms-respond(font-size, 0);
+    line-height: $line-height-base;
+//     letter-spacing: .0125em;
+}
+
+// pre{
+//   @include m(0);
+//   @include mt(1);
+//   @include mb(1);
+//   @include p(2);
+//   background-color: $gray-lightest;
+// }

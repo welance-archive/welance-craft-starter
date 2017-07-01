@@ -51,11 +51,13 @@ figure{
   }
   figcaption{
     @include pt(3);
+    font-family: $font-family-sans-serif;
   }
 }
 //...others
 .caption{
   @include pt(3);
+  font-family: $font-family-sans-serif;
 }
 video{
   max-width: 100%;

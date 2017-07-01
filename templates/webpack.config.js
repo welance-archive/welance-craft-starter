@@ -1,13 +1,16 @@
-let webpack = require("webpack");
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let path = require('path');
-let CopyWebpackPlugin = require('copy-webpack-plugin');
-let ImageminWebpackPlugin = require('imagemin-webpack-plugin').default;
-let FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const webpack = require("webpack");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ImageminWebpackPlugin = require('imagemin-webpack-plugin').default;
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const mainJSPath = path.resolve(__dirname, '__src/js', 'main.js');
 const mainCSSPath = path.resolve(__dirname, '__src/sass', 'main.scss');
 const publicPath = path.resolve(__dirname, '../public/assets');
+const imagesPath = path.resolve(__dirname, '__src/images');
+const rootPath = path.resolve(__dirname);
 
 const prod_plugins = [
 		//about SASS compilation
@@ -15,10 +18,9 @@ const prod_plugins = [
 			filename: "styles/main.min.css"
 		}),
 		// Copy the images folder and optimize all the images
-		new CopyWebpackPlugin([{
-			from: './__src/images/',
-			to: '../public/assets/images/'
-		}]),
+		new CopyWebpackPlugin([
+      { from: imagesPath + '/', to: 'images' }, { from: './__src/fonts/', to: 'fonts' }
+    ]),
 		new ImageminWebpackPlugin({
 			test: /\.(jpe?g|png|gif|svg)$/i,
 			//disable: process.env.NODE_ENV !== 'prod',
@@ -37,9 +39,9 @@ const prod_plugins = [
 		}),
 		new FaviconsWebpackPlugin({
 			// Your source logo
-			logo: './__src/images/favicon.svg',
+			logo: imagesPath + '/favicon.png',
 			// The prefix for all image files (might be a folder or a name)
-			prefix: '../public/assets/images/icons-[hash]/',
+			prefix: 'images/icons-[hash]/',
 			// Emit all stats of the generated icons
 			emitStats: false,
 			// The name of the json containing all favicon information
@@ -67,7 +69,14 @@ const prod_plugins = [
 				yandex: false,
 				windows: false
 			}
-		})
+		}),
+    new HtmlWebpackPlugin({
+      template: '_includes/_layouts/base.html',
+      filename: rootPath + '/_includes/_layouts/webpack_base.html',
+      hash: true,
+      inject: true
+    }),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'scripts/vendor.min.js?h=[hash]' })
 	];
 
 
@@ -79,15 +88,14 @@ const dev_plugins = [
 			filename: "styles/main.css"
 		}),
 		// Copy the images folder and optimize all the images
-		new CopyWebpackPlugin([{
-			from: './__src/images/',
-			to: '../public/assets/images/'
-		}]),
+		new CopyWebpackPlugin([
+      { from: imagesPath + '/', to: 'images' }, { from: './__src/fonts/', to: 'fonts' }
+    ]),
 		new FaviconsWebpackPlugin({
 			// Your source logo
-			logo: './__src/images/favicon.svg',
+			logo: imagesPath + '/favicon.png',
 			// The prefix for all image files (might be a folder or a name)
-			prefix: '../public/assets/images/icons-[hash]/',
+			prefix: 'images/icons-[hash]/',
 			// Emit all stats of the generated icons
 			emitStats: false,
 			// The name of the json containing all favicon information
@@ -114,7 +122,13 @@ const dev_plugins = [
 				yandex: false,
 				windows: false
 			}
-		})
+		}),
+    new HtmlWebpackPlugin({
+      template: '_includes/_layouts/base.html',
+      filename: rootPath + '/_includes/_layouts/webpack_base.html',
+      hash: true,
+      inject: true
+    })
 	];
 
 const plugins = process.env.NODE_ENV === 'prod' ? prod_plugins : dev_plugins;
@@ -126,12 +140,13 @@ module.exports = {
      main: [
       mainJSPath,
       mainCSSPath
-    ]
+    ],
+    vendor: ["jquery", "object-fit-images"]
   },
   output: {
-    filename: process.env.NODE_ENV === 'prod' ? path.join('scripts','[name].min.js') : path.join('scripts','[name].js'),
+    filename: process.env.NODE_ENV === 'prod' ? 'scripts/[name].min.js?h=[hash]' : 'scripts/[name].js?h=[hash]',
     path: publicPath,
-    publicPath: publicPath
+    publicPath: '/assets/'
   },
 	module: {
 		rules: [

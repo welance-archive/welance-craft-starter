@@ -1,0 +1,28 @@
+// here goes all the SCSS specific to this template
+.col--fellows{
+  h4{
+    @include pt(2);
+    a{
+      color: $black;
+      text-decoration: none;
+    }
+  }
+  p{
+    position: absolute;
+    bottom: 0;
+  }
+  @include pb(6);
+  @include mb(8);
+}
+
+.fellow-name{
+  @include pt(6);
+}
+.fellow-group{
+  font-weight: 400;
+}
+.fellow-bio{
+  @include pt(4);
+  @include ms-respond(font-size, 2);
+
+}

@@ -13,18 +13,23 @@
  # child templates to define the main contents for the page.
 -#}
 
-{% extends "_includes/_layouts/base" %}
-
-{# Define the site navigation #}
-{% set nav = {
-  "/":     { title: "HomePage", desc: "The Homepage" },
-	news:     { title: "News", desc: "Read something!" }
-} %}
+{% extends "_includes/_layouts/webpack_base" %}
 
 {# Set the `bodyClass` variable to the entry's section handle if there is one,
    or the first URI segment (this is used by the parent template) #}
 {% if bodyClass is not defined %}
 	{% set bodyClass = entry is defined ? entry.section.handle : craft.request.firstSegment %}
+
+  {% if craft.request.firstSegment and entry is defined %}
+    {% set bodyClass = bodyClass ~ " " ~ bodyClass ~ "--" ~ craft.request.firstSegment %}
+  {% elseif craft.request.firstSegment and entry is not defined and craft.request.getSegment(2) and craft.request.getSegment(3) %}
+    {% set bodyClass = bodyClass ~ " "  ~ bodyClass ~  "--" ~ craft.request.getSegment(2) ~ "-" ~ craft.request.getSegment(3) %}
+  {% endif %}
+
+  {% if craft.request.getSegment(2) and entry is defined %}
+    {% set bodyClass = bodyClass ~ " " ~ entry.section.handle ~ "--" ~ craft.request.getSegment(2) %}
+  {% endif %}
+
 {% endif %}
 
 {# Set the `title` variable to the nav item that matches the first segment #}
@@ -32,28 +37,103 @@
 	{% set title %}{% if title is defined %}{{ title }} - {% endif %}{{ nav[bodyClass].title }}{% endset %}
 {% endif %}
 
+{# ------------------------------------------------------------------ NAVIGATION ------------------------------ #}
+{# Define the site navigation #}
+{# here you can define Custom links in this format: { slug: "/", title: "HomePage", desc: "The Homepage" } #}
+{# ...or leave it blank if you don't have "custom links" #}
+{% set nav = [{slug: 'analysis', title: 'Analysis', desc: 'Analysis'}] %}
+
+{# Get ids for all entries from the different structures and levels #}
+{% set pagesNav = craft.entries.section('pages').level(1).limit(8).ids() %}
+
+{# combine previous nav with new pages #}
+{% set allEntries = craft.entries.id(pagesNav).limit(8) %}
+
+{% for entry in allEntries %}
+    {% set newEntry = [ {slug: entry.slug, title: entry.title, desc: entry.introText} ] %}
+    {% set nav = nav | merge(newEntry) %}
+{% endfor %}
+
+
+{# Define the site sub-navigation #}
+{% set currentEntry = craft.entries.slug(craft.request.getSegment(1)).first() %}
+{% set pagesSubNav = craft.entries.descendantOf(currentEntry).level(2).limit(10).ids() %}
+
+{# here you can define Custom links in this format: { slug: "/", title: "HomePage", desc: "The Homepage" } #}
+{# ...or leave it blank if you don't have "custom links" #}
+{% set subNav = false %}
+{# if page is an entry #}
+{% if currentEntry is not null %}
+  {# if entry has children #}
+  {% if currentEntry.children | length %}
+
+    {# change title according to design #}
+    {% if currentEntry.title | lower == 'about' %}
+      {% set subNavTitle = "Overview" %}
+    {% elseif currentEntry.title | lower == 'alumni' %}
+      {% set subNavTitle = currentEntry.title ~ " Community" %}
+    {% else %}
+      {% set subNavTitle = "Overview" %}
+    {% endif %}
+
+    {# build first subnav item #}
+    {% set subNav = [{slug: currentEntry.slug, title: subNavTitle, desc: currentEntry.introText}] %}
+
+    {# combine subnav with first subnav item #}
+    {% set allSubEntries = craft.entries.id(pagesSubNav).limit(10) %}
+
+    {% for subEntry in allSubEntries %}
+      {% set newSubEntry = [ {slug: currentEntry.slug ~ "/" ~ subEntry.slug, title: subEntry.title, desc: subEntry.introText} ] %}
+      {% set subNav = subNav | merge(newSubEntry) %}
+    {% endfor %}
+  {% endif %}
+{% endif %}
+
+
+{# ------------------------------------------------------------------ End NAVIGATION ------------------------------ #}
+
 
 {% block body %}
+
 	<header>
 		<div class="wrap  wrap--contained">
-			<div class="row">
-        <div class="col col--12-12">
-				  <h5><strong><a href="{{ siteUrl }}">Website Title</a></strong></h5>
+			<div class="row main-header">
+        <div class="col col--4-12@lg col--6-12@md">
+				  <a href="{{ siteUrl }}"><img class="logo" src="/assets/images/logo.png" alt="{{ siteName }}"></a></strong></h5>
+        </div>
+        <div class="col col--offset-3-12@lg col--5-12@lg col--12-12@md navigation-wrapper">
+          <nav class="row navigation">
+            <ul class="nav-els col col--12-12@xs">
+              {% for item in nav %}
+                <li class="nav-el {{craft.request.firstSegment == item.slug or craft.request.firstSegment == item.slug ? 'nav-el--selected' : ''}}">
+                  <a href="{{ url(item.slug) }}">
+                    {{ item.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
         </div>
       </div>
-      <nav>
-        <ul class="row">
-          {% for slug, item in nav %}
-            <li class="col col--3-12@lg col--6-12@md col--12-12@xs">
-              <a href="{{ url(slug) }}" {% if craft.request.firstSegment == slug %}class="sel"{% endif %}>
-                <strong>{{ item.title }}</strong>
-                <span>-</span>
-                <em>{{ item.desc }}</em>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </nav>
+      {% block subnav %}
+        {% if subNav %}
+          <nav class="row sub-navigation">
+            <ul class="sub-nav-els col col--6-12@xl col--12-12@xs">
+              {% for item in subNav %}
+                <li class="sub-nav-el {{(craft.request.firstSegment == item.slug and craft.request.getSegment(2) is empty ) or craft.request.firstSegment ~ "/" ~ craft.request.getSegment(2) == item.slug ? 'sub-nav-el--selected' : ''}}">
+                  <a href="{{ url(item.slug) }}">
+                    {{ item.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        {% else %}
+          {% if bodyClass != 'homepage' %}
+            <div class="sub-navigation-spacer"></div>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
 		</div>
 	</header>
 
@@ -63,12 +143,16 @@
 
 	<footer class="wrap wrap--contained">
 		<div class="row">
-			<div class="col col--6-12">
-				<p>welance © 2017</p>
-			</div>
-			<div  class="col col--6-12">
-				<a href="mailto:global.contactUsEmail">global.contactUsLabel</a>
+			<div class="col col--6-12@md col--12-12@xs">
+				<p>
+          {{siteName}}<br/>
+          {{contactInfo.address | nl2br}}, {{contactInfo.zip}} {{contactInfo.city}}, {{contactInfo.country}}<br/>
+          {{contactInfo.orgPhoneNumber}}<br/>
+          {{contactInfo.orgEMailAddress | replace('/.*</','') | replace('>','')}}<br/>
+          Impressum
+        </p>
 			</div>
 		</div>
 	</footer>
+
 {% endblock %}

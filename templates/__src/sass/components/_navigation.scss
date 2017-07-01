@@ -1,0 +1,54 @@
+.navigation-wrapper{
+  display: flex;
+}
+.navigation{
+  width: 102%;
+  @include mq($until: lg){
+    @include pb(4);
+  }
+}
+.navigation, .sub-navigation{
+  align-self: center;
+
+  .nav-els{
+    padding-right: 0;
+  }
+  .nav-els, .sub-nav-els{
+    font-family: $font-family-sans-serif;
+    justify-content: space-between;
+    flex-flow: row-reverse;
+
+    .nav-el, .sub-nav-el{
+      a{
+        color: $black;
+      }
+
+      &--selected{
+        a{
+          color: $brand-primary;
+        }
+      }
+    }
+  }
+  .sub-nav-els{
+    flex-flow: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+
+    .sub-nav-el{
+      @include pr(4);
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+  }
+}
+.sub-navigation{
+  overflow: scroll;
+  @include pt(4);
+  @include pb(4);
+  @include mb(4);
+}
+
+.sub-navigation-spacer{
+  @include mb(8);
+}

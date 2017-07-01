@@ -1,9 +1,50 @@
 @import './helpers/variables';
 @import '~@welance/welance-bs/src/sass/welanstrap';
+
+@import './base/typography';
+
 @import '../../_entries/pages/page';
-@import '../../_entries/posts/post';
+@import '../../_entries/analysis/analysis';
+@import '../../_entries/fellows/fellows';
+
 @import 'layout/general';
 
 @import 'components/hero';
 @import 'components/gallery';
 @import 'components/wc-accordion';
+@import 'components/navigation';
+
+.logo{
+  max-width: 18rem;
+  width: 100%;
+  @include mb(6);
+  @include mt(2);
+  @include mq($from: lg){
+    margin-left: -4.25rem;
+  }
+  @include mq($from: xs, $until: md){
+    margin-left: -1rem;
+  }
+}
+
+.main-header{
+  border-bottom: 2px solid $black;
+  @include mq($until: lg){
+    border-bottom: 1px solid $black;
+  }
+}
+
+.row{
+  &--block{
+    //@include mb(10);
+  }
+  &--title{
+    @include mb(6);
+  }
+}
+
+footer{
+  @include mt(30);
+  @include mb(30);
+  font-family: $font-family-sans-serif;
+}

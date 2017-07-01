@@ -1,1 +1,119 @@
 // here goes all the SCSS specific to this template
+
+.pages{
+  //---------------------------------------------------------------- FAQ and faq/subpages
+  &--faq{
+    //adjust accordion for FAQ page
+    .wc-accordion{
+      h4{
+        font-weight: bold;
+        border-bottom: 1px solid $black;
+        @include pt(4);
+        @include pb(4);
+        &:first-child{
+          border-top: 1px solid $black;
+        }
+        &:not(:nth-child(1)) {
+          margin-top: -2rem;
+        }
+      }
+    }
+  }
+  //---------------------------------------------------------------- ALUMNI and alumni/subpages
+  &--alumni{
+    .hero-text{
+      p{
+        line-height: $line-height-base + .1;
+      }
+    }
+    .hero--inverted{
+      .hero-text{
+        font-family: $font-family-sans-serif;
+        @include ms-respond(font-size, 2);
+        @include mq($from: lg){
+          @include pl(10);
+        }
+        @include mq($until: lg){
+          @include pl(0);
+          p{
+            @include p(2);
+          }
+        }
+      }
+    }
+  }
+  //---------------------------------------------------------------- team page
+  &--team{
+    .block{
+      &--image{
+        margin-bottom: 0!important;
+      }
+    }
+  }
+
+  //---------------------------------------------------------------- GENERAL "block" adjustments
+  .block{
+    &--gallery{
+      @include mb(10);
+      @include mt(10);
+    }
+    &--image{
+      @include mb(10);
+    }
+    &--entriesList{
+      @include mb(10);
+      @include mt(10);
+    }
+    &--richContent{
+      @include mq($until: lg){
+        @include pt(4);
+        @include pb(4);
+      }
+      ul{
+        display: block;
+        @include mb(3);
+        @include mt(1);
+        li{
+          display: block;
+          line-height: $line-height-base + 0.5;
+        }
+      }
+      p, ul, ol{
+        a{
+          color: $black;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+//---------------------------------------------------------------- Homepage (single)
+.homepage{
+  .main-header{
+    border-bottom: none;
+  }
+  .block{
+    &--5{     //robert bosch logo
+      margin-top: -8rem;
+      img{
+        object-fit: contain;
+      }
+    }
+    &--7{     //other logos
+      margin-top: -5rem;
+    }
+    &--richContent{
+      @include mb(10);
+    }
+  }
+  .hero{
+    .hero-text{
+      font-family: $font-family-sans-serif;
+      letter-spacing: .1rem;
+      p{
+        @include ms-respond(font-size, 1);
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{#
+ # News entry template
+ # -------------------
+ #
+ # This template gets loaded whenever a News entry's URL is requested, because
+ # the News section's Template setting is set to "news/_entry".
+ #
+ # An `entry` variable will be automatically passed to this template, which will
+ # be set to the requested News entry.
+-#}
+
+{% extends "_includes/_layouts/site" %}
+{% set title = entry.title %}
+
+{% block main %}
+	<article>
+    <div class="wrap wrap--contained">
+      <div class="row">
+        <div class="col col--12-12 analysis-image">
+          <div class="img--r16-9">
+            <picture class="ratio-content">
+              {% if entry.featuredImage.first() is not empty %}
+                <source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">
+                <img src="{{ entry.featuredImage.first().getUrl() }}" alt="{{ entry.title }}"/>
+              {% else %}
+                <source srcset="https://via.placeholder.com/1500x1500&text={{ entry.title | url_encode }}" media="(min-width: 600px)">
+                <img src="https://via.placeholder.com/500x500&text={{ entry.title | url_encode }}" alt="{{ entry.title }}"/>
+              {% endif %}
+            </picture>
+          </div>
+        </div>
+      </div>
+    </div>
+		{% include "_includes/_matrix_layouts/page_body" %}
+    {% if entry.attachment.first() %}
+    <div class="wrap wrap--contained">
+      <div class="row">
+        <div class="col col col--6-12@lg col--offset-3-12@lg">
+          <h4 class="attachment">
+            <a href="{{ entry.attachment.first().getUrl() }}">Download Full Report</a>
+          </h4>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+	</article>
+{% endblock %}

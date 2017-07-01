@@ -2,28 +2,57 @@
   {% case 'accordion-no-pic' %}
     <div class="wc-accordion">
       {% for i, element in block.entries %}
-        <h4 class="wc-accordion-title">{{element.title}}</h4>
-        <p class="wc-accordion-content"><a href="{{element.url}}">{{element.introText ? element.introText : "Read more about " ~ element.title}}</a></p>
+        <p class="wc-accordion-title">
+          {{element.title}}
+          {% for i, tag in element.tags %}
+            {% if loop.first %} – {% endif %}
+            {{tag}}
+          {% endfor %}
+        </p>
+        <p class="wc-accordion-content">
+          {{element.bio|striptags}}
+        </p>
       {% endfor %}
     </div>
   {% case 'squared' %}
     <div class="row">
       {% for i, element in block.entries %}
-        <div class="col col--{{block.entriesPerRow}}-12">
-          <div class="img--r1-1">
-            <picture class="ratio-content">
-              <a href="{{element.url}}">
-                <source srcset="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
-                <img src="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{element.title}} profile picture"/>
-              </a>
-            </picture>
-          </div>
+        {% if element.type == 'fellows' %}
+          <div class="col col--{{block.entriesPerRow}}-12@lg col--6-12@md col--fellows">
+            <div class="img--r1-1">
+              <picture class="ratio-content">
+                <a href="{{element.url}}">
+                  <source srcset="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
+                  <img src="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{element.title}} profile picture"/>
+                </a>
+              </picture>
+            </div>
 
-          <h3><a href="{{element.url}}">{{element.title}}</a></h3>
-          {% autoescape false %}
-            <p>{{element.introText ? element.introText | slice(0, 60) ~ "..." : "" }}</p>
-          {% endautoescape %}
-        </div>
+            <h4>
+              <a href="{{element.url}}">{{element.title}}</a>
+            </h4>
+            <h5>
+              {% for i, tag in element.tags %}{{ not loop.first ? ', ' ~ tag : tag }}{% endfor %}
+            </h5>
+            <p>{% for i, group in element.workingGroup %}{{ group.title }}{% endfor %}</p>
+          </div>
+        {% else %}
+          <div class="col col--{{block.entriesPerRow}}-12">
+            <div class="img--r1-1">
+              <picture class="ratio-content">
+                <a href="{{element.url}}">
+                  <source srcset="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
+                  <img src="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{element.title}} profile picture"/>
+                </a>
+              </picture>
+            </div>
+
+            <h4><a href="{{element.url}}">{{element.title}}</a></h4>
+            {% autoescape false %}
+              <p>{{element.introText ? element.introText | slice(0, 60) ~ "..." : "" }}</p>
+            {% endautoescape %}
+          </div>
+        {% endif %}
       {% endfor %}
     </div>
 

@@ -1,0 +1,36 @@
+// here goes all the SCSS specific to this template
+
+.analysis{
+  a{
+    text-decoration: none;
+    color: $black;
+  }
+  .col{
+    &--analysis{
+      @include mb(10);
+      h3{
+        padding: 0;
+        margin: 0;
+      }
+      p{
+        @include mt(3);
+      }
+    }
+  }
+  p{
+    @include ms-respond(font-size, 1);
+    line-height: $line-height-base + .1;
+    a{
+      text-decoration: underline;
+    }
+  }
+}
+.analysis-image{
+  @include mb(10);
+}
+
+
+
+.attachment{
+  @include mt(6);
+}

@@ -1,0 +1,16 @@
+{
+    "formatting": ["p", "h4"],
+	"buttons": ["formatting", "bold", "italic", "link"],
+    "maxHeight": 150,
+    "pasteBlockTags": [],
+    "formattingAdd": {
+        "question": {
+            "title": "Drawer Title",
+            "args": ["p","class","wc-accordion-title"]
+        },
+        "answer": {
+            "title": "Drawer Content",
+            "args": ["p","class","wc-accordion-content"]
+        }
+    }
+}

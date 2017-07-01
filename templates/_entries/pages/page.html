@@ -13,6 +13,15 @@
 {% set title = entry.title %}
 
 {% block main %}
+  {% if bodyClass != 'homepage' %}
+  <!--<div class="wrap wrap--contained">
+    <div class="row row--title">
+      <div class="col col-12-12">
+        <h2>{{title}}</h2>
+      </div>
+    </div>
+  </div>-->
+  {% endif %}
 	<article>
 		{% include "_includes/_matrix_layouts/page_body" %}
 	</article>
