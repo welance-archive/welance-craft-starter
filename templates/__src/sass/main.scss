@@ -4,8 +4,7 @@
 @import './base/typography';
 
 @import '../../_entries/pages/page';
-@import '../../_entries/analysis/analysis';
-@import '../../_entries/fellows/fellows';
+@import '../../_entries/news/news';
 
 @import 'layout/general';
 
@@ -15,16 +14,10 @@
 @import 'components/navigation';
 
 .logo{
-  max-width: 18rem;
+  max-width: 6rem;
   width: 100%;
   @include mb(6);
-  @include mt(2);
-  @include mq($from: lg){
-    margin-left: -4.25rem;
-  }
-  @include mq($from: xs, $until: md){
-    margin-left: -1rem;
-  }
+  @include mt(6);
 }
 
 .main-header{

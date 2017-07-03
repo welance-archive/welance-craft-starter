@@ -12,8 +12,7 @@ import './plugins/wc-accordion.js';
 
 // template-specific JS for entries
 import '../../_entries/pages/page.js';
-import '../../_entries/analysis/analysis.js';
-import '../../_entries/fellows/fellows.js';
+import '../../_entries/news/news.js';
 
 console.info( "\n\n\nCreated by %chttp://welance.com/ %ca Freelancers Collective.\n\n\n\n", "color: #FDB68E", "color: auto" );
 

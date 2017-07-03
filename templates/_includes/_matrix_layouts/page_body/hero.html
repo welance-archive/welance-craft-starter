@@ -15,22 +15,32 @@
       </div>
       <div class="hero-medias {{ (block.medias|length > 1) ? "hero-medias--gallery" : "hero-medias--single" }} col--6-12@md col--12-12@xs">
 
-        {% for i, media in block.medias %}
-          {% if media.kind == 'image' %}
-            <div class="img--r{{block.mediaRatio}}">
-              <picture class="ratio-content">
-                {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
-                <img src="{{ media.getUrl('imgSquared') }}" alt="{{ media.title }}"/>
-              </picture>
-            </div>
-          {% elseif media.kind == 'video' %}
-            {#Ignoring video for now#}
-            {#<video controls>
-              <source src="{{ media.getUrl()}}">
-            Your browser does not support the video tag.
-            </video>#}
-          {% endif %}
-        {% endfor %}
+        {% if block.medias | length %}
+          {% for i, media in block.medias %}
+            {% if media.kind == 'image' %}
+              <div class="img--r{{block.mediaRatio}}">
+                <picture class="ratio-content">
+                  <img src="{{ media.getUrl('mid11') }}" alt="{{ media.title }}"/>
+                  <source srcset="{{ media.getUrl('low11') }}" media="(max-width: 600px)">
+                  <source srcset="{{ media.getUrl('high11') }}" media="(min-width: 1280px)">
+                  <source srcset="{{ media.getUrl('mid11') }}">
+                </picture>
+              </div>
+            {% elseif media.kind == 'video' %}
+              {#Ignoring video for now#}
+              {#<video controls>
+                <source src="{{ media.getUrl()}}">
+              Your browser does not support the video tag.
+              </video>#}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <div class="img--r1-1">
+            <picture class="ratio-content">
+              <img src="https://via.placeholder.com/500x500&text={{ 'your image here' | url_encode }}" alt="your image here"/>
+            </picture>
+          </div>
+        {% endif %}
       </div>
 
   {% if block.mode == "contained" or block.mode == "contained-margins" %}

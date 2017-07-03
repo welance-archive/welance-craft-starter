@@ -24,35 +24,171 @@ assetSources:
     fieldLayout:
       fields: {  }
 assetTransforms:
-  imgPortrait:
-    name: img-portrait
-    width: '900'
-    height: '600'
-    format: jpg
+  high32:
+    name: 'Landscape 3/2 (hi-res)'
+    width: '2000'
+    height: '1333'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '82'
+  low32:
+    name: 'Landscape 3/2 (low-res)'
+    width: '500'
+    height: '333'
+    format: null
     mode: crop
     position: center-center
     quality: '60'
-  imgSquared:
-    name: img-squared
-    width: '600'
-    height: '600'
-    format: jpg
+  mid32:
+    name: 'Landscape 3/2 (mid-res)'
+    width: '1000'
+    height: '666'
+    format: null
     mode: crop
     position: center-center
     quality: '60'
-  imgSquaredThumb:
-    name: img-squared-thumb
-    width: '400'
-    height: '400'
-    format: jpg
+  high43:
+    name: 'Landscape 4/3 (hi-res)'
+    width: '2000'
+    height: '1500'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '82'
+  low43:
+    name: 'Landscape 4/3 (low-res)'
+    width: '500'
+    height: '375'
+    format: null
     mode: crop
     position: center-center
     quality: '60'
-  imgWide:
-    name: img-wide
-    width: '1600'
-    height: '900'
-    format: jpg
+  mid43:
+    name: 'Landscape 4/3 (mid-res)'
+    width: '1000'
+    height: '750'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  high23:
+    name: 'Portrait 2/3 (hi-res)'
+    width: '1333'
+    height: '2000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '82'
+  low23:
+    name: 'Portrait 2/3 (low-res)'
+    width: '333'
+    height: '500'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  mid23:
+    name: 'Portrait 2/3 (mid-res)'
+    width: '666'
+    height: '1000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  high34:
+    name: 'Portrait 3/4 (hi-res)'
+    width: '1500'
+    height: '2000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '82'
+  low34:
+    name: 'Portrait 3/4 (low-res)'
+    width: '375'
+    height: '500'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  mid34:
+    name: 'Portrait 3/4 (mid-res)'
+    width: '750'
+    height: '1000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  high11:
+    name: 'Squared 1:1 (hi-res)'
+    width: '2000'
+    height: '2000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '82'
+  low11:
+    name: 'Squared 1:1 (low-res)'
+    width: '500'
+    height: '500'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  mid11:
+    name: 'Squared 1:1 (mid-res)'
+    width: '1000'
+    height: '1000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  high916:
+    name: 'Tall Portrait 9:16 (hi-res)'
+    width: '1125'
+    height: '2000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '82'
+  low916:
+    name: 'Tall Portrait 9:16 (low-res)'
+    width: '281'
+    height: '500'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  mid916:
+    name: 'Tall Portrait 9:16 (mid-res)'
+    width: '562'
+    height: '1000'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  high169:
+    name: 'Wide Landscape 16:9 (hi-res)'
+    width: '2000'
+    height: '1125'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '82'
+  low169:
+    name: 'Wide Landscape 16:9 (low-res)'
+    width: '500'
+    height: '281'
+    format: null
+    mode: crop
+    position: center-center
+    quality: '60'
+  mid169:
+    name: 'Wide Landscape 16:9 (mid-res)'
+    width: '1000'
+    height: '562'
+    format: null
     mode: crop
     position: center-center
     quality: '60'
@@ -1402,6 +1538,54 @@ sections:
           tabs:
             Content:
               pageBody: '0'
+            'Listable Content':
+              featuredImage: '0'
+              introText: '0'
+            SEO:
+              seoTitle: '0'
+              seoDescription: '0'
+              tags: '0'
+  news:
+    name: News
+    type: channel
+    hasUrls: '1'
+    template: _entries/news/news
+    maxLevels: null
+    enableVersioning: '1'
+    locales:
+      en_us:
+        enabledByDefault: '1'
+        urlFormat: 'news/{slug}'
+        nestedUrlFormat: null
+    entryTypes:
+      report:
+        name: Report
+        hasTitleField: '1'
+        titleLabel: Title
+        titleFormat: null
+        fieldLayout:
+          tabs:
+            'GGF Report':
+              pageBody: '0'
+              attachment: '0'
+            'Listable Content':
+              featuredImage: '0'
+              introText: '0'
+            SEO:
+              seoTitle: '0'
+              seoDescription: '0'
+              tags: '0'
+      podcast:
+        name: Podcast
+        hasTitleField: '1'
+        titleLabel: Title
+        titleFormat: null
+        fieldLayout:
+          tabs:
+            Podcast:
+              pageBody: '0'
+              embed: '0'
+              attachment: '0'
             'Listable Content':
               featuredImage: '0'
               introText: '0'

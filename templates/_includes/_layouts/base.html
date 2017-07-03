@@ -107,14 +107,10 @@
         <!-- Google Analytics simple integration -->
         <script>
             window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-            ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
+            ga('create','{{services.GA}}','auto');ga('send','pageview')
         </script>
         <script src="https://www.google-analytics.com/analytics.js" async defer></script>
     {% endif %}
-
-    <!-- fonts from typekit -->
-    <script src="https://use.typekit.net/kuu5iyh.js"></script>
-    <script>try{Typekit.load({ async: true });}catch(e){}</script>
 
     {# !!! WEBPACK ----------------------------------------------------------- #}
     {# Here Webpack will automatically add the needed JS file(s) #}

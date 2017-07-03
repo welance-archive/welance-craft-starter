@@ -41,7 +41,7 @@
 {# Define the site navigation #}
 {# here you can define Custom links in this format: { slug: "/", title: "HomePage", desc: "The Homepage" } #}
 {# ...or leave it blank if you don't have "custom links" #}
-{% set nav = [{slug: 'analysis', title: 'Analysis', desc: 'Analysis'}] %}
+{% set nav = [{slug: 'news', title: 'News', desc: 'news'}] %}
 
 {# Get ids for all entries from the different structures and levels #}
 {% set pagesNav = craft.entries.section('pages').level(1).limit(8).ids() %}
