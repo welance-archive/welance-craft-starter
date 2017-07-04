@@ -896,17 +896,6 @@ fields:
                     label: '12 images per row'
                     value: '1'
                     default: ''
-    postsCategories:
-      name: 'Posts Categories'
-      required: false
-      instructions: ''
-      translatable: '0'
-      type: Categories
-      settings:
-        source: 'group:issues'
-        limit: ''
-        selectionLabel: ''
-      context: global
     seoDescription:
       name: 'SEO Description'
       required: false
@@ -939,29 +928,6 @@ fields:
       type: Tags
       settings:
         source: 'taggroup:default'
-        selectionLabel: ''
-      context: global
-  Fellows:
-    ggfIssue:
-      name: 'GGF Issue'
-      required: false
-      instructions: ''
-      translatable: '0'
-      type: Categories
-      settings:
-        source: 'group:issues'
-        limit: ''
-        selectionLabel: 'Select GGFuture Issue'
-      context: global
-    workingGroup:
-      name: 'Working Group'
-      required: false
-      instructions: ''
-      translatable: '0'
-      type: Categories
-      settings:
-        source: 'group:workingGroups'
-        limit: ''
         selectionLabel: ''
       context: global
   Globals:
@@ -1426,96 +1392,6 @@ plugins:
     isEnabled: true
     settings: {  }
 sections:
-  analysis:
-    name: Analysis
-    type: channel
-    hasUrls: '1'
-    template: _entries/analysis/analysis
-    maxLevels: null
-    enableVersioning: '1'
-    locales:
-      en_us:
-        enabledByDefault: '1'
-        urlFormat: 'analysis/{slug}'
-        nestedUrlFormat: null
-    entryTypes:
-      report:
-        name: Report
-        hasTitleField: '1'
-        titleLabel: Title
-        titleFormat: null
-        fieldLayout:
-          tabs:
-            'GGF Report':
-              pageBody: '0'
-              attachment: '0'
-            'Listable Content':
-              featuredImage: '0'
-              introText: '0'
-            SEO:
-              seoTitle: '0'
-              seoDescription: '0'
-              tags: '0'
-      commentary:
-        name: Commentary
-        hasTitleField: '1'
-        titleLabel: Title
-        titleFormat: null
-        fieldLayout:
-          tabs:
-            Commentary:
-              linkUrl: '0'
-            'Listable Content':
-              featuredImage: '0'
-              introText: '0'
-            SEO:
-              seoTitle: '0'
-              seoDescription: '0'
-              tags: '0'
-      podcast:
-        name: Podcast
-        hasTitleField: '1'
-        titleLabel: Title
-        titleFormat: null
-        fieldLayout:
-          tabs:
-            Podcast:
-              pageBody: '0'
-              embed: '0'
-              attachment: '0'
-            'Listable Content':
-              featuredImage: '0'
-              introText: '0'
-            SEO:
-              seoTitle: '0'
-              seoDescription: '0'
-              tags: '0'
-  fellows:
-    name: Fellows
-    type: channel
-    hasUrls: '1'
-    template: _entries/fellows/fellows
-    maxLevels: null
-    enableVersioning: '1'
-    locales:
-      en_us:
-        enabledByDefault: '1'
-        urlFormat: 'fellows/{slug}'
-        nestedUrlFormat: null
-    entryTypes:
-      fellows:
-        name: Fellows
-        hasTitleField: '1'
-        titleLabel: 'Full Name'
-        titleFormat: null
-        fieldLayout:
-          tabs:
-            Profile:
-              featuredImage: '0'
-              bio: '0'
-              tags: '0'
-              ggfIssue: '0'
-              workingGroup: '0'
   homepage:
     name: Homepage
     type: single
@@ -1632,20 +1508,20 @@ userGroups:
       - administrateUsers
       - assignUserPermissions
       - changeUserEmails
-      - 'createEntries:analysis'
+      - 'createEntries:news'
       - 'createEntries:pages'
+      - 'createSubfoldersInAssetSource:featured'
       - 'createSubfoldersInAssetSource:uploads'
-      - 'deleteEntries:analysis'
+      - 'deleteEntries:news'
       - 'deleteEntries:pages'
-      - 'deletePeerEntries:analysis'
+      - 'deletePeerEntries:news'
       - 'deletePeerEntries:pages'
-      - 'deletePeerEntryDrafts:analysis'
       - 'deletePeerEntryDrafts:homepage'
+      - 'deletePeerEntryDrafts:news'
       - 'deletePeerEntryDrafts:pages'
       - deleteUsers
-      - 'editCategories:issues'
-      - 'editEntries:analysis'
       - 'editEntries:homepage'
+      - 'editEntries:news'
       - 'editEntries:pages'
       - 'editGlobalSet:contactInfo'
       - 'editGlobalSet:main'
@@ -1653,34 +1529,37 @@ userGroups:
       - 'editGlobalSet:seo'
       - 'editGlobalSet:services'
       - 'editGlobalSet:social'
-      - 'editPeerEntries:analysis'
+      - 'editPeerEntries:news'
       - 'editPeerEntries:pages'
-      - 'editPeerEntryDrafts:analysis'
       - 'editPeerEntryDrafts:homepage'
+      - 'editPeerEntryDrafts:news'
       - 'editPeerEntryDrafts:pages'
       - editUsers
       - performUpdates
-      - 'publishEntries:analysis'
       - 'publishEntries:homepage'
+      - 'publishEntries:news'
       - 'publishEntries:pages'
-      - 'publishPeerEntries:analysis'
+      - 'publishPeerEntries:news'
       - 'publishPeerEntries:pages'
-      - 'publishPeerEntryDrafts:analysis'
       - 'publishPeerEntryDrafts:homepage'
+      - 'publishPeerEntryDrafts:news'
       - 'publishPeerEntryDrafts:pages'
       - registerUsers
+      - 'removeFromAssetSource:featured'
       - 'removeFromAssetSource:uploads'
+      - 'uploadToAssetSource:featured'
       - 'uploadToAssetSource:uploads'
+      - 'viewAssetSource:featured'
       - 'viewAssetSource:uploads'
   editors:
     name: Editors
     permissions:
       - accessCp
-      - 'createEntries:analysis'
+      - 'createEntries:news'
       - 'createEntries:pages'
-      - 'deleteEntries:analysis'
-      - 'editEntries:analysis'
+      - 'deleteEntries:news'
       - 'editEntries:homepage'
+      - 'editEntries:news'
       - 'editEntries:pages'
       - 'editGlobalSet:contactInfo'
       - 'editGlobalSet:main'
@@ -1688,12 +1567,17 @@ userGroups:
       - 'editGlobalSet:seo'
       - 'editGlobalSet:services'
       - 'editGlobalSet:social'
+      - 'editPeerEntries:news'
       - 'editPeerEntries:pages'
       - 'editPeerEntryDrafts:homepage'
+      - 'editPeerEntryDrafts:news'
       - 'editPeerEntryDrafts:pages'
-      - 'publishEntries:analysis'
       - 'publishEntries:pages'
+      - 'removeFromAssetSource:featured'
+      - 'removeFromAssetSource:uploads'
+      - 'uploadToAssetSource:featured'
       - 'uploadToAssetSource:uploads'
+      - 'viewAssetSource:featured'
       - 'viewAssetSource:uploads'
   mainEditors:
     name: 'Main Editors'
@@ -1702,20 +1586,20 @@ userGroups:
       - administrateUsers
       - assignUserPermissions
       - changeUserEmails
-      - 'createEntries:analysis'
+      - 'createEntries:news'
       - 'createEntries:pages'
+      - 'createSubfoldersInAssetSource:featured'
       - 'createSubfoldersInAssetSource:uploads'
-      - 'deleteEntries:analysis'
+      - 'deleteEntries:news'
       - 'deleteEntries:pages'
-      - 'deletePeerEntries:analysis'
+      - 'deletePeerEntries:news'
       - 'deletePeerEntries:pages'
-      - 'deletePeerEntryDrafts:analysis'
       - 'deletePeerEntryDrafts:homepage'
+      - 'deletePeerEntryDrafts:news'
       - 'deletePeerEntryDrafts:pages'
       - deleteUsers
-      - 'editCategories:issues'
-      - 'editEntries:analysis'
       - 'editEntries:homepage'
+      - 'editEntries:news'
       - 'editEntries:pages'
       - 'editGlobalSet:contactInfo'
       - 'editGlobalSet:main'
@@ -1723,23 +1607,26 @@ userGroups:
       - 'editGlobalSet:seo'
       - 'editGlobalSet:services'
       - 'editGlobalSet:social'
-      - 'editPeerEntries:analysis'
+      - 'editPeerEntries:news'
       - 'editPeerEntries:pages'
-      - 'editPeerEntryDrafts:analysis'
       - 'editPeerEntryDrafts:homepage'
+      - 'editPeerEntryDrafts:news'
       - 'editPeerEntryDrafts:pages'
       - editUsers
-      - 'publishEntries:analysis'
       - 'publishEntries:homepage'
+      - 'publishEntries:news'
       - 'publishEntries:pages'
-      - 'publishPeerEntries:analysis'
+      - 'publishPeerEntries:news'
       - 'publishPeerEntries:pages'
-      - 'publishPeerEntryDrafts:analysis'
       - 'publishPeerEntryDrafts:homepage'
+      - 'publishPeerEntryDrafts:news'
       - 'publishPeerEntryDrafts:pages'
       - registerUsers
+      - 'removeFromAssetSource:featured'
       - 'removeFromAssetSource:uploads'
+      - 'uploadToAssetSource:featured'
       - 'uploadToAssetSource:uploads'
+      - 'viewAssetSource:featured'
       - 'viewAssetSource:uploads'
 users:
   fieldLayout:
@@ -1749,7 +1636,7 @@ users:
 elementIndexSettings:
   Category:
     sources:
-      'group:issues':
+      '':
         tableAttributes:
           1: link
   User:
@@ -1761,29 +1648,7 @@ elementIndexSettings:
           3: dateCreated
           4: email
 pluginData: {  }
-categoryGroups:
-  issues:
-    name: Issues
-    hasUrls: '0'
-    template: null
-    maxLevels: '1'
-    locales:
-      en_us:
-        urlFormat: null
-        nestedUrlFormat: null
-    fieldLayout:
-      fields: {  }
-  workingGroups:
-    name: 'Working Groups'
-    hasUrls: '0'
-    template: null
-    maxLevels: null
-    locales:
-      en_us:
-        urlFormat: null
-        nestedUrlFormat: null
-    fieldLayout:
-      fields: {  }
+categoryGroups: {  }
 tagGroups:
   default:
     name: Default
