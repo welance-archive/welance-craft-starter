@@ -6,8 +6,18 @@
           <div class="img--r{{block.mediaRatio}}">
             {% if media.kind == 'image' %}
                 <picture class="ratio-content">
-                  <source srcset="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
-                  <img src="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{media.title}} media object"/>
+
+                  {% set ratioWithoutDash = block.mediaRatio | replace('-','') %}
+
+                  {% if media.getUrl() is not empty %}
+                    <source srcset="{{ media.getUrl('low') }}" media="(max-width: 600px)">
+                    <source srcset="{{ media.getUrl('high') }}" media="(min-width: 1280px)">
+                    <source srcset="{{ media.getUrl('low') }}">
+                    <img src="{{ media.getUrl('mid') }}" alt="{{ media.title }}"/>
+                  {% else %}
+                    <img src="https://via.placeholder.com/1000x1000&text={{ 'Missing Image' | url_encode }}" alt="Missing Image">
+                  {% endif %}
+
                 </picture>
             {% elseif media.kind == 'video' %}
                 <video class="ratio-content" controls controls="controls">
@@ -32,6 +42,7 @@
     <div class="row gallery gallery--logos">
       {% for i, media in block.medias %}
         {% if media.kind == 'image' %}
+
           <div class="col col--{{block.mediasPerRow}}-12">
             <div class="img--r{{block.mediaRatio}}">
               <picture class="ratio-content">
@@ -51,8 +62,18 @@
                 {% if link %}
                 <a href="{{link}}" {{linkDestination == 'in' ? '' : 'target="_blank"'}}>
                 {% endif %}
-                  <source srcset="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
-                  <img src="{{media.getUrl() ? media.getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{media.title}} media object"/>
+
+                  {% set ratioWithoutDash = block.mediaRatio | replace('-','') %}
+
+                  {% if media.getUrl() is not empty %}
+                    <source srcset="{{ media.getUrl('low') }}" media="(max-width: 600px)">
+                    <source srcset="{{ media.getUrl('high') }}" media="(min-width: 1280px)">
+                    <source srcset="{{ media.getUrl('low') }}">
+                    <img src="{{ media.getUrl('mid') }}" alt="{{ media.title }}"/>
+                  {% else %}
+                    <img src="https://via.placeholder.com/1000x1000&text={{ 'Missing Image' | url_encode }}" alt="Missing Image">
+                  {% endif %}
+
                 {% if media.linkUrl.first() %}
                 </a>
                 {% endif %}

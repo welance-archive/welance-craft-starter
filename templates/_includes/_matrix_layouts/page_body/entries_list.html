@@ -22,8 +22,14 @@
             <div class="img--r1-1">
               <picture class="ratio-content">
                 <a href="{{element.url}}">
-                  <source srcset="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
-                  <img src="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{element.title}} profile picture"/>
+                  {% if element.featuredImage.first() is not empty %}
+                    <source srcset="{{ element.featuredImage.first().getUrl('low11') }}" media="(max-width: 600px)">
+                    <source srcset="{{ element.featuredImage.first().getUrl('mid11') }}" media="(min-width: 1280px)">
+                    <source srcset="{{ element.featuredImage.first().getUrl('low11') }}">
+                    <img src="{{ element.featuredImage.first().getUrl('low11') }}" alt="{{element.title}} profile picture"/>
+                  {% else %}
+                    <img srcset="https://via.placeholder.com/500x500?text={{ element.title | url_encode }}" media="(min-width: 600px)" />
+                  {% endif %}
                 </a>
               </picture>
             </div>
@@ -41,8 +47,14 @@
             <div class="img--r1-1">
               <picture class="ratio-content">
                 <a href="{{element.url}}">
-                  <source srcset="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" media="(min-width: 600px)">
-                  <img src="{{element.featuredImage.first() ? element.featuredImage.first().getUrl() : 'https://via.placeholder.com/600x600?text=image+here'}}" alt="{{element.title}} profile picture"/>
+                  {% if element.featuredImage.first() is not empty %}
+                    <source srcset="{{ element.featuredImage.first().getUrl('low11') }}" media="(max-width: 600px)">
+                    <source srcset="{{ element.featuredImage.first().getUrl('mid11') }}" media="(min-width: 1280px)">
+                    <source srcset="{{ element.featuredImage.first().getUrl('low11') }}">
+                    <img src="{{ element.featuredImage.first().getUrl('low11') }}" alt="{{element.title}} profile picture"/>
+                  {% else %}
+                    <img srcset="https://via.placeholder.com/500x500?text={{ element.title | url_encode }}" media="(min-width: 600px)" />
+                  {% endif %}
                 </a>
               </picture>
             </div>
