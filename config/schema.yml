@@ -24,6 +24,14 @@ assetSources:
     fieldLayout:
       fields: {  }
 assetTransforms:
+  high:
+    name: high
+    width: '2000'
+    height: '2000'
+    format: null
+    mode: stretch
+    position: center-center
+    quality: '82'
   high32:
     name: 'Landscape 3/2 (hi-res)'
     width: '2000'
@@ -70,6 +78,22 @@ assetTransforms:
     height: '750'
     format: null
     mode: crop
+    position: center-center
+    quality: '60'
+  low:
+    name: low
+    width: '500'
+    height: '500'
+    format: null
+    mode: stretch
+    position: center-center
+    quality: '60'
+  mid:
+    name: mid
+    width: '1000'
+    height: '1000'
+    format: null
+    mode: stretch
     position: center-center
     quality: '60'
   high23:
@@ -1434,6 +1458,16 @@ sections:
         urlFormat: 'news/{slug}'
         nestedUrlFormat: null
     entryTypes:
+      news:
+        name: News
+        hasTitleField: '1'
+        titleLabel: Title
+        titleFormat: null
+        fieldLayout:
+          tabs:
+            Content:
+              body: '1'
+              tags: '0'
       report:
         name: Report
         hasTitleField: '1'
@@ -1635,10 +1669,7 @@ users:
         bio: '0'
 elementIndexSettings:
   Category:
-    sources:
-      '':
-        tableAttributes:
-          1: link
+    sources: {  }
   User:
     sources:
       '*':
