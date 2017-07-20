@@ -40,7 +40,7 @@ services:
       HTTPD_OPTIONS : ""
   database:
       image: mysql:5.6
-      restart: always
+      # restart: always
       container_name: database_%%PROJECTCOORDS%%
       environment:
         MYSQL_ROOT_PASSWORD: craft

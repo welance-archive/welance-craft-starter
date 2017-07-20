@@ -42,7 +42,7 @@ services:
       VIRTUAL_HOST: %%SITEHOST%%
   database:
       image: mysql:5.6
-      restart: always
+      # restart: always
       container_name: database_%%PROJECTCOORDS%%
       # set the network_mode to make the proxying in staging env working
       network_mode: bridge
