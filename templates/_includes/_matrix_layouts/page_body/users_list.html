@@ -12,8 +12,16 @@
         <div class="col col--{{block.usersPerRow}}-12">
           <div class="img--r1-1">
             <picture class="ratio-content">
-              <source srcset="{{user.photoUrl() ? user.photoUrl() : "https://via.placeholder.com/600x600?text=" ~ user.fullname | url_encode}}" media="(min-width: 600px)">
-              <img src="{{user.photoUrl() ? user.photoUrl() : "https://via.placeholder.com/600x600?text=image+here" ~ user.fullname | url_encode}}" alt="{{user.fullname}} profile picture"/>
+
+              {% if user.photoUrl() is not empty %}
+                <source srcset="{{ user.photoUrl('low') }}" media="(max-width: 600px)">
+                <source srcset="{{ user.photoUrl('high') }}" media="(min-width: 1280px)">
+                <source srcset="{{ user.photoUrl('low') }}">
+                <img src="{{ user.photoUrl('mid') }}" alt="{{ entry.title }}"/>
+              {% else %}
+                <img src="https://via.placeholder.com/1000x1000&text={{ user.fullname | url_encode }}" alt="Missing Image">
+              {% endif %}
+
             </picture>
           </div>
 

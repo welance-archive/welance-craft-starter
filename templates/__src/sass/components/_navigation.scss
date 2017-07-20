@@ -1,24 +1,26 @@
-.navigation-wrapper{
-  display: flex;
-}
 .navigation{
-  width: 102%;
   @include mq($until: lg){
     @include pb(4);
   }
 }
+.navigation-wrapper{
+  display: flex;
+}
 .navigation, .sub-navigation{
   align-self: center;
 
-  .nav-els{
-    padding-right: 0;
-  }
   .nav-els, .sub-nav-els{
     font-family: $font-family-sans-serif;
-    justify-content: space-between;
-    flex-flow: row-reverse;
+    flex-flow: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding-left: 0;
 
     .nav-el, .sub-nav-el{
+      @include pr(4);
+      box-sizing: border-box;
+      white-space: nowrap;
+
       a{
         color: $black;
       }
@@ -29,24 +31,39 @@
         }
       }
     }
+    .nav-el {
+      @include mq($from: md){
+        &:last-child{
+          padding-right: 0;
+        }
+      }
+    }
   }
-  .sub-nav-els{
-    flex-flow: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-
-    .sub-nav-el{
-      @include pr(4);
-      box-sizing: border-box;
-      white-space: nowrap;
+  .nav-els{
+    padding-right: 0;
+    @include mq($from: md){
+      justify-content: flex-end;
     }
   }
 }
-.sub-navigation{
-  overflow: scroll;
+.navigation, .sub-navigation{
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  // -ms-overflow-style: none;  // IE 10+ no scrollbars
+  // overflow: -moz-scrollbars-none;  // Firefox
+  // &::-webkit-scrollbar {
+  //     display: none;  // Safari and Chrome
+  // }
+
   @include pt(4);
   @include pb(4);
-  @include mb(4);
+  margin: 0;
+
+}
+.navigation{
+  @include pt(5);
 }
 
 .sub-navigation-spacer{

@@ -1,4 +1,4 @@
-<div class="row hero {{ block.backgroundColor | dark_or_light("hero") }} {{ (block.mediasPosition == "left") ? "hero--inverted" : "" }} {{ block.mode == "margins" ? "hero--margins" : "" }} {{ block.mode == "contained-margins" ? "hero--contained-margins" : "" }}" style="background-color:{{ block.backgroundColor }}">
+<div class="row hero {{ block.backgroundColor | dark_or_light("hero") }} {{ (block.mediasPosition == "left") ? "hero--inverted" : "" }} hero--{{block.mode}}" style="background-color:{{ block.backgroundColor }}">
 
   {% if block.mode == "contained" or block.mode == "contained-margins" %}
     <div class="wrap wrap--contained">
@@ -18,12 +18,17 @@
         {% if block.medias | length %}
           {% for i, media in block.medias %}
             {% if media.kind == 'image' %}
+
+              {% set ratioWithoutDash = block.mediaRatio | replace('-','') %}
+
               <div class="img--r{{block.mediaRatio}}">
                 <picture class="ratio-content">
-                  <img src="{{ media.getUrl('mid11') }}" alt="{{ media.title }}"/>
-                  <source srcset="{{ media.getUrl('low11') }}" media="(max-width: 600px)">
-                  <source srcset="{{ media.getUrl('high11') }}" media="(min-width: 1280px)">
-                  <source srcset="{{ media.getUrl('mid11') }}">
+
+                  <source srcset="{{ media.getUrl('mid') }}" media="(max-width: 600px)">
+                  <source srcset="{{ media.getUrl('high') }}" media="(min-width: 1280px)">
+                  <source srcset="{{ media.getUrl('mid') }}">
+                  <img src="{{ media.getUrl('mid') }}" alt="{{ media.title }}"/>
+
                 </picture>
               </div>
             {% elseif media.kind == 'video' %}

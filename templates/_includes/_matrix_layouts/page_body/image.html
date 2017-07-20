@@ -1,7 +1,17 @@
 <div class="img--r{{block.mediaRatio}}">
   <picture class="ratio-content">
-    {#<source srcset="{{ entry.featuredImage.first().getUrl() }}" media="(min-width: 600px)">#}
-    <img src="{{ block.image.first().getUrl() }}" alt="{{ block.image.first().title }}"/>
+
+    {% set ratioWithoutDash = block.mediaRatio | replace('-','') %}
+
+    {% if block.image.first().getUrl() is not empty %}
+      <source srcset="{{ block.image.first().getUrl('low') }}" media="(max-width: 600px)">
+      <source srcset="{{ block.image.first().getUrl('high') }}" media="(min-width: 1280px)">
+      <source srcset="{{ block.image.first().getUrl('low') }}">
+      <img src="{{ block.image.first().getUrl('mid') }}" alt="{{ entry.title }}"/>
+    {% else %}
+      <img src="https://via.placeholder.com/1000x1000&text={{ 'Missing Image' | url_encode }}" alt="Missing Image">
+    {% endif %}
+
   </picture>
 </div>
 {% if block.showCaption %}
