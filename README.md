@@ -88,12 +88,16 @@ first make sure that you have docker installed and running, you can download doc
 run the `bin/setup.sh` script. the script will ask for
   - customer number
   - project number
+  - slack channel
   - site name
   - local host/url 
+  - npm target dir (where npm should run)
+
 
 and will generate the following files:
 
 ```
+./bin/config.sh
 ./bin/schema-import.sh
 ./bin/schema-export.sh
 ./bin/local-start.sh
@@ -104,6 +108,7 @@ and will generate the following files:
 ./bin/staging-stop.sh
 ./bin/staging-teardown.sh
 ./docker/docker-compose-staging.yml
+./bin/make_release.sh
 ```
 
 after the setup is completed the command will crate and launch the containers. 
@@ -164,7 +169,7 @@ When the proxy is up you can run the containers using the project scripts:
 - `bin/staging-teardown.sh`
 
 ### Release
-The release process is out of the scope of this project and has to be carried on manually.
+the script `make-release.sh` can be used to create a zip with all resources required for release
 
 ### Project removal
 Once the project is finished to remove the resources associated with the project (containers and data) 
