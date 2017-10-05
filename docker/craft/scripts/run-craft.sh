@@ -23,6 +23,7 @@ export CRAFT_STORAGE_PATH="$CRAFT_BASE_PATH/storage/"
 export CRAFT_TEMPLATES_PATH="$CRAFT_BASE_PATH/templates/"
 export CRAFT_TRANSLATIONS_PATH="$CRAFT_BASE_PATH/translations/"
 export CRAFT_PUBLIC_PATH=$WEBROOT
+export CRAFT_UPLOADS_PATH="$WEBROOT/uploads"
 export ENV_LIVE=$CRAFT_CONFIG_PATH/.live
 
 ## move to the plugins folder
@@ -50,9 +51,8 @@ if [ -f $ENV_LIVE ]; then
  cd /data
  ./vendor/bin/schematic import
  # fix  privleges
- #chown -R apache /etc/apache2 
- chown -R apache $CRAFT_STORAGE_PATH
- #chown -R apache /data/public
+ chown -R apache $CRAFTROOT
+ chown -R apache $CRAFT_UPLOADS_PATH
  # run apache in foreground
  echo "launch apache2 in foreground"
  set -e
