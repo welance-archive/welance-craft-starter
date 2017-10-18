@@ -1,12 +1,12 @@
 // Fonts
 @font-face{
-  font-family: "MaisonNeue Book";
-  src: url("/assets/fonts/MaisonNeue-Book.otf");
+  font-family: "Roboto Regular";
+  src: url("/assets/fonts/Roboto-Regular.otf");
   font-weight:400;
   font-style:normal;
 }
 
-$font-family-sans-serif: "MaisonNeue Book", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-sans-serif: "Roboto Regular", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 $font-family-serif: serif, "Times New Roman", Times;
 $font-family-monospace:  Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
 $font-weight-normal: normal;
@@ -234,15 +234,29 @@ $line-height-h1:        $line-height-base - .2;
 
 $golden: 1.618;
 
-$ms-base: $font-size-base;
-$ms-ratio: $golden;
-$ms-range:
-  1.1 20em,     //320px
-  1.15 36em,     //576px
-  1.17 48em,     //768px
-  1.18 62em,     //992px
-  1.2 75em,     //1200
-  1.23 105em;    //1680
+$golden: 1.618 !default;
+$modularscale: (
+  base: $font-size-base,
+  ratio: 1.5,
+  20em: (
+    ratio: 1.1
+  ),
+  36em: (
+    ratio: 1.15
+  ),
+  48em: (
+    ratio: 1.17
+  ),
+  62em: (
+    ratio: 1.18
+  ),
+  75: (
+    ratio: 1.2
+  ),
+  105em: (
+    ratio: 1.22
+  )
+);
 
 //do not scale fluidly
 $ms-fluid: false;
