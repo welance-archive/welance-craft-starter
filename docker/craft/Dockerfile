@@ -28,6 +28,7 @@ php7-session \
 php7-iconv \
 php7-ctype \
 php7-zip \
+php7-zlib \
 php7-xml \
 php7-simplexml \
 php7-zlib \
