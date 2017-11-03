@@ -5,7 +5,7 @@ MAINTAINER Enrico Icardi "enrico@welance.com"
 
 # Set craft cms version
 ENV CRAFT_VERSION=2.6 
-ENV CRAFT_BUILD=2992
+ENV CRAFT_BUILD=2994
 ENV CRAFT_ZIP=Craft-$CRAFT_VERSION.$CRAFT_BUILD.zip
 
 # install php/apache2/sha256sum
@@ -29,6 +29,8 @@ php7-iconv \
 php7-ctype \
 php7-zip \
 php7-xml \
+php7-simplexml \
+php7-zlib \
 unzip \
 tar \
 coreutils \
