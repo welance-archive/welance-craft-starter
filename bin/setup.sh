@@ -22,8 +22,29 @@ LOCAL_ENVIRONMENT='.dev'
 STAGE_ENVIRONMENT='.net'
 SLACK_CHANNEL='general'
 NPM_TARGET_DIR='templates'
+# other variables
+# docker-compose for local dev
+DC_YAML='docker-compose.yml'
+DC_YAML_TEMPLATE='docker-compose.yml.tpl'
+# docker-compose for staging 
+DC_YAML_STAGE='docker-compose-staging.yml'
+DC_YAML_STAGE_TEMPLATE='docker-compose-staging.yml.tpl'
+# generated script prefixes 
+SCRIPT_LOCAL_PREFIX="local-"
+SCRIPT_STAGE_PREFIX="staging-"
+
+# ************* THE WHOLE SHEBANG STARTS HERE ************* 
 
 echo "Welcome to welance-craft project setup."
+# check if the project is already configured
+if [ -a  $SCRIPT_HOME/../docker/$DC_YAML ] ;then
+    echo -n "The project is already setup, do you want to overwrite the configuration? (YES/NO)? [NO]: "
+    read confirm
+    if [ "$confirm" != "YES" ] ;then
+        echo "setup canceled, bye!"
+        exit 0
+    fi
+fi
 
 # read the customer number from command line
 echo -n "Please enter the customer number: "
@@ -87,16 +108,6 @@ echo "Local Url      : $LOCAL_URL"
 echo "Staging Url    : $STAGE_URL"
 echo "npm target dir : $NPM_TARGET_DIR"
 echo ""
-
-# docker-compose for local dev
-DC_YAML='docker-compose.yml'
-DC_YAML_TEMPLATE='docker-compose.yml.tpl'
-# docker-compose for staging 
-DC_YAML_STAGE='docker-compose-staging.yml'
-DC_YAML_STAGE_TEMPLATE='docker-compose-staging.yml.tpl'
-# generated script prefixes 
-SCRIPT_LOCAL_PREFIX="local-"
-SCRIPT_STAGE_PREFIX="staging-"
 
 echo -n "are this info correct? (YES/NO)? [NO]: "
 read confirm
