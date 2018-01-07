@@ -1,8 +1,10 @@
-version: '2'
+version: '2.1'
 services:
   craft:
-    image: welance/craft:2.6
+    image: welance/craft:3
     container_name: craft_%%PROJECTCOORDS%%
+    build: 
+      context: ./craft
     ports: # host_port:container_port
       - "80:80"
       - "443:443"
@@ -13,19 +15,24 @@ services:
       - ./craft/adminer:/data/adminer
       - ../config:/data/craft/config
       - ../templates:/data/craft/templates
+      - ../migrations:/data/craft/migrations
       - ../plugins:/data/craft/plugins
-      - ../public:/data/public
+      - ../web:/data/craft/web
       
     links:
       - database
-    #  - redis
     # env vars are replaced in /data/craft/config
     environment:
       # Set locale to UTF-8 
       LANG: C.UTF-8
       # DB is linked
       DB_HOST: database
+      # Options are mysql or pgsql
+      DB_DRIVER: mysql
       DB_NAME: craft
+      # only for pgsql, default public
+      DB_SCHEMA: public
+      # optional, default 3306 for mysql and 5432 for pgsql
       DB_PORT: 3306
       DB_USER: craft
       DB_PASS: craft
@@ -35,12 +42,13 @@ services:
       CRAFT_SITENAME : %%SITENAME%%
       CRAFT_SITEURL : %%SITEURL%%
       CRAFT_LOCALE : en_us
+      CRAFT_SECURITY_KEY : %%SECURITYKEY%% 
       CRAFT_ENVIRONMENT : %%SITEENV%%
       PLUGIN_WELANCE_GRID_VERSION : "1.0.0"
       HTTPD_OPTIONS : ""
   database:
-      image: mysql:5.6
-      # restart: always
+      image: mysql:5.7
+      command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'
       container_name: database_%%PROJECTCOORDS%%
       environment:
         MYSQL_ROOT_PASSWORD: craft
@@ -50,5 +58,3 @@ services:
       volumes:
       - /var/lib/mysql
 
-#  redis:
-#    image: redis:3.2.8-alpine

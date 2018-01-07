@@ -92,12 +92,6 @@ if echo "$answer" | grep -q "^\w\+" ;then
     LOCAL_URL=$answer
 fi
 
-# read the npm template path
-echo -n "Where is the relative path to the front-end code (for npm): [$NPM_TARGET_DIR] "
-read answer
-if echo "$answer" | grep -q "^\w\+" ;then
-    NPM_TARGET_DIR=$answer
-fi
 
 # build stage url from customer/project number
 STAGE_URL="$CUSTOMER_NUMBER.$PROJECT_NUMBER.$STAGE_DOMAIN"
@@ -117,6 +111,8 @@ echo ""
 echo -n "are this info correct? (YES/NO)? [NO]: "
 read confirm
 if echo "$confirm" | grep -q "^YES" ;then
+    # generate random security key
+    SECURITY_KEY=$(LC_ALL=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
     # generate docker-compose.yaml for .dev enviroment
     echo "generating $DC_YAML for local environment"
@@ -125,6 +121,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     -e "s/%%SITEURL%%/\/\/$LOCAL_URL/" \
     -e "s/%%SITEENV%%/$LOCAL_ENVIRONMENT/" \
     -e "s/%%PROJECTCOORDS%%/$PROJECT_COORDINATES/" \
+    -e "s/%%SECURITYKEY%% /$SECURITY_KEY/" \
     $SCRIPT_HOME/$DC_YAML_TEMPLATE > $SCRIPT_HOME/../docker/$DC_YAML
 
 
@@ -136,6 +133,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     -e "s/%%SITEHOST%%/$STAGE_URL/" \
     -e "s/%%SITEENV%%/$STAGE_ENVIRONMENT/" \
     -e "s/%%PROJECTCOORDS%%/$PROJECT_COORDINATES/" \
+    -e "s/%%SECURITYKEY%% /$SECURITY_KEY/" \
     $SCRIPT_HOME/$DC_YAML_STAGE_TEMPLATE > $SCRIPT_HOME/../docker/$DC_YAML_STAGE
 
 
@@ -150,7 +148,6 @@ if echo "$confirm" | grep -q "^YES" ;then
     "CUSTOMER_NUMBER=$CUSTOMER_NUMBER" \
     "STAGING_URL='$STAGE_URL'" \
     "SLACK_CHANNEL='$SLACK_CHANNEL'" \
-    "NPM_TARGET_DIR='$NPM_TARGET_DIR'" \
     > $SCRIPT_HOME/config.sh
 
     # schema export
@@ -176,7 +173,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     '# location of the sql seed file' \
     'SEED_FILE="$SCRIPT_HOME/../config/database-seed.sql"' \
     '# run mysql dump' \
-    'docker exec -i "database_${CUSTOMER_NUMBER}_${PROJECT_NUMBER}" sh -c '"'"'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" '"$DB_NAME'"' > $SEED_FILE' \
+    'docker exec -i "database_${CUSTOMER_NUMBER}_${PROJECT_NUMBER}" sh -c '"'"'exec mysqldump -uroot -p"$MYSQL_ROOT_PASSWORD" --add-drop-table '"$DB_NAME'"' > $SEED_FILE' \
     > $SCRIPT_HOME/seed-export.sh
 
     # seed import
@@ -303,7 +300,7 @@ if echo "$confirm" | grep -q "^YES" ;then
     # all done
     echo "crating docker containers"
     cd $SCRIPT_HOME/../docker
-    docker-compose pull && docker-compose --project-name $PROJECT_COORDINATES create
+    docker-compose pull --ignore-pull-failures && docker-compose --project-name $PROJECT_COORDINATES up --no-start 
     echo "setup completed"
     echo "use bin/${SCRIPT_LOCAL_PREFIX}start.sh and bin/${SCRIPT_LOCAL_PREFIX}stop.sh script to start/stop containers."
 else
