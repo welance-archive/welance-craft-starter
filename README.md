@@ -86,6 +86,7 @@ create a fork of the latest release of the base repo : [https://github.com/welan
 first make sure that you have docker installed and running, you can download docker from [here](https://www.docker.com/community-edition).
 
 run the `bin/setup.sh` script. the script will ask for
+
   - customer number
   - project number
   - slack channel
@@ -100,6 +101,8 @@ and will generate the following files:
 ./bin/config.sh
 ./bin/schema-import.sh
 ./bin/schema-export.sh
+./bin/seed-import.sh
+./bin/seed-export.sh
 ./bin/local-start.sh
 ./bin/local-stop.sh
 ./bin/local-teardown.sh
@@ -111,7 +114,7 @@ and will generate the following files:
 ./bin/make_release.sh
 ```
 
-after the setup is completed the command will crate and launch the containers. 
+after the setup is completed the docker environment can be started.
 
 > **!!! ATTENTION !!!** 
 > customer and project number are used to setup the containers environment, 
@@ -123,7 +126,15 @@ commit the chagnes to the repository, in particular the changes reated to:
 
 ### Development
 
-to start and stop the system the command `bin/local-start.sh` and `bin/local-stop.sh` can be used.
+During the development here are the most used commands:
+
+##### Start the docker dev environment
+`bin/local-start.sh` script starts the docker containers and refreshes the schema.yaml
+> **!!! ATTENTION !!!** 
+> at each restart the `config/schema.yaml` will be reloaded,
+> if you have made any changes to the schema you will have to export
+> it before stopping the docker environment!
+
 
 Once the containers are started the following ports are available:
 - 80   for http
@@ -135,6 +146,26 @@ The development phase of the project will involve 3 main resources:
 - the `templates`folder
 - the `condfig/schema.yaml`
 - the `plugins` folder
+
+##### Stop the docker dev environment
+`bin/local-stop.sh` stops the docker conatiners. It doesn't delete the database or cms data.
+
+##### Import/Export schema
+To import/export the [craft schema](https://github.com/nerds-and-company/schematic) there is 
+
+- `bin/schema-export.sh`
+- `bin/schema-import.sh`
+
+the schema is imported/exported from `config/schema.yml`
+
+##### Import/Export database seed
+To import/export the dump of the database that it is used to setup/seed the database
+
+- `bin/seed-export.sh`
+- `bin/seed-import.sh`
+
+the seed sql file is imported/exported from `config/database-seed.sql`
+
 
 
 ### Staging
@@ -167,6 +198,11 @@ When the proxy is up you can run the containers using the project scripts:
 - `bin/staging-start.sh`
 - `bin/staging-stop.sh`
 - `bin/staging-teardown.sh`
+
+
+#### Database backup on Amazon S3 
+
+`// TODO ` 
 
 ### Release
 the script `make-release.sh` can be used to create a zip with all resources required for release
