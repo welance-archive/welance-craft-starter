@@ -18,6 +18,7 @@ services:
       - ../migrations:/data/craft/migrations
       - ../plugins:/data/craft/plugins
       - ../web:/data/craft/web
+      - ../composer.json:/data/craft/composer.json
       
     links:
       - database

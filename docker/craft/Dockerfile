@@ -1,6 +1,6 @@
 FROM alpine:3.6
 
-MAINTAINER Enrico Icardi "enrico@welance.com"
+LABEL mainteiner="andrea@welance.com"
 
 
 # Set craft cms version
@@ -41,9 +41,13 @@ wget \
 && mkdir -p /data && mkdir -p /run/apache2 \
 && composer create-project craftcms/craft:${CRAFT_PROJECT_VERSION} /data/craft \
 && cd /data/craft && cat composer.json \
-&& composer require welance/craft-toolbox:"dev-master" 
+#&& composer require welance/craft-toolbox:"dev-master" 
+&& rm /data/craft/.env 
+# remove .env file since the paramters are passe trough environment variables
 
 # && composer require nerds-and-company/schematic:3.8.* \
+
+
 
 ADD scripts /data/scripts
 RUN chmod +x /data/scripts/*.sh
