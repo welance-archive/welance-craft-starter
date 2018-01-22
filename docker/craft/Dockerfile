@@ -50,10 +50,13 @@ wget \
 
 
 ADD scripts /data/scripts
-RUN chmod +x /data/scripts/*.sh
-# this script will be used to orchestrate the startup of the containers
-ADD scripts/poll-db.php /data/scripts/poll-db.php
+# fix permissions
+RUN chmod +x /data/scripts/*.sh \
+&& chown -R apache:apache /data/craft 
 
+# everthing is in /data
+WORKDIR /data
+# expose port 80
 EXPOSE 80
 CMD ["/data/scripts/run-craft.sh"]
 

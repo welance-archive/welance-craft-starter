@@ -43,32 +43,27 @@ while [ $OUT -eq 1 ]; do
   OUT=$?
   echo "connection unavailable waiting 3 seconds before retry"
   sleep 3
-
-if [ ! -f $ENV_LIVE ]; then
-    echo "setting up craft installation"
-
-    craft setup/security-key
-    craft setup/db-creds --interactive=0 --database=$DB_HOST --user=$DB_USER --password=$DB_PASS
-    craft install --interactive=0 --email=$CRAFT_EMAIL --username=$CRAFT_USERNAME --password=$CRAFT_PASSWORD --siteName=$CRAFT_SITENAME --siteUrl=$CRAFT_SITEURL    
-
-    touch $ENV_LIVE 
+done
+# verify that craft is installed
+php -f $SCRIPTS_DIR/poll-craft.php
+OUT=$?
+if [ $OUT -eq 1 ]; then
+    echo "run craft setup"
+    /data/craft/craft install --interactive=0 --email=$CRAFT_EMAIL --username=$CRAFT_USERNAME --password=$CRAFT_PASSWORD --siteName=$CRAFT_SITENAME --siteUrl=$CRAFT_SITEURL    
+    echo "setup completed"
 fi
 
+#import schematic
+# cd /data
+# ./vendor/bin/schematic import
 
+# fix  privleges
+chown -R apache $CRAFTROOT
+chown -R apache $CRAFT_UPLOADS_PATH
+# run apache in foreground
+echo "launch apache2 in foreground"
+set -e
+# Apache gets grumpy about PID files pre-existing
+rm -f /var/www/run/httpd.pid
+/usr/sbin/httpd -DFOREGROUND $HTTPD_OPTIONS
 
-
-Replace	
- #import schematic
- # cd /data
- # ./vendor/bin/schematic import
-
- # fix  privleges
- chown -R apache $CRAFTROOT
- chown -R apache $CRAFT_UPLOADS_PATH
- # run apache in foreground
- echo "launch apache2 in foreground"
- set -e
- # Apache gets grumpy about PID files pre-existing
- rm -f /var/www/run/httpd.pid
- /usr/sbin/httpd -DFOREGROUND $HTTPD_OPTIONS
-fi
