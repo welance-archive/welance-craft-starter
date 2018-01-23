@@ -1,2 +1,4 @@
 docker/craft/logs/apache2
 templates/node_modules
+release*.tar.gz
+.vscode

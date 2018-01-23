@@ -4,7 +4,7 @@ _butlerpy()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="help local-start local-stop local-teardown restore seed-export seed-import setup"
+    opts="help local-start local-stop local-teardown restore seed-export seed-import setup package-release"
 
     if [[ ${cur} == * ]] ; then
         COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )

@@ -34,22 +34,15 @@ php7-xml \
 php7-simplexml \
 php7-zlib \
 php7-dom \
-unzip \
-tar \
 coreutils \
 wget \
+tar \
+gzip \
 && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
 && mkdir -p /data && mkdir -p /run/apache2 \
 && composer create-project craftcms/craft:${CRAFT_PROJECT_VERSION} /data/craft \
-&& cd /data/craft && cat composer.json \
-#&& composer require welance/craft-toolbox:"dev-master" 
 && rm /data/craft/.env 
-# remove .env file since the paramters are passe trough environment variables
-
-# && composer require nerds-and-company/schematic:3.8.* \
-
-
 
 ADD scripts /data/scripts
 # fix permissions

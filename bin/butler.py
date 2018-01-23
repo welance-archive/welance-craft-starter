@@ -70,6 +70,13 @@ class Commander(object):
         cmd = """docker exec -i "%s" sh -c '%s' %s""" % (container_target, command, additional_options)
         print(cmd)
         subprocess.run(cmd, shell=True, check=True)
+    
+    def docker_cp(self, container_source, container_path, local_path="."):
+        """ copy a file from a container to the host """
+        # docker cp <containerId>:/file/path/within/container /host/path/target
+        cmd = """docker cp %s:%s %s""" % (container_source,container_path,local_path )
+        print(cmd)
+        subprocess.run(cmd, shell=True, check=True)
 
     def prompt_yesno(self, prompt_key):
         """ prompt the user for a yes/no question, when yes return true, false otherwise"""
@@ -103,6 +110,12 @@ class Commander(object):
         fp = open(filepath, 'w')
         fp.write(data)
         fp.close()
+
+    def upc(self, key, default_value):
+        """set a project_conf value if it is not alredy set"""
+        if key not in self.project_conf:
+            self.project_conf[key] = default_value
+    
     
     #
     #  COMMANDS
@@ -154,22 +167,22 @@ class Commander(object):
             print(self.prompts['setup_abort'])
             return
         # generate security key
-        self.project_conf["security_key"] = secrets.token_hex(32)
+        self.upc("security_key", secrets.token_hex(32))
         # set the other default values
-        self.project_conf["docker_image_craft"] = "welance/craft3"
-        self.project_conf["db_schema"] = "public"
-        self.project_conf["db_server"] = "database"
-        self.project_conf["db_database"] = "craft"
-        self.project_conf["db_user"] = "craft"
-        self.project_conf["db_password"] = "craft"
-        self.project_conf["db_table_prefix"] = "craft_"
-        self.project_conf["craft_username"] =  "admin"
-        self.project_conf["craft_email"] =  "admin@welance.de"
-        self.project_conf["craft_password"] =  "welance"
-        self.project_conf["lang"] = "C.UTF-8"
-        self.project_conf["environment"] = "dev"
-        self.project_conf["craft_locale"] = "en_us"
-        self.project_conf["httpd_options"] = ""
+        self.upc("docker_image_craft", "welance/craft3")
+        self.upc("db_schema", "public")
+        self.upc("db_server", "database")
+        self.upc("db_database", "craft")
+        self.upc("db_user", "craft")
+        self.upc("db_password", "craft")
+        self.upc("db_table_prefix", "craft_")
+        self.upc("craft_username",  "admin")
+        self.upc("craft_email",  "admin@welance.de")
+        self.upc("craft_password",  "welance")
+        self.upc("lang", "C.UTF-8")
+        self.upc("environment", "dev")
+        self.upc("craft_locale", "en_us")
+        self.upc("httpd_options", "")
 
         # docker-compose.ymk
         docker_compose = {
@@ -329,8 +342,21 @@ class Commander(object):
         additional_options = "< %s" % seed_file
         self.docker_exec(container_target,command, additional_options)
 
-    def cmds(self):
-        pass
+    def cmd_package_release(self):
+        """create a gzip of the full craft release"""
+        # dump the seed database 
+        self.cmd_seed_export()
+        container = "craft_%s" % self.prjc()
+        release_path = "/data/release.tar.gz"
+        # create archive of the /data/craft directory
+        # maybe some directories could be escluded ?
+        cmd = "tar -cv /data/craft | gzip > %s" % release_path
+        self.docker_exec(container, cmd)
+        # copy the archive locally 
+        self.docker_cp(container, release_path, self.project_path)
+        # remove the archive in the container
+        cmd = "rm %s" % release_path
+        self.docker_exec(container, cmd)
 
 # main function
 def main():
