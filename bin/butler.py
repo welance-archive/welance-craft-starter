@@ -331,7 +331,7 @@ class Commander(object):
         self.docker_exec(container_target, command, additional_options)
 
     def cmd_seed_import(self):
-        """export the database-seed.sql"""
+        """import the database-seed.sql"""
         seed_file = os.path.join(self.project_path, "config",
                                  "database-seed.sql")
         # run mysql dump
@@ -343,7 +343,7 @@ class Commander(object):
         self.docker_exec(container_target,command, additional_options)
 
     def cmd_package_release(self):
-        """create a gzip of the full craft release"""
+        """create a gzip containg the project release"""
         # dump the seed database 
         self.cmd_seed_export()
         container = "craft_%s" % self.prjc()
