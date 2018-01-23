@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 """ butler allows to setup a welance craft3 cms project """
 
 import sys
@@ -16,12 +17,14 @@ SCRIPT_NAME = "butler.py"
 
 
 class Commander(object):
+    """ main class for command exectution"""
     STAGE_DOMAIN = "staging.welance.de"
     DEFAULT_SLACK_CHANNEL = "general"
     DEFAULT_SITE_NAME = "Welance"
     DEFAULT_LOCAL_URL = "localhost"
     DEFAULT_DB_DRIVER = "mysql"
 
+    # dictionary with the messages to print in th prompt
     prompts = {
         "project_ovverride":"The project is already setup boss, do you want to overwrite the configuration? (yes/no)? [no]: ",
         "setup_abort":"orrait boss, setup canceled, bye!",
@@ -51,35 +54,37 @@ class Commander(object):
         self.stage_yml = os.path.join(self.project_path, "docker",
                                       "docker-compose-staging.yml")
 
-    def prjc(self):
+    def prjc(self, sep="_"):
         """shortcut to get project coordinates like C_P"""
-        return "%d_%d" % (self.project_conf['customer_number'],
+        return "%s%s%s" % (self.project_conf['customer_number'], sep, 
                                self.project_conf['project_number'])
 
     def docker_compose(self, params, yaml_path="docker-compose.yaml"):
+        """ execte docker-compose commmand """
         cmd = "docker-compose -f %s %s " % (yaml_path, params)
         print(cmd)
         subprocess.run(cmd,shell=True,check=True)
 
-    def docker_exec(self, container_target, command, additional_options):
+    def docker_exec(self, container_target, command, additional_options=""):
+        """ execte docker exec commmand """
         cmd = """docker exec -i "%s" sh -c '%s' %s""" % (container_target, command, additional_options)
         print(cmd)
         subprocess.run(cmd, shell=True, check=True)
 
     def prompt_yesno(self, prompt_key):
-        """ return true when yes, false otherwise"""
+        """ prompt the user for a yes/no question, when yes return true, false otherwise"""
         val = input(self.prompts[prompt_key])
         if val.strip().lower() == 'yes':
             return True
         return False
 
     def prompt_int(self, prompt_key):
-        """ read an int from stdin, keep asking until a correct value is entered"""
-        val = -1
+        """ prompt user for a int value, keep asking until a correct value is entered"""
+        val = ""
         while True:
             try:
-                val = int(input(self.prompts[prompt_key]))
-                if val < 0:
+                val = input(self.prompts[prompt_key])
+                if int(val) < 0:
                     raise ValueError("")
                 break
             except ValueError:
@@ -132,9 +137,7 @@ class Commander(object):
         self.project_conf['db_driver'] = self.prompt_string('db_driver',
                                                        self.DEFAULT_DB_DRIVER)
         # build stage domain
-        self.project_conf['stage_url'] = '%d.%d.%s' % (
-            self.project_conf['customer_number'], self.project_conf['project_number'],
-            self.STAGE_DOMAIN)
+        self.project_conf['stage_url'] = '%s.%s' % (self.prjc(sep=".") ,self.STAGE_DOMAIN)
 
         ## print summary
         print("")
@@ -151,16 +154,30 @@ class Commander(object):
             print(self.prompts['setup_abort'])
             return
         # generate security key
-        self.project_conf['security_key'] = secrets.token_hex(32)
+        self.project_conf["security_key"] = secrets.token_hex(32)
+        # set the other default values
+        self.project_conf["docker_image_craft"] = "welance/craft3"
+        self.project_conf["db_schema"] = "public"
+        self.project_conf["db_server"] = "database"
+        self.project_conf["db_database"] = "craft"
+        self.project_conf["db_user"] = "craft"
+        self.project_conf["db_password"] = "craft"
+        self.project_conf["db_table_prefix"] = "craft_"
+        self.project_conf["craft_username"] =  "admin"
+        self.project_conf["craft_email"] =  "admin@welance.de"
+        self.project_conf["craft_password"] =  "welance"
+        self.project_conf["lang"] = "C.UTF-8"
+        self.project_conf["environment"] = "dev"
+        self.project_conf["craft_locale"] = "en_us"
+        self.project_conf["httpd_options"] = ""
+
         # docker-compose.ymk
         docker_compose = {
             "version": "2.1",
             "services": {
                 "craft": {
-                    "image":
-                    "welance/craft3",
-                    "container_name":
-                    "craft_%s" % self.prjc(),
+                    "image": self.project_conf["docker_image_craft"],
+                    "container_name": "craft_%s" % self.prjc(),
                     "ports": ["80:80", "443:443"],
                     "volumes": [
                         # webserver and php mounts
@@ -181,23 +198,23 @@ class Commander(object):
                     ],
                     "links": ["database"],
                     "environment": {
-                        "LANG": "C.UTF-8",
+                        "LANG": self.project_conf["lang"],
                         "DB_DRIVER": self.project_conf['db_driver'],
-                        "DB_SCHEMA": "public",
-                        "DB_SERVER": "database",
-                        "DB_DATABASE": "craft",
-                        "DB_USER": "craft",
-                        "DB_PASSWORD": "craft",
-                        "DB_TABLE_PREFIX": "craft_",
+                        "DB_SCHEMA": self.project_conf["db_schema"],
+                        "DB_SERVER": self.project_conf["db_server"],
+                        "DB_DATABASE": self.project_conf["db_database"],
+                        "DB_USER": self.project_conf["db_user"],
+                        "DB_PASSWORD": self.project_conf["db_password"],
+                        "DB_TABLE_PREFIX": self.project_conf["db_table_prefix"],
                         "SECURITY_KEY": self.project_conf['security_key'],
-                        "ENVIRONMENT": "dev",
-                        "CRAFT_USERNAME": "admin",
-                        "CRAFT_EMAIL": "admin@welance.de",
-                        "CRAFT_PASSWORD": "welance",
+                        "ENVIRONMENT": self.project_conf["environment"],
+                        "CRAFT_USERNAME": self.project_conf["craft_username"],
+                        "CRAFT_EMAIL": self.project_conf["craft_email"],
+                        "CRAFT_PASSWORD": self.project_conf["craft_password"],
                         "CRAFT_SITENAME": self.project_conf['site_name'],
                         "CRAFT_SITEURL": self.project_conf['local_url'],
-                        "CRAFT_LOCALE": "en_us",
-                        "HTTPD_OPTIONS": ""
+                        "CRAFT_LOCALE": self.project_conf["craft_locale"],
+                        "HTTPD_OPTIONS": self.project_conf["httpd_options"]
                     }
                 }
             }
@@ -211,10 +228,10 @@ class Commander(object):
                 "container_name":
                 "database_%s" % self.prjc(),
                 "environment": {
-                    "MYSQL_ROOT_PASSWORD": "craft",
-                    "MYSQL_DATABASE": "craft",
-                    "MYSQL_USER": "craft",
-                    "MYSQL_PASSWORD": "craft"
+                    "MYSQL_ROOT_PASSWORD": self.project_conf["db_password"],
+                    "MYSQL_DATABASE": self.project_conf["db_database"],
+                    "MYSQL_USER": self.project_conf["db_user"],
+                    "MYSQL_PASSWORD": self.project_conf["db_password"]
                 },
                 "volumes": ["/var/lib/mysql"]
             }
@@ -225,9 +242,9 @@ class Commander(object):
                 "image": "postgres:10-alpine",
                 "container_name": "database_%s" % self.prjc(),
                 "environment": {
-                    "POSTGRES_PASSWORD": "craft",
-                    "POSTGRES_USER": "craft",
-                    "POSTGRES_DB": "craft"
+                    "POSTGRES_PASSWORD": self.project_conf["db_password"],
+                    "POSTGRES_USER": self.project_conf["db_user"],
+                    "POSTGRES_DB": self.project_conf["db_database"]
                 },
                 "volumes": ["/var/lib/postgresql/data"]
             }
