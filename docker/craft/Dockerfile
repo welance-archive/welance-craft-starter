@@ -15,6 +15,8 @@ php7 \
 php7-apache2 \
 php7-pdo \
 php7-pdo_mysql \
+php7-pdo_pgsql \
+php7-pgsql \
 php7-mcrypt \
 php7-gd \
 php7-openssl \
