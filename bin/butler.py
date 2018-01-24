@@ -9,8 +9,8 @@ import os
 import secrets
 import subprocess
 import json
+import requests
 import yaml
-
 
 """ name of the out configuration file """
 SCRIPT_NAME = "butler.py"
@@ -30,12 +30,13 @@ class Commander(object):
         "setup_abort":"orrait boss, setup canceled, bye!",
         "customer_number":"Please enter the customer number, boss: ",
         "project_number":"Now enter the project number: ",
-        "slack_channel": "What is the slack channel for this project? [%s]:  " % DEFAULT_SLACK_CHANNEL,
+        "slack_channel": "What is the slack channel for this project? [%s]: " % DEFAULT_SLACK_CHANNEL,
         "site_name": "And the site name? [%s]: " % DEFAULT_SITE_NAME,
-        "local_url": "Url for development: [%s]" % DEFAULT_LOCAL_URL,
-        "db_driver": "which database will you use pgsql/mysql? [%s]:" % DEFAULT_DB_DRIVER,
+        "local_url": "Url for development [%s]: " % DEFAULT_LOCAL_URL,
+        "db_driver": "Which database will you use pgsql/mysql? [%s]: " % DEFAULT_DB_DRIVER,
         "setup_confirm": "are this info correct? (yes/no)? [no]: ",
-        "project_teardown" : "This action will remove all containers including data, do you want to continue (yes/no)? [no] "
+        "project_teardown" : "This action will remove all containers including data, do you want to continue (yes/no)? [no]: ",
+        "image_version" : "Which version do you want to use? [default with *]: "
     }
 
     def __init__(self):
@@ -77,6 +78,20 @@ class Commander(object):
         cmd = """docker cp %s:%s %s""" % (container_source,container_path,local_path )
         print(cmd)
         subprocess.run(cmd, shell=True, check=True)
+    
+    def dockerhub_image_versions(self, name, repo="library", max_results=0):
+        """retrieve the list of versions and it's size in MB of an image from docker hub"""
+        url = "https://registry.hub.docker.com/v2/repositories/%s/%s/tags/" % (repo, name)
+        # url = 'http://localhost:9999/download.json'
+        images = requests.get(url).json()
+        default_version = 0
+        versions = []
+        for v in images["results"]:
+            if v['name'] == 'latest' and images['count'] > 1:
+                continue
+            versions.append((v['name'], v['full_size'] / 1048576))
+        versions = versions[0:max_results] if max_results > 0 else versions
+        return default_version, versions
 
     def prompt_yesno(self, prompt_key):
         """ prompt the user for a yes/no question, when yes return true, false otherwise"""
@@ -85,17 +100,25 @@ class Commander(object):
             return True
         return False
 
-    def prompt_int(self, prompt_key):
+    def prompt_int(self, prompt_key, min_val=0, max_val=None, def_val=None):
         """ prompt user for a int value, keep asking until a correct value is entered"""
         val = ""
         while True:
             try:
                 val = input(self.prompts[prompt_key])
-                if int(val) < 0:
+                # if there is a default value use it
+                if not val and def_val is not None:
+                    val = def_val
+                    break
+                # else check the boundaries
+                if int(val) < min_val or (max_val is not None and int(val) > max_val):
                     raise ValueError("")
                 break
             except ValueError:
-                print(" sorry boss, must be a number greater than 0")
+                if max_val is not None:
+                    print("sorry boss, choose something between %d and %d"%(min_val,max_val))
+                else :
+                    print("sorry boss, chose a number greater than %d" % (min_val))
         return val
 
     def prompt_string(self, prompt_key, default_val=""):
@@ -149,6 +172,16 @@ class Commander(object):
                                                        self.DEFAULT_LOCAL_URL)
         self.project_conf['db_driver'] = self.prompt_string('db_driver',
                                                        self.DEFAULT_DB_DRIVER)
+        # retriewve image versions
+        dv, vers = self.dockerhub_image_versions("craft3","welance",4)
+        print("Here there are the available craft versions:")
+        for i in range(len(vers)):
+            num = "* [%2d]" % i if i == dv else "  [%2d]" % i
+            print("%s %10s %dMb" % (num, vers[i][0], vers[i][1]))
+        iv = int(self.prompt_int('image_version', 0, len(vers)-1, def_val=dv))
+        # select the version name from the version chosen by the user
+        self.project_conf["craft_image"] = "welance/craft3:%s" % vers[iv][0]
+        
         # build stage domain
         self.project_conf['stage_url'] = '%s.%s' % (self.prjc(sep=".") ,self.STAGE_DOMAIN)
 
@@ -161,6 +194,7 @@ class Commander(object):
         print("Local Url      : %s" % self.project_conf['local_url'])
         print("Staging Url    : %s" % self.project_conf['stage_url'])
         print("Db Driver      : %s" % self.project_conf['db_driver'])
+        print("Craft version  : %s" % self.project_conf['craft_image'])
         print("")
         ## ask for confirmation
         if (not self.prompt_yesno('setup_confirm')):
@@ -189,7 +223,7 @@ class Commander(object):
             "version": "2.1",
             "services": {
                 "craft": {
-                    "image": self.project_conf["docker_image_craft"],
+                    "image": self.project_conf["craft_image"],
                     "container_name": "craft_%s" % self.prjc(),
                     "ports": ["80:80", "443:443"],
                     "volumes": [
@@ -357,6 +391,7 @@ class Commander(object):
         # remove the archive in the container
         cmd = "rm %s" % release_path
         self.docker_exec(container, cmd)
+
 
 # main function
 def main():
