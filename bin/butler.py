@@ -14,34 +14,37 @@ import yaml
 
 
 
-class Settings(object):
-    pass
-
-settings = Settings()
-settings.script_name = "butler.py"
-# name of the project configuration file
-settings.project_conf_file = ".env.json"
-settings.dockerhub_cms_image = "welance/craft"
-settings.dockerhub_mysql_image = "library/mysql"
-settings.dockerhub_pgsql_image = "library/posgtre"
-# name of the docker-compose dev file
-settings.docker_compose_local = "docker-compose.yml"
-# name of the docker-compose staging file
-settings.docker_compose_stage = "docker-compose-staging.yml"
-# name of the database seed file
-settings.database_seed = "database-seed.sql"
-# base domain to create the app staging url
-settings.staging_domain = "staging.welance.de"
-# default values for configuration
-settings.default_slack_channel = "general"
-settings.default_local_url = "localhost"
-settings.default_site_name = "Welance"
-settings.default_site_url = "localhost"
-settings.default_db_driver = "mysql"
-settings.default_db_user = "craft"
-settings.default_db_pass = "craft"
-settings.default_db_name = "craft"
-settings.default_db_schema = "public"
+class Cfg:
+    script_name = "butler.py"
+    # name of the project configuration file
+    project_conf_file = ".env.json"
+    dockerhub_cms_image = "welance/craft"
+    dockerhub_mysql_image = "library/mysql"
+    dockerhub_pgsql_image = "library/posgtre"
+    # name of the docker-compose dev file
+    docker_compose_local = "docker-compose.yml"
+    # name of the docker-compose staging file
+    docker_compose_stage = "docker-compose-staging.yml"
+    # name of the database seed file
+    database_seed = "database-seed.sql"
+    # base domain to create the app staging url
+    staging_domain = "staging.welance.de"
+    # default values for configuration
+    default_slack_channel = "general"
+    default_local_url = "localhost"
+    default_site_name = "Welance"
+    default_site_url = "localhost"
+    default_db_driver = "mysql"
+    default_db_server = "database"
+    default_db_user = "craft"
+    default_db_pass = "craft"
+    default_db_name = "craft"
+    default_db_schema = "public"
+    default_db_table_prefix = "craft_"
+    # craft defaults
+    default_craft_username = "admin"
+    default_craft_email = "admin@welance.de"
+    default_craft_passord = "welance"
 
 """ name of the out configuration file """
 
@@ -49,21 +52,20 @@ settings.default_db_schema = "public"
 class Commander(object):
     """ main class for command exectution"""
 
-    def __init__(self, cfg):
-        self.cfg = cfg
+    def __init__(self):
         filename = inspect.getframeinfo(inspect.currentframe()).filename
         script_path = Path(filename).resolve()
         self.project_path = script_path.parent.parent
-        self.config_path = os.path.join(script_path.parent,self.cfg.project_conf_file)
+        self.config_path = os.path.join(script_path.parent, Cfg.project_conf_file)
         self.project_conf = {}
         if os.path.exists(self.config_path):
             fp = open(self.config_path, 'r')
             self.project_conf = json.load(fp)
             fp.close()
         # path for staging and local yaml
-        self.local_yml = os.path.join(self.project_path, "docker", self.cfg.docker_compose_local)
+        self.local_yml = os.path.join(self.project_path, "docker", Cfg.docker_compose_local)
         self.stage_yml = os.path.join(
-            self.project_path, "docker", self.cfg.docker_compose_stage)
+            self.project_path, "docker", Cfg.docker_compose_stage)
 
     def prjc(self, sep="_"):
         """shortcut to get project coordinates like C_P"""
@@ -82,10 +84,10 @@ class Commander(object):
             "setup_abort": "orrait boss, setup canceled, bye!",
             "customer_number": "Please enter the customer number, boss: ",
             "project_number": "Now enter the project number: ",
-            "slack_channel": "What is the slack channel for this project? [%s]: " % self.cfg.default_slack_channel,
-            "site_name": "And the site name? [%s]: " % self.cfg.default_site_name,
-            "local_url": "Url for development [%s]: " % self.cfg.default_local_url,
-            "db_driver": "Which database will you use pgsql/mysql? [%s]: " % self.cfg.default_db_driver,
+            "slack_channel": "What is the slack channel for this project? [%s]: " % Cfg.default_slack_channel,
+            "site_name": "And the site name? [%s]: " % Cfg.default_site_name,
+            "local_url": "Url for development [%s]: " % Cfg.default_local_url,
+            "db_driver": "Which database will you use pgsql/mysql? [%s]: " % Cfg.default_db_driver,
             "setup_confirm": "are this info correct? (yes/no)? [no]: ",
             "project_teardown": "This action will remove all containers including data, do you want to continue (yes/no)? [no]: ",
             "image_version": "Which version do you want to use? [default with *]: "
@@ -182,7 +184,7 @@ class Commander(object):
     
     def cmd_help(self):
         """ print help """
-        print ('%s <command>' % SCRIPT_NAME)
+        print ('%s <command>' % Cfg.script_name)
         print ('where command are')
 
         # get all the commands
@@ -192,7 +194,6 @@ class Commander(object):
 
     def cmd_setup(self):
         """ set up the application """
-        gc = self.cfg
         pc = self.project_conf
 
         # if the config  already exists prompt what to do
@@ -202,22 +203,22 @@ class Commander(object):
         ## ask for customer number
         pc['customer_number'] = self.prompt_int('customer_number')
         pc['project_number'] = self.prompt_int('project_number')
-        pc['slack_channel'] = self.prompt_string('slack_channel', gc.default_slack_channel)
-        pc['site_name'] = self.prompt_string('site_name', gc.default_site_name)
-        pc['local_url'] = self.prompt_string('local_url', gc.default_local_url)
-        pc['db_driver'] = self.prompt_string('db_driver', gc.default_db_driver)
+        pc['slack_channel'] = self.prompt_string('slack_channel', Cfg.default_slack_channel)
+        pc['site_name'] = self.prompt_string('site_name', Cfg.default_site_name)
+        pc['local_url'] = self.prompt_string('local_url', Cfg.default_local_url)
+        pc['db_driver'] = self.prompt_string('db_driver', Cfg.default_db_driver)
         # retriewve image versions
-        dv, vers = self.dockerhub_image_versions(gc.dockerhub_cms_image, 4)
+        dv, vers = self.dockerhub_image_versions(Cfg.dockerhub_cms_image, 4)
         print("Here there are the available craft versions:")
         for i in range(len(vers)):
             num = "* [%2d]" % i if i == dv else "  [%2d]" % i
             print("%s %10s %dMb" % (num, vers[i][0], vers[i][1]))
         iv = int(self.prompt_int('image_version', 0, len(vers)-1, def_val=dv))
         # select the version name from the version chosen by the user
-        pc["craft_image"] = "%s:%s" % (gc.dockerhub_cms_image, vers[iv][0])
+        pc["craft_image"] = "%s:%s" % (Cfg.dockerhub_cms_image, vers[iv][0])
         
         # build stage domain
-        pc['stage_url'] = '%s.%s' % (self.prjc(sep="."), gc.staging_domain)
+        pc['stage_url'] = '%s.%s' % (self.prjc(sep="."), Cfg.staging_domain)
 
         ## print summary
         print("")
@@ -237,16 +238,16 @@ class Commander(object):
         # generate security key
         self.upc("security_key", secrets.token_hex(32))
         # set the other default values
-        self.upc("docker_image_craft", "welance/craft3")
-        self.upc("db_schema", "public")
-        self.upc("db_server", "database")
-        self.upc("db_database", "craft")
-        self.upc("db_user", "craft")
-        self.upc("db_password", "craft")
-        self.upc("db_table_prefix", "craft_")
-        self.upc("craft_username",  "admin")
-        self.upc("craft_email",  "admin@welance.de")
-        self.upc("craft_password",  "welance")
+        self.upc("craft_image", Cfg.dockerhub_cms_image)
+        self.upc("db_schema", Cfg.default_db_schema)
+        self.upc("db_server", Cfg.default_db_server)
+        self.upc("db_database", Cfg.default_db_name)
+        self.upc("db_user", Cfg.default_db_user)
+        self.upc("db_password", Cfg.default_db_pass)
+        self.upc("db_table_prefix", Cfg.default_db_table_prefix)
+        self.upc("craft_username", Cfg.default_craft_username)
+        self.upc("craft_email", Cfg.default_craft_email)
+        self.upc("craft_password",  Cfg.default_craft_passord)
         self.upc("lang", "C.UTF-8")
         self.upc("environment", "dev")
         self.upc("craft_locale", "en_us")
@@ -389,7 +390,7 @@ class Commander(object):
     def cmd_seed_export(self):
         """export the database-seed.sql"""
         seed_file = os.path.join(self.project_path, "config",
-                                 self.cfg.database_seed)
+                                 Cfg.database_seed)
         # run mysql dump
         container_target = "database_%s" % self.pcd()
         command = """exec mysqldump -uroot -p"craft" --add-drop-table craft"""
@@ -401,13 +402,13 @@ class Commander(object):
     def cmd_seed_import(self):
         """import the database-seed.sql"""
         seed_file = os.path.join(self.project_path, "config",
-                                 self.cfg.database_seed)
+                                 Cfg.database_seed)
         # run mysql dump
         container_target = "database_%s" % self.pcd()
         command = """exec mysql -u%s -p"%s" %s""" % (
-            self.cfg.default_db_user, self.cfg.default_db_pass, self.cfg.default_db_name)
+            Cfg.default_db_user, Cfg.default_db_pass, Cfg.default_db_name)
         if self.project_conf["db_driver"] == "pgsql":
-            command = """exec psql --quiet -U %s -d "%s" """ % (self.cfg.default_db_user, self.cfg.default_db_name)
+            command = """exec psql --quiet -U %s -d "%s" """ % (Cfg.default_db_user, Cfg.default_db_name)
         additional_options = "< %s" % seed_file
         self.docker_exec(container_target,command, additional_options)
 
@@ -443,8 +444,8 @@ def cmd2method(cmd):
 
 
 if __name__ == '__main__':
-    SCRIPT_NAME = sys.argv[0]
-    c = Commander(settings)
+    Cfg.script_name = sys.argv[0]
+    c = Commander()
     if len(sys.argv) == 1 or not hasattr(c, cmd2method(sys.argv[1])):
         c.cmd_help()
         exit(0)
