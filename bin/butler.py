@@ -275,7 +275,8 @@ class Commander(object):
                         "../migrations:/data/craft/migrations",
                         "../plugins:/data/craft/plugins",
                         "../web/uploads:/data/craft/web/uploads",
-                        "../composer.json:/data/craft/composer.json"
+                        "../composer.json:/data/craft/composer.json",
+                        "../composer.lock:/data/craft/composer.lock",
                     ],
                     "links": ["database"],
                     "environment": {
@@ -425,6 +426,12 @@ class Commander(object):
         # remove the archive in the container
         cmd = "rm %s" % release_path
         self.docker_exec(container, cmd)
+    
+    def cmd_composer_update(self):
+        """ run composer install on the target environment """
+        container_target = "craft_%s" % self.pcd()
+        command = """cd craft && composer update"""
+        self.docker_exec(container_target, command)
 
 
 # main function
