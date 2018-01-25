@@ -345,7 +345,8 @@ class Commander(object):
         docker_compose["services"]["craft"]["environment"]["VIRTUAL_HOST"] = pc['stage_url']
 
         # save docker-composer
-        self.write_file(self.stage_yml, yaml.dump(docker_compose))
+        self.write_file(self.stage_yml, yaml.dump(
+            docker_compose, default_flow_style=False))
 
         # save project conf
         self.write_file(self.config_path, json.dumps(self.project_conf, indent=2))
