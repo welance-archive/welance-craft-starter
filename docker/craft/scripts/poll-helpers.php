@@ -46,9 +46,9 @@ function isCraftConfigured(){
 	$c = getConnection();
 	
 	if($dbDriver == "mysql") {
-		$r = $c->query("SHOW TABLES LIKE '".$table."'");
+		$r = $c->query("SHOW TABLES LIKE '".$infoTable."'");
 		if($r !== false && $result->num_rows == 1){
-			$r = $c->query("SELECT COUNT(*) AS num FROM '".$table."'");
+			$r = $c->query("SELECT COUNT(*) AS num FROM '".$infoTable."'");
 			if($r !== false && $r->num > 0) {
 				return true;
 			}
