@@ -34,6 +34,8 @@ php7-xml \
 php7-simplexml \
 php7-zlib \
 php7-dom \
+php7-fileinfo \
+php7-intl \
 coreutils \
 wget \
 tar \
