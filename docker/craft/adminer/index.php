@@ -49,4 +49,4 @@ function adminer_object()
     return new AdminerSoftware;
 }
 
-include "./adminer-4.6.1-en.php";
+include "./adminer-4.6.2-en.php";
