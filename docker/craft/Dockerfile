@@ -36,6 +36,7 @@ php7-zlib \
 php7-dom \
 php7-fileinfo \
 php7-intl \
+php7-xdebug \
 coreutils \
 wget \
 tar \
@@ -44,7 +45,9 @@ gzip \
 && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
 && mkdir -p /data && mkdir -p /run/apache2 \
 && composer create-project craftcms/craft:${CRAFT_PROJECT_VERSION} /data/craft \
-&& rm /data/craft/.env 
+&& rm /data/craft/.env \
+# remove xdebug since we'll decide in the php.ini file if to load it 
+&& rm /etc/php7/conf.d/00_xdebug.ini  
 
 ADD scripts /data/scripts
 # fix permissions
