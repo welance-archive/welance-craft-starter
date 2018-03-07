@@ -44,13 +44,11 @@ class Cfg:
     default_craft_username = "admin"
     default_craft_email = "admin@welance.de"
     default_craft_passord = "welance"
+    default_craft_allow_updates = "false"
     # version management (semver)
     semver_major = 0
     semver_minor = 0
     semver_patch = 0
-
-
-""" name of the out configuration file """
 
 
 class Commander(object):
@@ -80,13 +78,13 @@ class Commander(object):
 
     def prjc(self, sep="_"):
         """shortcut to get project coordinates like C_P"""
-        return "%s%s%s" % (self.project_conf['customer_number'], sep,
-                           self.project_conf['project_number'])
+        pc = self.project_conf
+        return "%s%s%s" % (pc['customer_number'], sep, pc['project_number'])
 
     def pcd(self):
         """shortcut to get the docker project code that is c{customer number}p{projectnumber}"""
-        return "c%sp%s" % (self.project_conf['customer_number'],
-                           self.project_conf['project_number'])
+        pc = self.project_conf
+        return "c%sp%s" % (pc['customer_number'], pc['project_number'])
 
     def semver(self):
         """ create a string representation of the versino of the project """
@@ -106,11 +104,13 @@ class Commander(object):
         if with_containers:
             try:
                 # check if docker is running
-                s = str(subprocess.check_output('docker ps', shell=True, stderr=subprocess.STDOUT))
+                s = str(subprocess.check_output('docker ps',
+                                                shell=True, stderr=subprocess.STDOUT))
                 c1, c2 = ("database_%s" % self.pcd(), "craft_%s" % self.pcd())
                 # check if the containers are running
                 if s.find(c1) == -1 or s.find(c2) == -1:
-                    print("the project containers are not running, run the local-start command first")
+                    print(
+                        "the project containers are not running, run the local-start command first")
                     exit(0)
             except subprocess.CalledProcessError:
                 print("docker is not running")
@@ -140,10 +140,9 @@ class Commander(object):
         cmd = "docker-compose -f %s %s " % (yaml_path, params)
         print(cmd)
         try:
-          subprocess.run(cmd, shell=True, check=True)
+            subprocess.run(cmd, shell=True, check=True)
         except:
-          pass
-        
+            pass
 
     def docker_exec(self, container_target, command, additional_options=""):
         """ execte docker exec commmand """
@@ -151,9 +150,9 @@ class Commander(object):
             container_target, command, additional_options)
         print(cmd)
         try:
-          subprocess.run(cmd, shell=True, check=True)
+            subprocess.run(cmd, shell=True, check=True)
         except:
-          pass
+            pass
 
     def docker_cp(self, container_source, container_path, local_path="."):
         """ copy a file from a container to the host """
@@ -162,9 +161,9 @@ class Commander(object):
             container_source, container_path, local_path)
         print(cmd)
         try:
-          subprocess.run(cmd, shell=True, check=True)
+            subprocess.run(cmd, shell=True, check=True)
         except:
-          pass
+            pass
 
     def dockerhub_image_versions(self, name, max_results=0):
         """retrieve the list of versions and it's size in MB of an image from docker hub"""
@@ -245,7 +244,8 @@ class Commander(object):
         # get all the commands
         for name, obj in inspect.getmembers(self, inspect.ismethod):
             if (name.startswith('cmd_')):
-                print(" %-18s - %s" % (name[4:].replace("_", "-"), obj.__doc__))
+                print(" %-18s - %s" %
+                      (name[4:].replace("_", "-"), obj.__doc__))
 
     def cmd_setup(self):
         """set up the application """
@@ -311,6 +311,7 @@ class Commander(object):
         self.upc("semver_major", Cfg.semver_major)
         self.upc("semver_minor", Cfg.semver_minor)
         self.upc("semver_patch", Cfg.semver_patch)
+        self.upc("craft_allow_updates", Cfg.default_craft_allow_updates)
 
         self.upc("lang", "C.UTF-8")
         self.upc("environment", "dev")
@@ -361,6 +362,7 @@ class Commander(object):
                         "CRAFT_SITENAME": pc['site_name'],
                         "CRAFT_SITEURL": pc['local_url'],
                         "CRAFT_LOCALE": pc["craft_locale"],
+                        "CRAFT_ALLOW_UPDATES": pc["craft_allow_updates"],
                         "HTTPD_OPTIONS": pc["httpd_options"]
                     }
                 }
@@ -520,7 +522,8 @@ class Commander(object):
         # dump the seed database
         self.cmd_seed_export()
         container = "craft_%s" % self.pcd()
-        release_path = "/data/release_%s-%s.tar.gz" % (self.pcd(), self.semver())
+        release_path = "/data/release_%s-%s.tar.gz" % (
+            self.pcd(), self.semver())
         # create archive of the /data/craft directory
         # maybe some directories could be escluded ?
         cmd = "tar -c /data/craft | gzip > %s" % release_path
