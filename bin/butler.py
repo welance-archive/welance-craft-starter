@@ -11,6 +11,7 @@ import subprocess
 import json
 import requests
 import yaml
+import re
 
 
 config = {
@@ -564,6 +565,24 @@ class Commander(object):
         self.require_configured(with_containers=True)
         container_target = "craft_%s" % self.pcd()
         command = """cd craft && composer update"""
+        self.docker_exec(container_target, command)
+
+    def cmd_install_plugin(self, plugin_name=None):
+        """install a plugin with composer in craft environment (if not yet installed)"""
+        self.require_configured(with_containers=True)
+        container_target = "craft_%s" % self.pcd()
+        # check if the package is already installed
+        command = """cd craft && composer show --name-only | grep %s | wc -l""" % plugin_name
+        res = self.docker_exec(container_target, command)
+        if int(res) > 0:
+            print("plugin %s already installed" % plugin_name)
+            return
+        # run composer install
+        command = """cd craft && composer require %s --no-interaction""" % plugin_name
+        self.docker_exec(container_target, command)
+        # run craft install
+        command = """craft/craft install/plugin %s """ % re.sub(
+            r'^.*?/', '', plugin_name)
         self.docker_exec(container_target, command)
 
 
