@@ -45,17 +45,15 @@ To publish an updated image of CraftCMS container to docker hub do the folowing:
 # cd into the docker/craft folder of the base project
 cd docker/craft
 # build a new image (this is going to be the 'latest' tag)
-docker build -t welance/craft .
+docker build -t welance/craft:CRAFT_VERSION .
 # list the images and pick up the id of the images just built
 docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
-welance/craft       latest              18cd3db3e7df        About a minute ago   114 MB
+welance/craft       CRAFT_VERSION           18cd3db3e7df        About a minute ago   114 MB
 <none>              <none>              be09b9e54c3d        About an hour ago    113 MB
 ...
 # login to docker hub
 docker login --username=yourhubusername
-# tag your image  (other than 'latest')
-docker tag 18cd3db3e7df welance/craft:2.6
 # push the image
 docker push welance/craft
 ```
@@ -197,6 +195,31 @@ the craft installation with a **fresh database dump**
 ### Project removal
 Once the project is finished to remove the resources associated with the project (containers and data) 
 the `bin/butler.py local-teardown`script is provided.
+
+
+## Applying Craftcms updates
+
+Applying a craftcms update is a sensible activity that has to be performed with extreme care.
+
+Craftcms autoupdate performs 2 actions:
+- runs `composer update` for code 
+- apply changes to the database and records changes in the table `info`:
+  - `info.version` for craft version, ex 3.x
+	- `info.schemaVersion` for the database schema version
+
+it is therefore important that this operation is performed atomically in one machine
+and the result propagated to the other installations. 
+
+The steps to perform an upgrade during development are:
+  - freeze content editing.
+	- obtain a copy of the latest official database seed (ex. from staging)
+	- perform the upgrade locally 
+	- run the `seed-export` and commit the changes to the database
+	- update the `docker/docker-compose.yml` and `docker-compose-staging.yml` with the new version 
+	- commit the result
+
+
+
 
 ## Accessing the database
 Since the database use in the containers is not accessible from outside docker a database web interface
