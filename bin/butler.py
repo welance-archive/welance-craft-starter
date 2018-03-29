@@ -13,42 +13,53 @@ import requests
 import yaml
 
 
-class Cfg:
-    script_name = "butler.py"
+config = {
+    # configuration version
+    'version': '3.0.0',
+    'script_name': "butler.py",
     # name of the project configuration file
-    project_conf_file = ".env.json"
-    dockerhub_cms_image = "welance/craft"
-    dockerhub_mysql_image = "library/mysql"
-    dockerhub_pgsql_image = "library/posgtre"
+    'project_conf_file': ".env.json",
+    'dockerhub_cms_image': "welance/craft",
+    'dockerhub_mysql_image': "library/mysql",
+    'dockerhub_pgsql_image': "library/posgtre",
     # name of the docker-compose dev file
-    docker_compose_local = "docker-compose.yml"
+    'docker_compose_local': "docker-compose.yml",
     # name of the docker-compose staging file
-    docker_compose_stage = "docker-compose-staging.yml"
+    'docker_compose_stage': "docker-compose-staging.yml",
     # name of the database seed file
-    database_seed = "database-seed.sql"
+    'database_seed': "database-seed.sql",
     # base domain to create the app staging url
-    staging_domain = "staging.welance.de"
+    'staging_domain': "staging.welance.de",
     # default values for configuration
-    default_slack_channel = "general"
-    default_local_url = "localhost"
-    default_site_name = "Welance"
-    default_site_url = "localhost"
-    default_db_driver = "mysql"
-    default_db_server = "database"
-    default_db_user = "craft"
-    default_db_pass = "craft"
-    default_db_name = "craft"
-    default_db_schema = "public"
-    default_db_table_prefix = "craft_"
+    'default_slack_channel': "general",
+    'default_local_url': "localhost",
+    'default_site_name': "Welance",
+    'default_site_url': "localhost",
+    'default_db_driver': "mysql",
+    'default_db_server': "database",
+    'default_db_user': "craft",
+    'default_db_pass': "craft",
+    'default_db_name': "craft",
+    'default_db_schema': "public",
+    'default_db_table_prefix': "craft_",
     # craft defaults
-    default_craft_username = "admin"
-    default_craft_email = "admin@welance.de"
-    default_craft_passord = "welance"
-    default_craft_allow_updates = "false"
+    'default_craft_username': "admin",
+    'default_craft_email': "admin@welance.de",
+    'default_craft_passord': "welance",
+    'default_craft_allow_updates': "false",
     # version management (semver)
-    semver_major = 0
-    semver_minor = 0
-    semver_patch = 0
+    'semver_major': 0,
+    'semver_minor': 0,
+    'semver_patch': 0,
+    # required plugins
+    'composer_require': [
+        'craftcms/redactor',
+        'craftcms/aws-s3'
+    ]
+}
+
+
+""" name of the out configuration file """
 
 
 class Commander(object):
@@ -61,7 +72,7 @@ class Commander(object):
         self.project_path = script_path.parent.parent
         # absolute path to the configuration file
         self.config_path = os.path.join(
-            script_path.parent, Cfg.project_conf_file)
+            script_path.parent, config['project_conf_file'])
         # tells if the project has a configuration file
         self.project_is_configured = False
         self.project_conf = {}
@@ -72,25 +83,25 @@ class Commander(object):
             self.project_is_configured = True
         # path for staging and local yaml
         self.local_yml = os.path.join(
-            self.project_path, "docker", Cfg.docker_compose_local)
+            self.project_path, "docker", config['docker_compose_local'])
         self.stage_yml = os.path.join(
-            self.project_path, "docker", Cfg.docker_compose_stage)
+            self.project_path, "docker", config['docker_compose_stage'])
 
     def prjc(self, sep="_"):
         """shortcut to get project coordinates like C_P"""
-        pc = self.project_conf
-        return "%s%s%s" % (pc['customer_number'], sep, pc['project_number'])
+        return "%s%s%s" % (self.project_conf['customer_number'], sep,
+                           self.project_conf['project_number'])
 
     def pcd(self):
         """shortcut to get the docker project code that is c{customer number}p{projectnumber}"""
-        pc = self.project_conf
-        return "c%sp%s" % (pc['customer_number'], pc['project_number'])
+        return "c%sp%s" % (self.project_conf['customer_number'],
+                           self.project_conf['project_number'])
 
     def semver(self):
         """ create a string representation of the versino of the project """
-        ma = self.project_conf.get("semver_major", Cfg.semver_major)
-        mi = self.project_conf.get("semver_minor", Cfg.semver_minor)
-        pa = self.project_conf.get("semver_patch", Cfg.semver_patch)
+        ma = self.project_conf.get("semver_major", config['semver_major'])
+        mi = self.project_conf.get("semver_minor", config['semver_minor'])
+        pa = self.project_conf.get("semver_patch", config['semver_patch'])
         self.project_conf["semver_major"] = ma
         self.project_conf["semver_minor"] = mi
         self.project_conf["semver_patch"] = pa
@@ -124,10 +135,10 @@ class Commander(object):
             "setup_abort": "orrait boss, setup canceled, bye!",
             "customer_number": "Please enter the customer number, boss: ",
             "project_number": "Now enter the project number: ",
-            "slack_channel": "What is the slack channel for this project? [%s]: " % Cfg.default_slack_channel,
-            "site_name": "And the site name? [%s]: " % Cfg.default_site_name,
-            "local_url": "Url for development [%s]: " % Cfg.default_local_url,
-            "db_driver": "Which database will you use pgsql/mysql? [%s]: " % Cfg.default_db_driver,
+            "slack_channel": "What is the slack channel for this project? [%s]: " % config['default_slack_channel'],
+            "site_name": "And the site name? [%s]: " % config['default_site_name'],
+            "local_url": "Url for development [%s]: " % config['default_local_url'],
+            "db_driver": "Which database will you use pgsql/mysql? [%s]: " % config['default_db_driver'],
             "setup_confirm": "are this info correct? (yes/no)? [no]: ",
             "project_teardown": "This action will remove all containers including data, do you want to continue (yes/no)? [no]: ",
             "image_version": "Which version do you want to use? [default with *]: ",
@@ -145,14 +156,16 @@ class Commander(object):
             pass
 
     def docker_exec(self, container_target, command, additional_options=""):
-        """ execte docker exec commmand """
+        """ execte docker exec commmand and return the stdout or None when error"""
         cmd = """docker exec -i "%s" sh -c '%s' %s""" % (
             container_target, command, additional_options)
         print(cmd)
         try:
-            subprocess.run(cmd, shell=True, check=True)
+            cp = subprocess.run(cmd, shell=True, check=True,
+                                stdout=subprocess.PIPE)
+            return cp.stdout
         except:
-            pass
+            return None
 
     def docker_cp(self, container_source, container_path, local_path="."):
         """ copy a file from a container to the host """
@@ -238,7 +251,7 @@ class Commander(object):
 
     def cmd_help(self):
         """print help """
-        print('%s <command>' % Cfg.script_name)
+        print('%s <command>' % config['script_name'])
         print('where command are')
 
         # get all the commands
@@ -260,25 +273,28 @@ class Commander(object):
         pc['customer_number'] = self.prompt_int('customer_number')
         pc['project_number'] = self.prompt_int('project_number')
         pc['slack_channel'] = self.prompt_string(
-            'slack_channel', Cfg.default_slack_channel)
+            'slack_channel', config['default_slack_channel'])
         pc['site_name'] = self.prompt_string(
-            'site_name', Cfg.default_site_name)
+            'site_name', config['default_site_name'])
         pc['local_url'] = self.prompt_string(
-            'local_url', Cfg.default_local_url)
+            'local_url', config['default_local_url'])
         pc['db_driver'] = self.prompt_string(
-            'db_driver', Cfg.default_db_driver)
+            'db_driver', config['default_db_driver'])
         # retriewve image versions
-        dv, vers = self.dockerhub_image_versions(Cfg.dockerhub_cms_image, 4)
+        dv, vers = self.dockerhub_image_versions(
+            config['dockerhub_cms_image'], 4)
         print("Here there are the available craft versions:")
         for i in range(len(vers)):
             num = "* [%2d]" % i if i == dv else "  [%2d]" % i
             print("%s %10s %dMb" % (num, vers[i][0], vers[i][1]))
         iv = int(self.prompt_int('image_version', 0, len(vers) - 1, def_val=dv))
         # select the version name from the version chosen by the user
-        pc["craft_image"] = "%s:%s" % (Cfg.dockerhub_cms_image, vers[iv][0])
+        pc["craft_image"] = "%s:%s" % (
+            config['dockerhub_cms_image'], vers[iv][0])
 
         # build stage domain
-        pc['stage_url'] = '%s.%s' % (self.prjc(sep="."), Cfg.staging_domain)
+        pc['stage_url'] = '%s.%s' % (
+            self.prjc(sep="."), config['staging_domain'])
 
         #  print summary
         print("")
@@ -298,20 +314,20 @@ class Commander(object):
         # generate security key
         self.upc("security_key", secrets.token_hex(32))
         # set the other default values
-        self.upc("craft_image", Cfg.dockerhub_cms_image)
-        self.upc("db_schema", Cfg.default_db_schema)
-        self.upc("db_server", Cfg.default_db_server)
-        self.upc("db_database", Cfg.default_db_name)
-        self.upc("db_user", Cfg.default_db_user)
-        self.upc("db_password", Cfg.default_db_pass)
-        self.upc("db_table_prefix", Cfg.default_db_table_prefix)
-        self.upc("craft_username", Cfg.default_craft_username)
-        self.upc("craft_email", Cfg.default_craft_email)
-        self.upc("craft_password",  Cfg.default_craft_passord)
-        self.upc("semver_major", Cfg.semver_major)
-        self.upc("semver_minor", Cfg.semver_minor)
-        self.upc("semver_patch", Cfg.semver_patch)
-        self.upc("craft_allow_updates", Cfg.default_craft_allow_updates)
+        self.upc("craft_image", config['dockerhub_cms_image'])
+        self.upc("db_schema", config['default_db_schema'])
+        self.upc("db_server", config['default_db_server'])
+        self.upc("db_database", config['default_db_name'])
+        self.upc("db_user", config['default_db_user'])
+        self.upc("db_password", config['default_db_pass'])
+        self.upc("db_table_prefix", config['default_db_table_prefix'])
+        self.upc("craft_username", config['default_craft_username'])
+        self.upc("craft_email", config['default_craft_email'])
+        self.upc("craft_password",  config['default_craft_passord'])
+        self.upc("semver_major", config['semver_major'])
+        self.upc("semver_minor", config['semver_minor'])
+        self.upc("semver_patch", config['semver_patch'])
+        self.upc("craft_allow_updates", config['default_craft_allow_updates'])
 
         self.upc("lang", "C.UTF-8")
         self.upc("environment", "dev")
@@ -341,8 +357,6 @@ class Commander(object):
                         "../migrations:/data/craft/migrations",
                         "../plugins:/data/craft/plugins",
                         "../web/uploads:/data/craft/web/uploads",
-                        "../composer.json:/data/craft/composer.json",
-                        "../composer.lock:/data/craft/composer.lock",
                     ],
                     "links": ["database"],
                     "environment": {
@@ -363,7 +377,9 @@ class Commander(object):
                         "CRAFT_SITEURL": pc['local_url'],
                         "CRAFT_LOCALE": pc["craft_locale"],
                         "CRAFT_ALLOW_UPDATES": pc["craft_allow_updates"],
-                        "HTTPD_OPTIONS": pc["httpd_options"]
+                        "CRAFT_DEVMODE": 1,  # enable development mode
+                        "HTTPD_OPTIONS": pc["httpd_options"],
+
                     }
                 }
             }
@@ -412,6 +428,8 @@ class Commander(object):
         docker_compose["services"]["craft"]["expose"] = [80, 443]
         docker_compose["services"]["craft"]["network_mode"] = "bridge"
         docker_compose["services"]["craft"]["environment"]["VIRTUAL_HOST"] = pc['stage_url']
+        # disable develpment mode
+        docker_compose["services"]["craft"]["environment"]["CRAFT_DEVMODE"] = 0
 
         # save docker-composer
         self.write_file(self.stage_yml, yaml.dump(
@@ -448,6 +466,10 @@ class Commander(object):
         self.require_configured()
         self.docker_compose("--project-name %s up -d" %
                             self.pcd(), self.local_yml)
+        # run the plugin installation in case
+        # they are not there anymore
+        for p in config['composer_require']:
+            self.cmd_install_plugin(p)
 
     def cmd_local_stop(self):
         """stop the local docker environment"""
@@ -466,7 +488,7 @@ class Commander(object):
         """export the database-seed.sql"""
         self.require_configured(with_containers=True)
         seed_file = os.path.join(self.project_path, "config",
-                                 Cfg.database_seed)
+                                 config['database_seed'])
         # run mysql dump
         container_target = "database_%s" % self.pcd()
         command = """exec mysqldump -uroot -p"craft" --add-drop-table craft"""
@@ -479,14 +501,14 @@ class Commander(object):
         """import the database-seed.sql"""
         self.require_configured(with_containers=True)
         seed_file = os.path.join(self.project_path, "config",
-                                 Cfg.database_seed)
+                                 config['database_seed'])
         # run mysql dump
         container_target = "database_%s" % self.pcd()
         command = """exec mysql -u%s -p"%s" %s""" % (
-            Cfg.default_db_user, Cfg.default_db_pass, Cfg.default_db_name)
+            config['default_db_user'], config['default_db_pass'], config['default_db_name'])
         if self.project_conf["db_driver"] == "pgsql":
             command = """exec psql --quiet -U %s -d "%s" """ % (
-                Cfg.default_db_user, Cfg.default_db_name)
+                config['default_db_user'], config['default_db_name'])
         additional_options = "< %s" % seed_file
         self.docker_exec(container_target, command, additional_options)
 
@@ -512,11 +534,11 @@ class Commander(object):
         val = self.prompt_int("semver", 0, 2, 0)
         if int(val) == 0:
             pc['semver_major'] += 1
-            pc['semver_minor'] = Cfg.semver_minor
-            pc['semver_patch'] = Cfg.semver_patch
+            pc['semver_minor'] = config['semver_minor']
+            pc['semver_patch'] = config['semver_patch']
         elif int(val) == 1:
             pc['semver_minor'] += 1
-            pc['semver_patch'] = Cfg.semver_patch
+            pc['semver_patch'] = config['semver_patch']
         else:
             pc['semver_patch'] += 1
         # dump the seed database
@@ -555,9 +577,9 @@ def cmd2method(cmd):
 
 
 if __name__ == '__main__':
-    Cfg.script_name = sys.argv[0]
+    config['script_name'] = sys.argv[0]
     c = Commander()
-
+    # too lazy to use argparse, will go with refrlection
     if len(sys.argv) == 1 or not hasattr(c, cmd2method(sys.argv[1])):
         c.cmd_help()
         exit(0)
