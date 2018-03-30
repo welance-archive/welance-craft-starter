@@ -12,12 +12,11 @@ import json
 import requests
 import yaml
 import re
-
+import argparse
 
 config = {
     # configuration version
     'version': '3.0.0',
-    'script_name': "butler.py",
     # name of the project configuration file
     'project_conf_file': ".env.json",
     'dockerhub_cms_image': "welance/craft",
@@ -250,18 +249,7 @@ class Commander(object):
     #  COMMANDS
     #
 
-    def cmd_help(self):
-        """print help """
-        print('%s <command>' % config['script_name'])
-        print('where command are')
-
-        # get all the commands
-        for name, obj in inspect.getmembers(self, inspect.ismethod):
-            if (name.startswith('cmd_')):
-                print(" %-18s - %s" %
-                      (name[4:].replace("_", "-"), obj.__doc__))
-
-    def cmd_setup(self):
+    def cmd_setup(self, ns=None):
         """set up the application """
         # shorcut since "self.project_conf" is too long to write
         pc = self.project_conf
@@ -448,7 +436,7 @@ class Commander(object):
                             self.pcd(), self.local_yml)
         print("setup completed")
 
-    def cmd_restore(self):
+    def cmd_restore(self, ns=None):
         """restore a project that has been teardown, recreating the configurations """
         self.require_configured()
         # if the config  already exists prompt what to do
@@ -462,7 +450,7 @@ class Commander(object):
             return
         print("there is nothing to restore, perhaps you want to setup?")
 
-    def cmd_local_start(self):
+    def cmd_local_start(self, ns=None):
         """start the local docker environment"""
         self.require_configured()
         self.docker_compose("--project-name %s up -d" %
@@ -470,22 +458,22 @@ class Commander(object):
         # run the plugin installation in case
         # they are not there anymore
         for p in config['composer_require']:
-            self.cmd_install_plugin(p)
+            self.plugin_install(p)
 
-    def cmd_local_stop(self):
+    def cmd_local_stop(self, ns=None):
         """stop the local docker environment"""
         self.require_configured()
         self.docker_compose("--project-name %s stop" % self.pcd(),
                             self.local_yml)
 
-    def cmd_local_teardown(self):
+    def cmd_local_teardown(self, ns=None):
         """destroy the local docker environment"""
         self.require_configured()
         if self.prompt_yesno('project_teardown'):
             self.docker_compose("--project-name %s down -v" % self.pcd(),
                                 self.local_yml)
 
-    def cmd_seed_export(self):
+    def cmd_seed_export(self, ns=None):
         """export the database-seed.sql"""
         self.require_configured(with_containers=True)
         seed_file = os.path.join(self.project_path, "config",
@@ -498,7 +486,7 @@ class Commander(object):
         additional_options = "> %s" % seed_file
         self.docker_exec(container_target, command, additional_options)
 
-    def cmd_seed_import(self):
+    def cmd_seed_import(self, ns=None):
         """import the database-seed.sql"""
         self.require_configured(with_containers=True)
         seed_file = os.path.join(self.project_path, "config",
@@ -513,7 +501,7 @@ class Commander(object):
         additional_options = "< %s" % seed_file
         self.docker_exec(container_target, command, additional_options)
 
-    def cmd_info(self):
+    def cmd_info(self, ns=None):
         """print the current project info and version"""
         self.require_configured()
         pc = self.project_conf
@@ -526,7 +514,7 @@ class Commander(object):
         print("Project Version : %s" % self.semver())
         print("")
 
-    def cmd_package_release(self):
+    def cmd_package_release(self, ns=None):
         """create a gzip containg the project release"""
         self.require_configured(with_containers=True)
         pc = self.project_conf
@@ -560,14 +548,18 @@ class Commander(object):
         self.write_file(self.config_path, json.dumps(
             self.project_conf, indent=2))
 
-    def cmd_composer_update(self):
+    def cmd_composer_update(self, ns=None):
         """run composer install on the target environment (experimental)"""
         self.require_configured(with_containers=True)
         container_target = "craft_%s" % self.pcd()
         command = """cd craft && composer update"""
         self.docker_exec(container_target, command)
 
-    def cmd_install_plugin(self, plugin_name=None):
+    def cmd_plugin_install(self, ns=None):
+        """handles the command to install a plugin with composer in craft environment (@see plugin_install)"""
+        self.plugin_install(ns.name)
+
+    def plugin_install(self, plugin_name):
         """install a plugin with composer in craft environment (if not yet installed)"""
         self.require_configured(with_containers=True)
         container_target = "craft_%s" % self.pcd()
@@ -575,15 +567,51 @@ class Commander(object):
         command = """cd craft && composer show --name-only | grep %s | wc -l""" % plugin_name
         res = self.docker_exec(container_target, command)
         if int(res) > 0:
-            print("plugin %s already installed" % plugin_name)
-            return
-        # run composer install
-        command = """cd craft && composer require %s --no-interaction""" % plugin_name
-        self.docker_exec(container_target, command)
-        # run craft install
-        command = """craft/craft install/plugin %s """ % re.sub(
-            r'^.*?/', '', plugin_name)
-        self.docker_exec(container_target, command)
+            print("plugin %s installed" % plugin_name)
+        else:
+            # run composer install
+            command = """cd craft && composer require %s --no-interaction""" % plugin_name
+            self.docker_exec(container_target, command)
+            # run craft install
+            command = """craft/craft install/plugin %s """ % re.sub(
+                r'^.*?/', '', plugin_name)
+            self.docker_exec(container_target, command)
+        # get the list of plugins required for the project in conf
+        cr = self.project_conf.get('composer_require', [])
+        # if the plugin was not listed add it to the project
+        if plugin_name not in cr:
+            cr.append(plugin_name)
+            self.project_conf['composer_require'] = cr
+            # save project conf
+            self.write_file(self.config_path, json.dumps(
+                self.project_conf, indent=2))
+
+    def cmd_plugin_remove(self, ns=None):
+        """handles the command line command to uninstall a plugin with composer in craft environment @see plugin_remove"""
+        self.plugin_remove(ns.name)
+
+    def plugin_remove(self, plugin_name):
+        """uninstall a plugin with composer in craft environment (if installed)"""
+        self.require_configured(with_containers=True)
+        container_target = "craft_%s" % self.pcd()
+        # check if the package is already installed
+        command = """cd craft && composer show --name-only | grep %s | wc -l""" % plugin_name
+        res = self.docker_exec(container_target, command)
+        if int(res) <= 0:
+            print("plugin %s is not installed" % plugin_name)
+        else:
+            # run composer uninstall
+            command = """cd craft && composer remove %s --no-interaction""" % plugin_name
+            self.docker_exec(container_target, command)
+        # get the list of plugins required for the project in conf
+        cr = self.project_conf.get('composer_require', [])
+        # if the plugin was not listed add it to the project
+        if plugin_name in cr:
+            cr.remove(plugin_name)
+            self.project_conf['composer_require'] = cr
+            # save project conf
+            self.write_file(self.config_path, json.dumps(
+                self.project_conf, indent=2))
 
 
 # main function
@@ -596,10 +624,90 @@ def cmd2method(cmd):
 
 
 if __name__ == '__main__':
-    config['script_name'] = sys.argv[0]
+    cmds = [
+        {
+            'name': 'setup',
+            'help': 'set up the application'
+        },
+        {
+            'name': 'seed-import',
+            'help': 'import the database-seed.sql'
+        },
+        {
+            'name': 'seed-export',
+            'help': 'export the database-seed.sql'
+        },
+        {
+            'name': 'info',
+            'help': 'print the current project info and version'
+        },
+        {
+            'name': 'local-start',
+            'help': 'start the local docker environment'
+        },
+        {
+            'name': 'local-stop',
+            'help': 'stops the local docker environment'
+        },
+        {
+            'name': 'local-teardown',
+            'help': 'destroy the local docker environment'
+        },
+        {
+            'name': 'restore',
+            'help': 'restore a project that has been teardown, recreating the configurations'
+        },
+        {
+            'name': 'package-release',
+            'help': 'create a gzip containg the project release'
+        },
+        {
+            'name': 'plugin-install',
+            'help': 'install a plugin into craft',
+            'args': [
+                {
+                    'names': ['name'],
+                    'help': 'the name of the plugin to install, ex. craftcms/aws-s3',
+                }
+            ]
+
+        },
+        {
+            'name': 'plugin-remove',
+            'help': 'uninstall a plugin from craft',
+            'args': [
+                {
+                    'names': ['name'],
+                    'help': 'the name of the plugin to remove, ex. craftcms/aws-s3',
+                }
+            ]
+
+        },
+    ]
+
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers()
+    subparsers.required = True
+    subparsers.dest = 'command'
+
+    # get our global options and subcommand
+    # parser.add_argument(
+    #     '--database', help='Specify a database to use (default = ./tickets.db)')
+    # parser.add_argument('--service', help='Specify which service to work with')
+
+    for c in cmds:
+        subp = subparsers.add_parser(c['name'], help=c['help'])
+        subargs = c.get('args')
+        if subargs is not None:
+            for sa in subargs:
+                subp.add_argument(*sa['names'],
+                                  help=sa['help'],
+                                  action=sa.get('action'),
+                                  default=sa.get('default'))
+
+    args = parser.parse_args()
+
     c = Commander()
-    # too lazy to use argparse, will go with refrlection
-    if len(sys.argv) == 1 or not hasattr(c, cmd2method(sys.argv[1])):
-        c.cmd_help()
-        exit(0)
-    getattr(c, cmd2method(sys.argv[1]))()
+    # call the command with our args
+    ret = getattr(c, 'cmd_{0}'.format(args.command.replace('-', '_')))(args)
+    sys.exit(ret)
