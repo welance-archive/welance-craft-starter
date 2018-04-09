@@ -1,11 +1,7 @@
 <?php
 
-
-
-
-
 /**
-eral Configuration
+ * Genereral Configuration
  *
  * All of your system's general configuration settings go in here. You can see a
  * list of the available settings in vendor/craftcms/cms/src/config/GeneralConfig.php.
@@ -23,27 +19,16 @@ return [
         'cpTrigger' => 'admin',
         // The secure key Craft will use for hashing and encrypting data
         'securityKey' => getenv('SECURITY_KEY'),
-        'environmentVariables' => array(
-            'baseUrl'  => getenv('CRAFT_SITEURL'),
-            'assetsBaseUrl'  => getenv('CRAFT_SITEURL')+"/assets"
-        ),
-    ],
-    // Dev environment settings
-    'dev' => [
         // Base site URL
         'siteUrl' => getenv('CRAFT_SITEURL'),
         // Dev Mode (see https://craftcms.com/support/dev-mode)
-        'devMode' => true,
-    ],
-    // Staging environment settings
-    'staging' => [
-        // Base site URL
-        'siteUrl' => getenv('CRAFT_SITEURL'),
-    ],
-    // Production environment settings
-    'production' => [
-        // Base site URL
-        'siteUrl' => getenv('CRAFT_SITEURL'),
+        'devMode' => getenv('CRAFT_DEVMODE'),
+        // disable updates on dev environment they have to be perforemed with care
+        'allowUpdates' => getenv('CRAFT_ALLOW_UPDATES'),
+
+        'environmentVariables' => array(
+            'baseUrl' => getenv('CRAFT_SITEURL'),
+            'assetsBaseUrl' => getenv('CRAFT_SITEURL')+"/assets",
+        ),
     ],
 ];
-

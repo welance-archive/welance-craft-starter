@@ -48,9 +48,11 @@ done
 php -f $SCRIPTS_DIR/poll-craft.php
 OUT=$?
 if [ $OUT -eq 1 ]; then
+    echo "craftcms is not installed, will perform initial setup"
     echo "run craft setup"
     /data/craft/craft install --interactive=0 --email=$CRAFT_EMAIL --username=$CRAFT_USERNAME --password=$CRAFT_PASSWORD --siteName="$CRAFT_SITENAME" --siteUrl=$CRAFT_SITEURL    
     echo "setup completed"
+    # TODO: load the database-seed.sql file
 fi
 
 #import schematic

@@ -13,6 +13,7 @@ import requests
 import yaml
 import re
 import argparse
+import time
 
 config = {
     # configuration version
@@ -65,9 +66,10 @@ config = {
 class Commander(object):
     """ main class for command exectution"""
 
-    def __init__(self):
+    def __init__(self, verbose=False):
         filename = inspect.getframeinfo(inspect.currentframe()).filename
         script_path = Path(filename).resolve()
+        self.verbose = verbose
         # absolute path to the project root
         self.project_path = script_path.parent.parent
         # absolute path to the configuration file
@@ -146,6 +148,11 @@ class Commander(object):
         }
         return prompts.get(prompt_key)
 
+    def upc(self, key, default_value):
+        """set a project_conf value if it is not alredy set"""
+        if key not in self.project_conf:
+            self.project_conf[key] = default_value
+
     def docker_compose(self, params, yaml_path="docker-compose.yml"):
         """ execte docker-compose commmand """
         cmd = "docker-compose -f %s %s " % (yaml_path, params)
@@ -159,11 +166,14 @@ class Commander(object):
         """ execte docker exec commmand and return the stdout or None when error"""
         cmd = """docker exec -i "%s" sh -c '%s' %s""" % (
             container_target, command, additional_options)
-        print(cmd)
+        if self.verbose:
+            print(cmd)
         try:
-            cp = subprocess.run(cmd, shell=True, check=True,
+            cp = subprocess.run(cmd,
+                                shell=True,
+                                check=True,
                                 stdout=subprocess.PIPE)
-            return cp.stdout
+            return cp.stdout.decode("utf-8").strip()
         except:
             return None
 
@@ -239,11 +249,6 @@ class Commander(object):
         fp = open(filepath, 'w')
         fp.write(data)
         fp.close()
-
-    def upc(self, key, default_value):
-        """set a project_conf value if it is not alredy set"""
-        if key not in self.project_conf:
-            self.project_conf[key] = default_value
 
     #
     #  COMMANDS
@@ -344,7 +349,6 @@ class Commander(object):
                         "../config:/data/craft/config",
                         "../templates:/data/craft/templates",
                         "../migrations:/data/craft/migrations",
-                        "../plugins:/data/craft/plugins",
                         "../web/uploads:/data/craft/web/uploads",
                     ],
                     "links": ["database"],
@@ -453,10 +457,47 @@ class Commander(object):
     def cmd_local_start(self, ns=None):
         """start the local docker environment"""
         self.require_configured()
-        self.docker_compose("--project-name %s up -d" %
-                            self.pcd(), self.local_yml)
+        cmd = "--project-name {} up -d".format(self.pcd())
+        self.docker_compose(cmd, self.local_yml)
+        # TESTING FOR REMOVE EMBEDDED STUFF
+        # poll the databse
+        # container_target = "database_%s" % self.pcd()
+        # cmdp = {
+        #     'db_u': self.project_conf['db_user'],
+        #     'db_p': self.project_conf['db_password'],
+        #     'db_d': self.project_conf['db_database'],
+        #     'q': 'SELECT 1 FROM DUAL'
+        # }
+        # # command
+        # command = 'mysql -h localhost -u {db_u}  -p{db_p} -e "{q}" -s {db_d}'
+        # if self.project_conf['db_driver'] == 'pgsql':
+        #     command = 'sudo -u postgres psql {db_d} -c {query}'
+
+        # print("check database status")
+        # res = '0'
+        # while res != '1':
+        #     res = self.docker_exec(container_target, command.format(**cmdp))
+        #     time.sleep(3)
+        # print("database online")
+        # # check craftcms status
+        # cmdp['q'] = 'SELECT version, schemaVersion FROM craft_info'
+        # res = self.docker_exec(container_target, command.format(**cmdp))
+        # if len(res) == 0:
+        #     print('craft is not installed, running the installer')
+        #     # craft is not installed, TODO: run the installer
+        #     cmdp = {
+        #       'cr_e': self.project_conf['craft_email'],
+        #       'cr_u': self.project_conf['craft_username'],
+        #       'cr_p': self.project_conf['craft_password'],
+        #       'cr_n': self.project_conf['site_name'],
+        #     }
+        #     command = '/data/craft/craft install --interactive=0 --email=$CRAFT_EMAIL --username=$CRAFT_USERNAME --password=$CRAFT_PASSWORD --siteName="$CRAFT_SITENAME" --siteUrl=$CRAFT_SITEURL'
+        #     container_target = "craft_%s" % self.pcd()
+        #     self.docker_exec(container_target, command)
+        #     print('installation completed')
+
         # run the plugin installation in case
-        # they are not there anymore
+        # they are not there yet or anymore
         for p in config['composer_require']:
             self.plugin_install(p)
 
@@ -614,15 +655,6 @@ class Commander(object):
                 self.project_conf, indent=2))
 
 
-# main function
-def main():
-    """run the butler system"""
-
-
-def cmd2method(cmd):
-    return "cmd_%s" % cmd.replace("-", "_")
-
-
 if __name__ == '__main__':
     cmds = [
         {
@@ -686,28 +718,24 @@ if __name__ == '__main__':
     ]
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--verbose', help='print verbose messages',
+                        action='store_true', default=False)
     subparsers = parser.add_subparsers()
     subparsers.required = True
     subparsers.dest = 'command'
-
-    # get our global options and subcommand
-    # parser.add_argument(
-    #     '--database', help='Specify a database to use (default = ./tickets.db)')
-    # parser.add_argument('--service', help='Specify which service to work with')
-
+    # register all the commands
     for c in cmds:
         subp = subparsers.add_parser(c['name'], help=c['help'])
-        subargs = c.get('args')
-        if subargs is not None:
-            for sa in subargs:
-                subp.add_argument(*sa['names'],
-                                  help=sa['help'],
-                                  action=sa.get('action'),
-                                  default=sa.get('default'))
+        # add the sub arguments
+        for sa in c.get('args', []):
+            subp.add_argument(*sa['names'],
+                              help=sa['help'],
+                              action=sa.get('action'),
+                              default=sa.get('default'))
 
     args = parser.parse_args()
 
-    c = Commander()
+    c = Commander(args.verbose)
     # call the command with our args
     ret = getattr(c, 'cmd_{0}'.format(args.command.replace('-', '_')))(args)
     sys.exit(ret)
