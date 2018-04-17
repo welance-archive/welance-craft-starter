@@ -89,29 +89,7 @@ class Commander(object):
         self.stage_yml = os.path.join(
             self.project_path, "docker", config['docker_compose_stage'])
 
-    def prjc(self, sep="_"):
-        """shortcut to get project coordinates like C_P"""
-        return "%s%s%s" % (self.project_conf['customer_number'], sep,
-                           self.project_conf['project_number'])
-
-    def pcd(self):
-        """shortcut to get the docker project code that is c{customer number}p{projectnumber}"""
-        return "c%sp%s" % (self.project_conf['customer_number'],
-                           self.project_conf['project_number'])
-
-    def semver(self):
-        """ create a string representation of the versino of the project """
-        ma = self.project_conf.get("semver_major", config['semver_major'])
-        mi = self.project_conf.get("semver_minor", config['semver_minor'])
-        pa = self.project_conf.get("semver_patch", config['semver_patch'])
-        self.project_conf["semver_major"] = ma
-        self.project_conf["semver_minor"] = mi
-        self.project_conf["semver_patch"] = pa
-        return "%d.%d.%d" % (ma, mi, pa)
-
-    def require_configured(self, with_containers=False):
-        """ check if the project is configured or die otherwise """
-        if not self.project_is_configured:
+    def prjc(self, sep="-
             print("the project is not yet configured, run the setup command first")
             exit(0)
         if with_containers:
@@ -371,6 +349,7 @@ class Commander(object):
                         "CRAFT_LOCALE": pc["craft_locale"],
                         "CRAFT_ALLOW_UPDATES": pc["craft_allow_updates"],
                         "CRAFT_DEVMODE": 1,  # enable development mode
+                        "CRAFT_ENABLE_CACHE": 0,  # disable cache
                         "HTTPD_OPTIONS": pc["httpd_options"],
 
                     }
@@ -423,6 +402,7 @@ class Commander(object):
         docker_compose["services"]["craft"]["environment"]["VIRTUAL_HOST"] = pc['stage_url']
         # disable develpment mode
         docker_compose["services"]["craft"]["environment"]["CRAFT_DEVMODE"] = 0
+        docker_compose["services"]["craft"]["environment"]["CRAFT_ENABLE_CACHE"] = 1
 
         # save docker-composer
         self.write_file(self.stage_yml, yaml.dump(

@@ -23,6 +23,8 @@ return [
         'siteUrl' => getenv('CRAFT_SITEURL'),
         // Dev Mode (see https://craftcms.com/support/dev-mode)
         'devMode' => getenv('CRAFT_DEVMODE'),
+        // Cachin 
+        'cache' => getenv('CRAFT_ENABLE_CACHE'),
         // disable updates on dev environment they have to be perforemed with care
         'allowUpdates' => getenv('CRAFT_ALLOW_UPDATES'),
 
