@@ -40,15 +40,15 @@ coreutils \
 wget \
 tar \
 gzip \
+bash \
 && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
 && mkdir -p /data && mkdir -p /run/apache2 \
 && composer create-project craftcms/craft:${CRAFT_PROJECT_VERSION} /data/craft \
-&& rm /data/craft/.env \
 # remove xdebug since we'll decide in the php.ini file to enable it or not
 && rm /etc/php7/conf.d/*xdebug.ini  
 
-ADD scripts /data/scripts
+ADD docker/craft/scripts /data/scripts
 # fix permissions
 RUN chmod +x /data/scripts/*.sh \
 && chown -R apache:apache /data/craft 

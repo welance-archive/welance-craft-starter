@@ -42,6 +42,20 @@ the craft cms image is available [here](https://hub.docker.com/r/welance/craft/)
 To publish an updated image of CraftCMS container to docker hub do the folowing:
 
 ```
+make docker-publish TAG=$CRAFT_VERSION
+```
+
+where `$CRAFT_VERSION` is the craft version to publish, for example 
+
+```
+make docker-publish TAG=3.0.5 
+```
+
+will publish the image `welance/craft:3.0.5` to the docker hub registry
+
+Alternatively, the long version is:
+
+```
 # cd into the docker/craft folder of the base project
 cd docker/craft
 # build a new image (this is going to be the 'latest' tag)
