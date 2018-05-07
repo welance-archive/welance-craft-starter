@@ -53,6 +53,7 @@ config = {
     'semver_patch': 0,
     # required plugins
     'composer_require': [
+        'nerds-and-company/schematic',
         'craftcms/redactor',
         'craftcms/aws-s3'
     ]
@@ -610,14 +611,14 @@ class Commander(object):
         """uninstall a plugin with composer in craft environment (if installed)"""
         self.require_configured(with_containers=True)
         # check if the package is already installed
-        command = f"cd craft && composer show --name-only | grep {plugin_name} | wc -l"
-        res = self.docker.exec(self.cms_container, command)
+        cmd = f"cd craft && composer show --name-only | grep {plugin_name} | wc -l"
+        res = self.docker.exec(self.cms_container, cmd)
         if int(res) <= 0:
             print("plugin %s is not installed" % plugin_name)
         else:
             # run composer uninstall
-            command = f"cd craft && composer remove {plugin_name} --no-interaction"
-            self.docker.exec(self.cms_container, command)
+            cmd = f"cd craft && composer remove {plugin_name} --no-interaction"
+            self.docker.exec(self.cms_container, cmd)
         # get the list of plugins required for the project in conf
         cr = self.project_conf.get('composer_require', [])
         # if the plugin was not listed add it to the project
@@ -626,6 +627,20 @@ class Commander(object):
             self.project_conf['composer_require'] = cr
             # save project conf
             self.write_file(self.config_path, json.dumps(self.project_conf, indent=2))
+
+    def cmd_schema_export(self, args=None):
+        """export the schema using schematic"""
+        self.require_configured(with_containers=True)
+        cmd = f"/data/craft/craft schematic/export --file={args.file}"
+        self.docker.exec(self.cms_container, cmd)
+        print(f"schema export complete")
+
+    def cmd_schema_import(self, args=None):
+        """import the schema using schematic"""
+        self.require_configured(with_containers=True)
+        cmd = f"/data/craft/craft schematic/import --file={args.file}"
+        self.docker.exec(self.cms_container, cmd)
+        print(f"schema import complete")
 
 
 if __name__ == '__main__':
@@ -636,11 +651,25 @@ if __name__ == '__main__':
         },
         {
             'name': 'seed-import',
-            'help': 'import the database-seed.sql'
+            'help': 'import the database-seed.sql',
+            'args': [
+                {
+                    'names': ['-f', '--file'],
+                    'help': 'path of the sql to import',
+                    'default': '/data/craft/config/database-seed.sql'
+                }
+            ]
         },
         {
             'name': 'seed-export',
-            'help': 'export the database-seed.sql'
+            'help': 'export the database-seed.sql',
+            'args': [
+                {
+                    'names': ['-f', '--file'],
+                    'help': 'path of produced sql',
+                    'default': '/data/craft/config/database-seed.sql'
+                }
+            ]
         },
         {
             'name': 'info',
@@ -686,14 +715,34 @@ if __name__ == '__main__':
                     'help': 'the name of the plugin to remove, ex. craftcms/aws-s3',
                 }
             ]
-
+        },
+        {
+            'name': 'schema-export',
+            'help': 'export the craft schema',
+            'args': [
+                {
+                    'names': ['-f', '--file'],
+                    'help': 'path of the schema where to export',
+                    'default': '/data/craft/config/schema.yml'
+                }
+            ]
+        },
+        {
+            'name': 'schema-import',
+            'help': 'import the craft schema',
+            'args': [
+                {
+                    'names': ['-f', '--file'],
+                    'help': 'path of the schemat to import',
+                    'default': '/data/craft/config/schema.yml'
+                }
+            ]
         },
     ]
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose', help='print verbose messages',
-                        action='store_true', default=False)
-    subparsers = parser.add_subparsers()
+    parser.add_argument('-v', '--verbose', help='print verbose messages', action='store_true', default=False)
+    subparsers = parser.add_subparsers(title="commands")
     subparsers.required = True
     subparsers.dest = 'command'
     # register all the commands
