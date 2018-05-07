@@ -1,12 +1,10 @@
 FROM alpine:3.6
 
-MAINTAINER Enrico Icardi "enrico@welance.com"
+LABEL mainteiner="andrea@welance.com"
 
 
 # Set craft cms version
-ENV CRAFT_VERSION=2.6 
-ENV CRAFT_BUILD=3002
-ENV CRAFT_ZIP=Craft-$CRAFT_VERSION.$CRAFT_BUILD.zip
+ENV CRAFT_PROJECT_VERSION='^1.0'
 
 # install php/apache2/sha256sum
 RUN apk add --no-cache \
@@ -16,6 +14,8 @@ php7 \
 php7-apache2 \
 php7-pdo \
 php7-pdo_mysql \
+php7-pdo_pgsql \
+php7-pgsql \
 php7-mcrypt \
 php7-gd \
 php7-openssl \
@@ -32,39 +32,30 @@ php7-zlib \
 php7-xml \
 php7-simplexml \
 php7-zlib \
-unzip \
-tar \
+php7-dom \
+php7-fileinfo \
+php7-intl \
+php7-xdebug \
 coreutils \
-wget; \
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"; \
-php composer-setup.php --install-dir=/usr/local/bin --filename=composer; \
-mkdir -p /data; mkdir -p /run/apache2; \
-cd /data; \
-composer require nerds-and-company/schematic:3.8.*
+wget \
+tar \
+gzip \
+bash \
+&& php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+&& php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+&& mkdir -p /data && mkdir -p /run/apache2 \
+&& composer create-project craftcms/craft:${CRAFT_PROJECT_VERSION} /data/craft \
+# remove xdebug since we'll decide in the php.ini file to enable it or not
+&& rm /etc/php7/conf.d/*xdebug.ini  
 
+ADD docker/craft/scripts /data/scripts
+# fix permissions
+RUN chmod +x /data/scripts/*.sh \
+&& chown -R apache:apache /data/craft 
 
-# create the folder if not exists or apache will not start
-
-
-# Download the latest Craft (https://craftcms.com/support/download-previous-versions)
-ADD https://download.buildwithcraft.com/craft/$CRAFT_VERSION/$CRAFT_VERSION.$CRAFT_BUILD/$CRAFT_ZIP /tmp/$CRAFT_ZIP
-
-# Extract craft to webroot & remove default template files
-RUN unzip -qo /tmp/$CRAFT_ZIP -d /data
-
-# Add the environment variable settings to public/index.php
-#RUN mv $WEBROOT/index.php $CRAFTROOT/index.php.original
-#RUN awk '!found && /\$craftPath/ {print;print "define(\"CRAFT_ENVIRONMENT\", env(\"CRAFT_ENVIRONMENT\"));";found=1;next} 1' $CRAFTROOT/index.php.original > $WEBROOT/index.php
-
-# Cleanup
-RUN rm /tmp/$CRAFT_ZIP 
-#&& chown -Rf www-data:www-data $CRAFTROOT
-
-ADD scripts /data/scripts
-RUN chmod +x /data/scripts/*.sh
-# this script will be used to orchestrate the startup of the containers
-ADD scripts/poll-db.php /data/scripts/poll-db.php
-
+# everthing is in /data
+WORKDIR /data
+# expose port 80
 EXPOSE 80
 CMD ["/data/scripts/run-craft.sh"]
 

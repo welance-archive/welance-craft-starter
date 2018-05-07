@@ -1,35 +1,18 @@
 <?php
 
 /**
- * Database Configuration
+* Database Configuration
  *
- * All of your system's database configuration settings go in here.
- * You can see a list of the default settings in craft/app/etc/config/defaults/db.php
+ * All of your system's database connection settings go in here. You can see a
+ * list of the available settings in vendor/craftcms/cms/src/config/DbConfig.php.
  */
-
-return array(
-    '*' => array(
-        'tablePrefix' => 'craft'
-    ),
-    '.dev' => array(
-        // The database server name or IP address. Usually this is 'localhost' or '127.0.0.1'.
-        'server' => getenv('DB_HOST'),
-        // The name of the database to select.
-        'database' => getenv('DB_NAME'),
-        // The database username to connect with.
-        'user' => getenv('DB_USER'),
-        // The database password to connect with.
-        'password' =>  getenv('DB_PASS'),
-    ),
-    '.net' => array(
-        // The database server name or IP address. Usually this is 'localhost' or '127.0.0.1'.
-        'server' => getenv('DB_HOST'),
-        // The name of the database to select.
-        'database' => getenv('DB_NAME'),
-        // The database username to connect with.
-        'user' => getenv('DB_USER'),
-        // The database password to connect with.
-        'password' =>  getenv('DB_PASS'),
-    ),
-
-);
+return [
+    'driver' => getenv('DB_DRIVER'),
+    'server' => getenv('DB_SERVER'),
+    'user' => getenv('DB_USER'),
+    'password' => getenv('DB_PASSWORD'),
+    'database' => getenv('DB_DATABASE'),
+    'schema' => getenv('DB_SCHEMA'),
+    'tablePrefix' => getenv('DB_TABLE_PREFIX'),
+    'port' => getenv('DB_PORT')
+];
