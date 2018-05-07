@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """ butler allows to setup a welance craft3 cms project """
 
@@ -13,13 +13,12 @@ import requests
 import yaml
 import re
 import argparse
-import time
 
 config = {
     # configuration version
     'version': '3.0.0',
     # name of the project configuration file
-    'project_conf_file': ".env.json",
+    'project_conf_file': ".welance_prj.json",
     'dockerhub_cms_image': "welance/craft",
     'dockerhub_mysql_image': "library/mysql",
     'dockerhub_pgsql_image': "library/posgtre",
@@ -63,49 +62,15 @@ config = {
 """ name of the out configuration file """
 
 
-class Commander(object):
-    """ main class for command exectution"""
+#   _______  _______      ___   _______  ____    ____  _______   _________
+#  |_   __ \|_   __ \   .'   `.|_   __ \|_   \  /   _||_   __ \ |  _   _  |
+#    | |__) | | |__) | /  .-.  \ | |__) | |   \/   |    | |__) ||_/ | | \_|
+#    |  ___/  |  __ /  | |   | | |  ___/  | |\  /| |    |  ___/     | |
+#   _| |_    _| |  \ \_\  `-'  /_| |_    _| |_\/_| |_  _| |_       _| |_
+#  |_____|  |____| |___|`.___.'|_____|  |_____||_____||_____|     |_____|
+#
 
-    def __init__(self, verbose=False):
-        filename = inspect.getframeinfo(inspect.currentframe()).filename
-        script_path = Path(filename).resolve()
-        self.verbose = verbose
-        # absolute path to the project root
-        self.project_path = script_path.parent.parent
-        # absolute path to the configuration file
-        self.config_path = os.path.join(
-            script_path.parent, config['project_conf_file'])
-        # tells if the project has a configuration file
-        self.project_is_configured = False
-        self.project_conf = {}
-        if os.path.exists(self.config_path):
-            fp = open(self.config_path, 'r')
-            self.project_conf = json.load(fp)
-            fp.close()
-            self.project_is_configured = True
-        # path for staging and local yaml
-        self.local_yml = os.path.join(
-            self.project_path, "docker", config['docker_compose_local'])
-        self.stage_yml = os.path.join(
-            self.project_path, "docker", config['docker_compose_stage'])
-
-    def prjc(self, sep="-
-            print("the project is not yet configured, run the setup command first")
-            exit(0)
-        if with_containers:
-            try:
-                # check if docker is running
-                s = str(subprocess.check_output('docker ps',
-                                                shell=True, stderr=subprocess.STDOUT))
-                c1, c2 = ("database_%s" % self.pcd(), "craft_%s" % self.pcd())
-                # check if the containers are running
-                if s.find(c1) == -1 or s.find(c2) == -1:
-                    print(
-                        "the project containers are not running, run the local-start command first")
-                    exit(0)
-            except subprocess.CalledProcessError:
-                print("docker is not running")
-                exit(0)
+class Prompter(object):
 
     def p(self, prompt_key):
         """ retrieve the message of a prompt  """
@@ -126,73 +91,18 @@ class Commander(object):
         }
         return prompts.get(prompt_key)
 
-    def upc(self, key, default_value):
-        """set a project_conf value if it is not alredy set"""
-        if key not in self.project_conf:
-            self.project_conf[key] = default_value
+    def say(self, prompt_key):
+        """say something"""
+        print(self.p(prompt_key))
 
-    def docker_compose(self, params, yaml_path="docker-compose.yml"):
-        """ execte docker-compose commmand """
-        cmd = "docker-compose -f %s %s " % (yaml_path, params)
-        print(cmd)
-        try:
-            subprocess.run(cmd, shell=True, check=True)
-        except:
-            pass
-
-    def docker_exec(self, container_target, command, additional_options=""):
-        """ execte docker exec commmand and return the stdout or None when error"""
-        cmd = """docker exec -i "%s" sh -c '%s' %s""" % (
-            container_target, command, additional_options)
-        if self.verbose:
-            print(cmd)
-        try:
-            cp = subprocess.run(cmd,
-                                shell=True,
-                                check=True,
-                                stdout=subprocess.PIPE)
-            return cp.stdout.decode("utf-8").strip()
-        except:
-            return None
-
-    def docker_cp(self, container_source, container_path, local_path="."):
-        """ copy a file from a container to the host """
-        # docker cp <containerId>:/file/path/within/container /host/path/target
-        cmd = """docker cp %s:%s %s""" % (
-            container_source, container_path, local_path)
-        print(cmd)
-        try:
-            subprocess.run(cmd, shell=True, check=True)
-        except:
-            pass
-
-    def dockerhub_image_versions(self, name, max_results=0):
-        """retrieve the list of versions and it's size in MB of an image from docker hub"""
-        url = "https://registry.hub.docker.com/v2/repositories/%s/tags/" % (
-            name)
-        # url = 'http://localhost:9999/download.json'
-        try:
-            images = requests.get(url).json()
-        except:
-            print("sorry chief, I cannot contact dockerhub right now, try again later")
-            exit(0)
-        default_version = 0
-        versions = []
-        for v in images["results"]:
-            if v['name'] == 'latest' and images['count'] > 1:
-                continue
-            versions.append((v['name'], v['full_size'] / 1048576))
-        versions = versions[0:max_results] if max_results > 0 else versions
-        return default_version, versions
-
-    def prompt_yesno(self, prompt_key):
+    def ask_yesno(self, prompt_key):
         """ prompt the user for a yes/no question, when yes return true, false otherwise"""
         val = input(self.p(prompt_key))
         if val.strip().lower() == 'yes':
             return True
         return False
 
-    def prompt_int(self, prompt_key, min_val=0, max_val=None, def_val=None):
+    def ask_int(self, prompt_key, min_val=0, max_val=None, def_val=None):
         """ prompt user for a int value, keep asking until a correct value is entered"""
         val = ""
         while True:
@@ -215,12 +125,162 @@ class Commander(object):
                           (min_val))
         return val
 
-    def prompt_string(self, prompt_key, default_val=""):
+    def ask_str(self, prompt_key, default_val=""):
         """ read a string from a command line, apply default_val if the input is empty"""
         val = input(self.p(prompt_key)).strip()
         if not val:
             val = default_val
         return val
+
+
+#   ______      ___      ______  ___  ____   ________  _______
+#  |_   _ `.  .'   `.  .' ___  ||_  ||_  _| |_   __  ||_   __ \
+#    | | `. \/  .-.  \/ .'   \_|  | |_/ /     | |_ \_|  | |__) |
+#    | |  | || |   | || |         |  __'.     |  _| _   |  __ /
+#   _| |_.' /\  `-'  /\ `.___.'\ _| |  \ \_  _| |__/ | _| |  \ \_
+#  |______.'  `.___.'  `.____ .'|____||____||________||____| |___|
+#
+
+class DockerCli(object):
+    def __init__(self, project_name, verbose=False):
+        self.verbose = verbose
+        self.project_name = project_name
+
+    def compose(self, params, yaml_path="docker-compose.yml"):
+        """ execte docker-compose commmand """
+        cmd = f"docker-compose -f {yaml_path} {params}"
+        print(cmd)
+        try:
+            subprocess.run(cmd, shell=True, check=True)
+        except Exception:
+            pass
+
+    def compose_stop(self, yaml_path):
+        self.compose(f"--project-name {self.project_name} stop ", yaml_path)
+
+    def compose_start(self, yaml_path):
+        self.compose(f"--project-name {self.project_name} up -d ", yaml_path)
+
+    def compose_down(self, yaml_path):
+        self.compose(f"--project-name {self.project_name} down -v", yaml_path)
+
+    def compose_setup(self, yaml_path):
+        self.compose(f"--project-name {self.project_name} up --no-start ", yaml_path)
+
+    def compose_pull(self, yaml_path):
+        self.compose("pull --ignore-pull-failures", yaml_path)
+
+    def exec(self, container_target, command, additional_options=""):
+        """ execte docker exec commmand and return the stdout or None when error"""
+        cmd = """docker exec -i "%s" sh -c '%s' %s""" % (
+            container_target, command, additional_options)
+        if self.verbose:
+            print(cmd)
+        try:
+            cp = subprocess.run(cmd,
+                                shell=True,
+                                check=True,
+                                stdout=subprocess.PIPE)
+            return cp.stdout.decode("utf-8").strip()
+        except Exception:
+            return None
+
+    def cp(self, container_source, container_path, local_path="."):
+        """ copy a file from a container to the host """
+        # docker cp <containerId>:/file/path/within/container /host/path/target
+        cmd = """docker cp %s:%s %s""" % (
+            container_source, container_path, local_path)
+        print(cmd)
+        try:
+            subprocess.run(cmd, shell=True, check=True)
+        except Exception:
+            pass
+
+    @classmethod
+    def list_image_versions(cls, name, max_results=0):
+        """retrieve the list of versions and it's size in MB of an image from docker hub"""
+        url = f"https://registry.hub.docker.com/v2/repositories/{name}/tags/"
+        # url = 'http://localhost:9999/download.json'
+        try:
+            images = requests.get(url).json()
+        except Exception:
+            print("sorry chief, I cannot contact dockerhub right now, try again later")
+            exit(0)
+        default_version = 0
+        versions = []
+        for v in images["results"]:
+            if v['name'] == 'latest' and images['count'] > 1:
+                continue
+            versions.append((v['name'], v['full_size'] / 1048576))
+        versions = versions[0:max_results] if max_results > 0 else versions
+        return default_version, versions
+
+
+#     ______  ____    ____  ______     ______
+#   .' ___  ||_   \  /   _||_   _ `. .' ____ \
+#  / .'   \_|  |   \/   |    | | `. \| (___ \_|
+#  | |         | |\  /| |    | |  | | _.____`.
+#  \ `.___.'\ _| |_\/_| |_  _| |_.' /| \____) |
+#   `.____ .'|_____||_____||______.'  \______.'
+#
+
+
+class Commander(object):
+    """ main class for command exectution"""
+
+    def __init__(self, verbose=False):
+        filename = inspect.getframeinfo(inspect.currentframe()).filename
+        script_path = Path(filename).resolve()
+        self.verbose = verbose
+        # absolute path to the project root
+        self.project_path = script_path.parent.parent
+        # absolute path to the configuration file
+        self.config_path = os.path.join(script_path.parent, config['project_conf_file'])
+        # tells if the project has a configuration file
+        self.project_is_configured = False
+        self.project_conf = {}
+        if os.path.exists(self.config_path):
+            fp = open(self.config_path, 'r')
+            self.project_conf = json.load(fp)
+            fp.close()
+            self.project_is_configured = True
+            self.__register_env()
+        # path for staging and local yaml
+        self.local_yml = os.path.join(self.project_path, "docker", config['docker_compose_local'])
+        self.stage_yml = os.path.join(self.project_path, "docker", config['docker_compose_stage'])
+        # init command line cli
+        self.prompt = Prompter()
+
+    def __register_env(self):
+        """will register the project coordinates and instantiate the clients"""
+        # project code
+        c, p = self.project_conf['customer_number'], self.project_conf['project_number']
+        self.p_code = f"p{c}-{p}"
+        self.db_container = f"database_{self.p_code}"
+        self.cms_container = f"craft_{self.p_code}"
+        # communicate with th propmt
+        self.docker = DockerCli(self.p_code)
+
+    def semver(self):
+        """ create a string representation of the versino of the project """
+        ma = self.project_conf.get("semver_major", config['semver_major'])
+        mi = self.project_conf.get("semver_minor", config['semver_minor'])
+        pa = self.project_conf.get("semver_patch", config['semver_patch'])
+        self.project_conf["semver_major"] = ma
+        self.project_conf["semver_minor"] = mi
+        self.project_conf["semver_patch"] = pa
+        return f"{ma}.{mi}.{pa}"
+
+    def require_configured(self, with_containers=False):
+        """ check if the project is configured or die otherwise """
+        if not self.project_is_configured:
+            print("the project is not yet configured, run the setup command first")
+            exit(0)
+
+    def upc(self, key, default_value):
+        """set a project_conf value if it is not alredy set"""
+        if key not in self.project_conf:
+            self.project_conf[key] = default_value
 
     def write_file(self, filepath, data):
         """ write a file to the filesystem """
@@ -236,53 +296,46 @@ class Commander(object):
         """set up the application """
         # shorcut since "self.project_conf" is too long to write
         pc = self.project_conf
-
         # if the config  already exists prompt what to do
-        if pc and not self.prompt_yesno('project_ovverride'):
-            print(self.p('setup_abort'))
+        if pc and not self.prompt.ask_yesno('project_ovverride'):
+            print(self.prompt.say('setup_abort'))
             return
         # ask for customer number
-        pc['customer_number'] = self.prompt_int('customer_number')
-        pc['project_number'] = self.prompt_int('project_number')
-        pc['slack_channel'] = self.prompt_string(
-            'slack_channel', config['default_slack_channel'])
-        pc['site_name'] = self.prompt_string(
-            'site_name', config['default_site_name'])
-        pc['local_url'] = self.prompt_string(
-            'local_url', config['default_local_url'])
-        pc['db_driver'] = self.prompt_string(
-            'db_driver', config['default_db_driver'])
+        pc['customer_number'] = self.prompt.ask_int('customer_number')
+        pc['project_number'] = self.prompt.ask_int('project_number')
+        pc['slack_channel'] = self.prompt.ask_str('slack_channel', config['default_slack_channel'])
+        pc['site_name'] = self.prompt.ask_str('site_name', config['default_site_name'])
+        pc['local_url'] = self.prompt.ask_str('local_url', config['default_local_url'])
+        pc['db_driver'] = self.prompt.ask_str('db_driver', config['default_db_driver'])
         # retriewve image versions
-        dv, vers = self.dockerhub_image_versions(
-            config['dockerhub_cms_image'], 4)
+        dv, vers = DockerCli.list_image_versions(config['dockerhub_cms_image'], 4)
         print("Here there are the available craft versions:")
         for i in range(len(vers)):
             num = "* [%2d]" % i if i == dv else "  [%2d]" % i
             print("%s %10s %dMb" % (num, vers[i][0], vers[i][1]))
-        iv = int(self.prompt_int('image_version', 0, len(vers) - 1, def_val=dv))
+        iv = int(self.prompt.ask_int('image_version', 0, len(vers) - 1, def_val=dv))
         # select the version name from the version chosen by the user
-        pc["craft_image"] = "%s:%s" % (
-            config['dockerhub_cms_image'], vers[iv][0])
-
+        pc["craft_image"] = f"{config['dockerhub_cms_image']}:{vers[iv][0]}"
         # build stage domain
-        pc['stage_url'] = '%s.%s' % (
-            self.prjc(sep="."), config['staging_domain'])
-
+        c, p = pc['customer_number'], pc['project_number']
+        pc['stage_url'] = f"p{c}-{p}.{config['staging_domain']}'"
         #  print summary
         print("")
-        print("Customer Number: %s" % pc['customer_number'])
-        print("Project  Number: %s" % pc['project_number'])
-        print("Slack channel  : %s" % pc['slack_channel'])
-        print("Site Name      : %s" % pc['site_name'])
-        print("Local Url      : %s" % pc['local_url'])
-        print("Staging Url    : %s" % pc['stage_url'])
-        print("Db Driver      : %s" % pc['db_driver'])
-        print("Craft version  : %s" % pc['craft_image'])
+        print(f"Customer Number: {pc['customer_number']}")
+        print(f"Project  Number: {pc['project_number']}")
+        print(f"Slack channel  : {pc['slack_channel']}")
+        print(f"Site Name      : {pc['site_name']}")
+        print(f"Local Url      : {pc['local_url']}")
+        print(f"Staging Url    : {pc['stage_url']}")
+        print(f"Db Driver      : {pc['db_driver']}")
+        print(f"Craft version  : {pc['craft_image']}")
         print("")
         # ask for confirmation
-        if (not self.prompt_yesno('setup_confirm')):
-            print(self.p('setup_abort'))
+        if (not self.prompt.ask_yesno('setup_confirm')):
+            print(self.prompt.say('setup_abort'))
             return
+        # register env and instantiate docker cli
+        self.__register_env()
         # generate security key
         self.upc("security_key", secrets.token_hex(32))
         # set the other default values
@@ -312,7 +365,7 @@ class Commander(object):
             "services": {
                 "craft": {
                     "image": pc["craft_image"],
-                    "container_name": "craft_%s" % self.pcd(),
+                    "container_name": f"craft_{self.p_code}",
                     "ports": ["80:80", "443:443"],
                     "volumes": [
                         # webserver and php mounts
@@ -362,8 +415,7 @@ class Commander(object):
                 "mysql:5.7",
                 "command":
                 "mysqld --character-set-server=utf8  --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'",
-                "container_name":
-                "database_%s" % self.pcd(),
+                "container_name": f"database_{self.p_code}",
                 "environment": {
                     "MYSQL_ROOT_PASSWORD": self.project_conf["db_password"],
                     "MYSQL_DATABASE": self.project_conf["db_database"],
@@ -377,7 +429,7 @@ class Commander(object):
         elif pc['db_driver'] == 'pgsql':
             docker_compose["services"]["database"] = {
                 "image": "postgres:10-alpine",
-                "container_name": "database_%s" % self.pcd(),
+                "container_name": f"database_{self.p_code}",
                 "environment": {
                     "POSTGRES_PASSWORD": pc["db_password"],
                     "POSTGRES_USER": pc["db_user"],
@@ -389,12 +441,11 @@ class Commander(object):
             docker_compose["services"]["craft"]["environment"]["DB_PORT"] = "5432"
         else:
             print("the value for Db Driver must be mysql or pgsql")
-            print(self.p('setup_abort'))
+            print(self.prompt.say('setup_abort'))
             return
 
         # save docker-composer
-        self.write_file(self.local_yml, yaml.dump(
-            docker_compose, default_flow_style=False))
+        self.write_file(self.local_yml, yaml.dump(docker_compose, default_flow_style=False))
         # edit for docker-compose.staging.yaml
         docker_compose["services"]["craft"].pop("ports")
         docker_compose["services"]["craft"]["expose"] = [80, 443]
@@ -405,19 +456,16 @@ class Commander(object):
         docker_compose["services"]["craft"]["environment"]["CRAFT_ENABLE_CACHE"] = 1
 
         # save docker-composer
-        self.write_file(self.stage_yml, yaml.dump(
-            docker_compose, default_flow_style=False))
+        self.write_file(self.stage_yml, yaml.dump(docker_compose, default_flow_style=False))
 
         # save project conf
-        self.write_file(self.config_path, json.dumps(
-            self.project_conf, indent=2))
+        self.write_file(self.config_path, json.dumps(self.project_conf, indent=2))
         # all done
 
         print("pull doker images images")
-        self.docker_compose("pull --ignore-pull-failures", self.local_yml)
+        self.docker.compose_pull(self.local_yml)
         print("create containers")
-        self.docker_compose("--project-name %s up --no-start " %
-                            self.pcd(), self.local_yml)
+        self.docker.compose_setup(self.local_yml)
         print("setup completed")
 
     def cmd_restore(self, ns=None):
@@ -426,10 +474,9 @@ class Commander(object):
         # if the config  already exists prompt what to do
         if self.project_conf:
             print("pull doker images images")
-            self.docker_compose("pull --ignore-pull-failures", self.local_yml)
+            self.docker.compose_pull(self.local_yml)
             print("create containers")
-            self.docker_compose("--project-name %s up --no-start " %
-                                self.pcd(), self.local_yml)
+            self.docker.compose_setup(self.local_yml)
             print("setup completed")
             return
         print("there is nothing to restore, perhaps you want to setup?")
@@ -437,45 +484,7 @@ class Commander(object):
     def cmd_local_start(self, ns=None):
         """start the local docker environment"""
         self.require_configured()
-        cmd = "--project-name {} up -d".format(self.pcd())
-        self.docker_compose(cmd, self.local_yml)
-        # TESTING FOR REMOVE EMBEDDED STUFF
-        # poll the databse
-        # container_target = "database_%s" % self.pcd()
-        # cmdp = {
-        #     'db_u': self.project_conf['db_user'],
-        #     'db_p': self.project_conf['db_password'],
-        #     'db_d': self.project_conf['db_database'],
-        #     'q': 'SELECT 1 FROM DUAL'
-        # }
-        # # command
-        # command = 'mysql -h localhost -u {db_u}  -p{db_p} -e "{q}" -s {db_d}'
-        # if self.project_conf['db_driver'] == 'pgsql':
-        #     command = 'sudo -u postgres psql {db_d} -c {query}'
-
-        # print("check database status")
-        # res = '0'
-        # while res != '1':
-        #     res = self.docker_exec(container_target, command.format(**cmdp))
-        #     time.sleep(3)
-        # print("database online")
-        # # check craftcms status
-        # cmdp['q'] = 'SELECT version, schemaVersion FROM craft_info'
-        # res = self.docker_exec(container_target, command.format(**cmdp))
-        # if len(res) == 0:
-        #     print('craft is not installed, running the installer')
-        #     # craft is not installed, TODO: run the installer
-        #     cmdp = {
-        #       'cr_e': self.project_conf['craft_email'],
-        #       'cr_u': self.project_conf['craft_username'],
-        #       'cr_p': self.project_conf['craft_password'],
-        #       'cr_n': self.project_conf['site_name'],
-        #     }
-        #     command = '/data/craft/craft install --interactive=0 --email=$CRAFT_EMAIL --username=$CRAFT_USERNAME --password=$CRAFT_PASSWORD --siteName="$CRAFT_SITENAME" --siteUrl=$CRAFT_SITEURL'
-        #     container_target = "craft_%s" % self.pcd()
-        #     self.docker_exec(container_target, command)
-        #     print('installation completed')
-
+        self.docker.compose_start(self.local_yml)
         # run the plugin installation in case
         # they are not there yet or anymore
         for p in config['composer_require']:
@@ -484,43 +493,36 @@ class Commander(object):
     def cmd_local_stop(self, ns=None):
         """stop the local docker environment"""
         self.require_configured()
-        self.docker_compose("--project-name %s stop" % self.pcd(),
-                            self.local_yml)
+        self.docker.compose_stop(self.local_yml)
 
     def cmd_local_teardown(self, ns=None):
         """destroy the local docker environment"""
         self.require_configured()
-        if self.prompt_yesno('project_teardown'):
-            self.docker_compose("--project-name %s down -v" % self.pcd(),
-                                self.local_yml)
+        if self.prompt.ask_yesno('project_teardown'):
+            self.docker.compose_down(self.local_yml)
 
     def cmd_seed_export(self, ns=None):
         """export the database-seed.sql"""
         self.require_configured(with_containers=True)
-        seed_file = os.path.join(self.project_path, "config",
-                                 config['database_seed'])
+        seed_file = os.path.join(self.project_path, "config", config['database_seed'])
         # run mysql dump
-        container_target = "database_%s" % self.pcd()
         command = """exec mysqldump -uroot -p"craft" --add-drop-table craft"""
         if self.project_conf["db_driver"] == "pgsql":
             command = """exec pg_dump --clean --if-exists -U craft -d craft"""
         additional_options = "> %s" % seed_file
-        self.docker_exec(container_target, command, additional_options)
+        self.docker.exec(self.db_container, command, additional_options)
 
     def cmd_seed_import(self, ns=None):
         """import the database-seed.sql"""
         self.require_configured(with_containers=True)
-        seed_file = os.path.join(self.project_path, "config",
-                                 config['database_seed'])
+        seed_file = os.path.join(self.project_path, "config", config['database_seed'])
         # run mysql dump
-        container_target = "database_%s" % self.pcd()
-        command = """exec mysql -u%s -p"%s" %s""" % (
-            config['default_db_user'], config['default_db_pass'], config['default_db_name'])
+        u, p, d = config['default_db_user'], config['default_db_pass'], config['default_db_name']
+        command = f'exec mysql -u {u} -p"{p}" {d}'
         if self.project_conf["db_driver"] == "pgsql":
-            command = """exec psql --quiet -U %s -d "%s" """ % (
-                config['default_db_user'], config['default_db_name'])
+            command = f'exec psql --quiet -U {u} -d "{d}"'
         additional_options = "< %s" % seed_file
-        self.docker_exec(container_target, command, additional_options)
+        self.docker.exec(self.db_container, command, additional_options)
 
     def cmd_info(self, ns=None):
         """print the current project info and version"""
@@ -541,7 +543,7 @@ class Commander(object):
         pc = self.project_conf
 
         print("Current version is %s" % self.semver())
-        val = self.prompt_int("semver", 0, 2, 0)
+        val = self.prompt.ask_int("semver", 0, 2, 0)
         if int(val) == 0:
             pc['semver_major'] += 1
             pc['semver_minor'] = config['semver_minor']
@@ -553,28 +555,24 @@ class Commander(object):
             pc['semver_patch'] += 1
         # dump the seed database
         self.cmd_seed_export()
-        container = "craft_%s" % self.pcd()
-        release_path = "/data/release_%s-%s.tar.gz" % (
-            self.pcd(), self.semver())
+        release_path = f"/data/release_{self.p_code}-{self.semver()}.tar.gz"
         # create archive of the /data/craft directory
         # maybe some directories could be escluded ?
         cmd = "tar -c /data/craft | gzip > %s" % release_path
-        self.docker_exec(container, cmd)
+        self.docker.exec(self.cms_container, cmd)
         # copy the archive locally
-        self.docker_cp(container, release_path, self.project_path)
+        self.docker.cp(self.cms_container, release_path, self.project_path)
         # remove the archive in the container
-        cmd = "rm %s" % release_path
-        self.docker_exec(container, cmd)
+        cmd = f"rm {release_path}"
+        self.docker.exec(self.cms_container, cmd)
         # save project conf
-        self.write_file(self.config_path, json.dumps(
-            self.project_conf, indent=2))
+        self.write_file(self.config_path, json.dumps(self.project_conf, indent=2))
 
     def cmd_composer_update(self, ns=None):
         """run composer install on the target environment (experimental)"""
         self.require_configured(with_containers=True)
-        container_target = "craft_%s" % self.pcd()
         command = """cd craft && composer update"""
-        self.docker_exec(container_target, command)
+        self.docker.exec(self.cms_container, command)
 
     def cmd_plugin_install(self, ns=None):
         """handles the command to install a plugin with composer in craft environment (@see plugin_install)"""
@@ -583,20 +581,18 @@ class Commander(object):
     def plugin_install(self, plugin_name):
         """install a plugin with composer in craft environment (if not yet installed)"""
         self.require_configured(with_containers=True)
-        container_target = "craft_%s" % self.pcd()
         # check if the package is already installed
-        command = """cd craft && composer show --name-only | grep %s | wc -l""" % plugin_name
-        res = self.docker_exec(container_target, command)
+        cmd = f"cd craft && composer show --name-only | grep {plugin_name} | wc -l"
+        res = self.docker.exec(self.cms_container, cmd)
         if int(res) > 0:
             print("plugin %s installed" % plugin_name)
         else:
             # run composer install
-            command = """cd craft && composer require %s --no-interaction""" % plugin_name
-            self.docker_exec(container_target, command)
+            cmd = f"cd craft && composer require {plugin_name} --no-interaction"
+            self.docker.exec(self.cms_container, cmd)
             # run craft install
-            command = """craft/craft install/plugin %s """ % re.sub(
-                r'^.*?/', '', plugin_name)
-            self.docker_exec(container_target, command)
+            cmd = """craft/craft install/plugin %s """ % re.sub(r'^.*?/', '', plugin_name)
+            self.docker.exec(self.cms_container, cmd)
         # get the list of plugins required for the project in conf
         cr = self.project_conf.get('composer_require', [])
         # if the plugin was not listed add it to the project
@@ -604,8 +600,7 @@ class Commander(object):
             cr.append(plugin_name)
             self.project_conf['composer_require'] = cr
             # save project conf
-            self.write_file(self.config_path, json.dumps(
-                self.project_conf, indent=2))
+            self.write_file(self.config_path, json.dumps(self.project_conf, indent=2))
 
     def cmd_plugin_remove(self, ns=None):
         """handles the command line command to uninstall a plugin with composer in craft environment @see plugin_remove"""
@@ -614,16 +609,15 @@ class Commander(object):
     def plugin_remove(self, plugin_name):
         """uninstall a plugin with composer in craft environment (if installed)"""
         self.require_configured(with_containers=True)
-        container_target = "craft_%s" % self.pcd()
         # check if the package is already installed
-        command = """cd craft && composer show --name-only | grep %s | wc -l""" % plugin_name
-        res = self.docker_exec(container_target, command)
+        command = f"cd craft && composer show --name-only | grep {plugin_name} | wc -l"
+        res = self.docker.exec(self.cms_container, command)
         if int(res) <= 0:
             print("plugin %s is not installed" % plugin_name)
         else:
             # run composer uninstall
-            command = """cd craft && composer remove %s --no-interaction""" % plugin_name
-            self.docker_exec(container_target, command)
+            command = f"cd craft && composer remove {plugin_name} --no-interaction"
+            self.docker.exec(self.cms_container, command)
         # get the list of plugins required for the project in conf
         cr = self.project_conf.get('composer_require', [])
         # if the plugin was not listed add it to the project
@@ -631,8 +625,7 @@ class Commander(object):
             cr.remove(plugin_name)
             self.project_conf['composer_require'] = cr
             # save project conf
-            self.write_file(self.config_path, json.dumps(
-                self.project_conf, indent=2))
+            self.write_file(self.config_path, json.dumps(self.project_conf, indent=2))
 
 
 if __name__ == '__main__':
