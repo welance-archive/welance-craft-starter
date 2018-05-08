@@ -28,7 +28,7 @@ pigeons:
 	@echo current version is $(CURRENT_VER) latest tag $(LATEST_TAG) 
 	@if [ -z "$$(git status --porcelain)" ]; \
 		then \
-		@git archive \
+		git archive \
 		--format=zip HEAD \
 		`git diff --name-status HEAD $(LATEST_TAG) | grep -v '^D' | awk '{print $$2}'` > dist/pigeon.zip; \
 	else \
