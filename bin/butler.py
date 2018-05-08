@@ -13,6 +13,7 @@ import requests
 import yaml
 import re
 import argparse
+import webbrowser
 
 config = {
     # configuration version
@@ -319,7 +320,7 @@ class Commander(object):
         pc["craft_image"] = f"{config['dockerhub_cms_image']}:{vers[iv][0]}"
         # build stage domain
         c, p = pc['customer_number'], pc['project_number']
-        pc['stage_url'] = f"p{c}-{p}.{config['staging_domain']}'"
+        pc['stage_url'] = f"p{c}-{p}.{config['staging_domain']}"
         #  print summary
         print("")
         print(f"Customer Number: {pc['customer_number']}")
@@ -327,7 +328,7 @@ class Commander(object):
         print(f"Slack channel  : {pc['slack_channel']}")
         print(f"Site Name      : {pc['site_name']}")
         print(f"Local Url      : {pc['local_url']}")
-        print(f"Staging Url    : {pc['stage_url']}")
+        print(f"Staging Host   : {pc['stage_url']}")
         print(f"Db Driver      : {pc['db_driver']}")
         print(f"Craft version  : {pc['craft_image']}")
         print("")
@@ -530,12 +531,12 @@ class Commander(object):
         self.require_configured()
         pc = self.project_conf
         print("")
-        print("Customer Number : %s" % pc['customer_number'])
-        print("Project  Number : %s" % pc['project_number'])
-        print("Site Name       : %s" % pc['site_name'])
-        print("Staging Url     : %s" % pc['stage_url'])
-        print("Db Driver       : %s" % pc['db_driver'])
-        print("Project Version : %s" % self.semver())
+        print(f"Customer Number : {pc['customer_number']}")
+        print(f"Project  Number : {pc['project_number']}")
+        print(f"Site Name       : {pc['site_name']}")
+        print(f"Staging Url     : https://{pc['stage_url']}")
+        print(f"Db Driver       : {pc['db_driver']}")
+        print(f"Project Version : {self.semver()}")
         print("")
 
     def cmd_package_release(self, ns=None):
@@ -642,6 +643,21 @@ class Commander(object):
         self.docker.exec(self.cms_container, cmd)
         print(f"schema import complete")
 
+    def cmd_open_staging(self, args=None):
+        host = self.project_conf['stage_url']
+        if args.all_pages:
+            webbrowser.open_new_tab(f"https://{host}/db")
+            webbrowser.open_new_tab(f"https://{host}/admin")
+        webbrowser.open_new_tab(f"https://{host}")
+
+    def cmd_open_dev(self, args=None):
+        self.require_configured(with_containers=True)
+        host = self.project_conf['local_url']
+        if not args.front_only:
+            webbrowser.open_new_tab(f"http://{host}/db")
+            webbrowser.open_new_tab(f"http://{host}/admin")
+        webbrowser.open_new_tab(f"http://{host}")
+
 
 if __name__ == '__main__':
     cmds = [
@@ -735,6 +751,28 @@ if __name__ == '__main__':
                     'names': ['-f', '--file'],
                     'help': 'path of the schemat to import',
                     'default': '/data/craft/config/schema.yml'
+                }
+            ]
+        },
+        {
+            'name': 'open-staging',
+            'help': 'open a browser tabs to staging env (public)',
+            'args': [
+                {
+                    'names': ['-a', '--all-pages'],
+                    'help': 'also open admin and adminer',
+                    'action': 'store_true'
+                }
+            ]
+        },
+        {
+            'name': 'open-dev',
+            'help': 'open a browser tabs to dev env (public,admin,adminer)',
+            'args': [
+                {
+                    'names': ['-f', '--front-only'],
+                    'help': 'open only the public page',
+                    'action': 'store_true'
                 }
             ]
         },
