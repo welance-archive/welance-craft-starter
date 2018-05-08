@@ -19,14 +19,14 @@ config = {
     # configuration version
     'version': '3.0.0',
     # name of the project configuration file
-    'project_conf_file': ".welance_prj.json",
+    'project_conf_file': ".butler.json",
     'dockerhub_cms_image': "welance/craft",
     'dockerhub_mysql_image': "library/mysql",
     'dockerhub_pgsql_image': "library/posgtre",
     # name of the docker-compose dev file
     'docker_compose_local': "docker-compose.yml",
     # name of the docker-compose staging file
-    'docker_compose_stage': "docker-compose-staging.yml",
+    'docker_compose_stage': "docker-compose.staging.yml",
     # name of the database seed file
     'database_seed': "database-seed.sql",
     # base domain to create the app staging url
@@ -184,7 +184,8 @@ class DockerCli(object):
                                 check=True,
                                 stdout=subprocess.PIPE)
             return cp.stdout.decode("utf-8").strip()
-        except Exception:
+        except Exception as e:
+            print(f"Docker exec failed command {e}")
             return None
 
     def cp(self, container_source, container_path, local_path="."):
@@ -248,8 +249,8 @@ class Commander(object):
             self.project_is_configured = True
             self.__register_env()
         # path for staging and local yaml
-        self.local_yml = os.path.join(self.project_path, "docker", config['docker_compose_local'])
-        self.stage_yml = os.path.join(self.project_path, "docker", config['docker_compose_stage'])
+        self.local_yml = os.path.join(self.project_path, "build", config['docker_compose_local'])
+        self.stage_yml = os.path.join(self.project_path, "build", config['docker_compose_stage'])
         # init command line cli
         self.prompt = Prompter()
 
@@ -361,9 +362,9 @@ class Commander(object):
         self.upc("craft_locale", "en_us")
         self.upc("httpd_options", "")
 
-        # docker-compose.ymk
+        # docker-compose.yml
         docker_compose = {
-            "version": "2.1",
+            "version": "3.1",
             "services": {
                 "craft": {
                     "image": pc["craft_image"],
@@ -372,12 +373,12 @@ class Commander(object):
                     "volumes": [
                         # webserver and php mounts
                         "/var/log",
-                        "./craft/conf/apache2/ssl:/etc/apache2/ssl",
-                        "./craft/conf/apache2/craft.conf:/etc/apache2/conf.d/craft.conf",
-                        "./craft/conf/php/php.ini:/etc/php7/php.ini",
-                        "./craft/logs/apache2:/var/log/apache2",
+                        "./docker/craft/conf/apache2/ssl:/etc/apache2/ssl",
+                        "./docker/craft/conf/apache2/craft.conf:/etc/apache2/conf.d/craft.conf",
+                        "./docker/craft/conf/php/php.ini:/etc/php7/php.ini",
+                        "./docker/craft/logs/apache2:/var/log/apache2",
                         # adminer utility
-                        "./craft/adminer:/data/adminer",
+                        "./docker/craft/adminer:/data/adminer",
                         # craft
                         "../config:/data/craft/config",
                         "../templates:/data/craft/templates",
@@ -639,7 +640,7 @@ class Commander(object):
     def cmd_schema_import(self, args=None):
         """import the schema using schematic"""
         self.require_configured(with_containers=True)
-        cmd = f"/data/craft/craft schematic/import --file={args.file}"
+        cmd = f"/data/craft/craft schematic/import --force --file={args.file}"
         self.docker.exec(self.cms_container, cmd)
         print(f"schema import complete")
 
