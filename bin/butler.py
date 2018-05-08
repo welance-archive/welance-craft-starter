@@ -19,7 +19,7 @@ config = {
     # configuration version
     'version': '0.3.0',
     # name of the project configuration file
-    'project_conf_file': ".welance_prj.json",
+    'project_conf_file': ".butler.json",
     'dockerhub_cms_image': "welance/craft",
     'dockerhub_mysql_image': "library/mysql",
     'dockerhub_pgsql_image': "library/posgtre",
@@ -373,12 +373,12 @@ class Commander(object):
                     "volumes": [
                         # webserver and php mounts
                         "/var/log",
-                        "./craft/conf/apache2/ssl:/etc/apache2/ssl",
-                        "./craft/conf/apache2/craft.conf:/etc/apache2/conf.d/craft.conf",
-                        "./craft/conf/php/php.ini:/etc/php7/php.ini",
-                        "./craft/logs/apache2:/var/log/apache2",
+                        "./docker/craft/conf/apache2/ssl:/etc/apache2/ssl",
+                        "./docker/craft/conf/apache2/craft.conf:/etc/apache2/conf.d/craft.conf",
+                        "./docker/craft/conf/php/php.ini:/etc/php7/php.ini",
+                        "./docker/craft/logs/apache2:/var/log/apache2",
                         # adminer utility
-                        "./craft/adminer:/data/adminer",
+                        "./docker/craft/adminer:/data/adminer",
                         # craft
                         "../config:/data/craft/config",
                         "../templates:/data/craft/templates",
