@@ -1,0 +1,317 @@
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Thu Mar 29 21:35:08.106023 2018] [mpm_prefork:notice] [pid 49] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Thu Mar 29 21:35:08.106408 2018] [core:notice] [pid 49] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Thu Mar 29 21:35:52.493227 2018] [mpm_prefork:notice] [pid 36] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Thu Mar 29 21:35:52.493472 2018] [core:notice] [pid 36] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Thu Mar 29 21:38:37.019867 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:38.026780 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:49.053319 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:50.058716 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:51.062389 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:52.066261 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:53.068840 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:54.070489 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:55.077511 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:56.079373 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:57.084365 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:58.087181 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:38:59.089878 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:00.093128 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:01.099531 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:02.101830 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:03.103880 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:04.110297 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:05.115779 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:06.119167 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:07.124484 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:08.127257 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:09.130061 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:10.135556 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:11.139122 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:12.146049 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:13.147195 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:14.150710 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:15.152332 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:16.154601 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:17.157008 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:18.159636 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:19.162806 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:20.166110 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:21.168761 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:22.170981 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:23.176594 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:24.181745 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:25.184208 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:26.186595 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:27.187559 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:28.191901 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:29.194316 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:30.197035 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:31.200099 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:32.202253 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:33.204385 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:34.208573 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:35.212385 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:36.216552 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:37.218955 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:38.222888 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:39.227354 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:40.230597 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 21:39:41.233408 2018] [core:warn] [pid 36] (99)Address not available: AH00056: connect to listener on [::]:80
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Thu Mar 29 21:40:24.783854 2018] [mpm_prefork:notice] [pid 53] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Thu Mar 29 21:40:24.784041 2018] [core:notice] [pid 53] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Thu Mar 29 21:53:09.043707 2018] [mpm_prefork:notice] [pid 53] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Thu Mar 29 21:53:09.043942 2018] [core:notice] [pid 53] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Thu Mar 29 21:55:04.129545 2018] [mpm_prefork:notice] [pid 51] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Thu Mar 29 21:55:04.129748 2018] [core:notice] [pid 51] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Thu Mar 29 23:40:07.038235 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:08.041083 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:09.042393 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:10.046401 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:11.048972 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:12.050774 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:13.054260 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:14.056898 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:15.058603 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:16.060385 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:17.063160 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:18.066211 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:19.068075 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:20.071445 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:21.073437 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:22.077784 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:23.082611 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:24.086929 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:25.093094 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:26.096565 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:27.102488 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:28.105319 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:29.111087 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:30.116925 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:31.124181 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:32.127076 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:33.131431 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:34.136716 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:35.139416 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:36.141714 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:37.148298 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:38.151595 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:39.154635 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:40.156619 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:41.158636 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:42.164479 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:43.169390 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:44.172276 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:45.178969 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:46.185980 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:47.190036 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:48.193239 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:49.195209 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:50.199491 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:51.201192 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:52.204409 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:53.206700 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:54.210819 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:55.215391 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:56.228565 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:57.234366 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:58.245590 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:40:59.248850 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:41:00.255081 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:41:01.257725 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:41:02.261810 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+[Thu Mar 29 23:41:03.264520 2018] [core:warn] [pid 51] (99)Address not available: AH00056: connect to listener on [::]:80
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Thu Mar 29 23:53:44.770966 2018] [mpm_prefork:notice] [pid 15] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Thu Mar 29 23:53:44.771292 2018] [core:notice] [pid 15] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Tue Apr 03 18:42:58.844587 2018] [mpm_prefork:notice] [pid 81] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Tue Apr 03 18:42:58.845031 2018] [core:notice] [pid 81] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Tue Apr 03 18:55:30.560213 2018] [mpm_prefork:notice] [pid 75] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Tue Apr 03 18:55:30.560610 2018] [core:notice] [pid 75] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 192.168.160.3. Set the 'ServerName' directive globally to suppress this message
+[Tue Apr 03 18:56:41.447550 2018] [mpm_prefork:notice] [pid 75] AH00163: Apache/2.4.27 (Unix) PHP/7.1.15 LibreSSL/2.5.4 configured -- resuming normal operations
+[Tue Apr 03 18:56:41.447812 2018] [core:notice] [pid 75] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.18.0.3. Set the 'ServerName' directive globally to suppress this message
+[Mon May 07 20:32:53.746180 2018] [mpm_prefork:notice] [pid 103] AH00163: Apache/2.4.33 (Unix) PHP/7.1.16 LibreSSL/2.5.4 configured -- resuming normal operations
+[Mon May 07 20:32:53.751210 2018] [core:notice] [pid 103] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Mon May 07 20:34:43.031014 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:34:44.032646 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:34:45.034442 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:34:46.039545 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:34:47.042599 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:05.104279 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:06.107358 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:07.113490 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:08.120105 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:09.124267 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:10.127188 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:11.131746 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:12.138348 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:13.143620 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:14.146346 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:15.152333 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:16.154825 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:17.161488 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:18.164453 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:19.171352 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:20.176940 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:21.179391 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:22.184537 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:23.190906 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:24.195815 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:25.198004 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:26.204397 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:27.209194 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 20:35:28.215883 2018] [core:warn] [pid 103] (99)Address not available: AH00056: connect to listener on [::]:80
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.18.0.3. Set the 'ServerName' directive globally to suppress this message
+[Mon May 07 21:13:40.465921 2018] [mpm_prefork:notice] [pid 99] AH00163: Apache/2.4.33 (Unix) PHP/7.1.16 LibreSSL/2.5.4 configured -- resuming normal operations
+[Mon May 07 21:13:40.466287 2018] [core:notice] [pid 99] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using 172.18.0.3. Set the 'ServerName' directive globally to suppress this message
+[Mon May 07 21:14:41.403427 2018] [mpm_prefork:notice] [pid 68] AH00163: Apache/2.4.33 (Unix) PHP/7.1.16 LibreSSL/2.5.4 configured -- resuming normal operations
+[Mon May 07 21:14:41.403767 2018] [core:notice] [pid 68] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Mon May 07 21:15:46.560819 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:00.597821 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:01.604557 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:37.710512 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:38.712569 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:39.713606 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:40.715366 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:41.718174 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:42.719778 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:43.723787 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:44.724612 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:45.730848 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:46.735979 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:47.737817 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:48.742440 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:16:49.748734 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:07.028588 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:08.035616 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:09.037777 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:10.044664 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:11.048241 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:12.053216 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:13.055674 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:14.057682 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:15.064333 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:16.067862 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:17.069670 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:18.074177 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:19.078088 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:20.079749 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:21.084099 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:22.086351 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:23.088092 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:24.094209 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:25.098394 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:26.105638 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:27.119423 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:28.124594 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:29.129061 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:30.130218 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:31.133978 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:32.140517 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:33.144295 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:34.150186 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:35.156584 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:36.160763 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:37.162652 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:38.168748 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:39.172570 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:40.176992 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:41.183660 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:42.185966 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:43.191949 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:44.194356 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:45.195185 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:46.198550 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:47.204404 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:48.211411 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:49.214708 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:50.219038 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:51.220861 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:52.223179 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:53.230311 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:54.234811 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:55.237403 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:56.242059 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:57.245355 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:58.249889 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:48:59.253265 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:00.260207 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:01.262199 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:02.266129 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:03.267952 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:04.270072 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:05.276259 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:06.280799 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:07.287376 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:08.294013 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:09.297270 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:10.304124 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:11.307354 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:12.309619 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:13.319618 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:14.324117 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:15.327408 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:16.330635 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:17.332773 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:18.335190 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:19.337494 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:20.341426 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:21.342715 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:22.345009 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:23.998502 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:24.999330 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:26.000465 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:27.001655 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:28.003926 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:29.006511 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:30.008426 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:31.010485 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:32.014220 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:33.015370 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:34.019583 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:35.021719 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:36.030074 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:37.034006 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:38.037283 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:39.041944 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:40.045972 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:41.051133 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:42.052904 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:43.054461 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:44.057168 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:45.063367 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:46.066804 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:47.068723 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:48.074974 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:49.076455 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:50.077444 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:51.080010 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:52.084644 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:53.085828 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:54.087890 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:55.089904 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:56.091867 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:57.094209 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:58.099629 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:49:59.106306 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:00.108646 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:01.115869 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:02.119740 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:03.122730 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:04.125567 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:05.127758 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:06.134178 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:07.136037 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:08.138601 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:09.142260 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:10.144335 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80
+[Mon May 07 21:50:11.145574 2018] [core:warn] [pid 68] (99)Address not available: AH00056: connect to listener on [::]:80

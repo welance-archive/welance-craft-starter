@@ -1,0 +1,55 @@
+services:
+  craft:
+    container_name: craft_p007-200
+    environment:
+      CRAFT_ALLOW_UPDATES: 'false'
+      CRAFT_DEVMODE: 1
+      CRAFT_EMAIL: admin@welance.de
+      CRAFT_ENABLE_CACHE: 0
+      CRAFT_LOCALE: en_us
+      CRAFT_PASSWORD: welance
+      CRAFT_SITENAME: Welance
+      CRAFT_SITEURL: localhost
+      CRAFT_USERNAME: admin
+      DB_DATABASE: craft
+      DB_DRIVER: mysql
+      DB_PASSWORD: craft
+      DB_PORT: '3306'
+      DB_SCHEMA: public
+      DB_SERVER: database
+      DB_TABLE_PREFIX: craft_
+      DB_USER: craft
+      ENVIRONMENT: dev
+      HTTPD_OPTIONS: ''
+      LANG: C.UTF-8
+      SECURITY_KEY: 6ca417b11d8d68272755b62a37479a59d370c8eaddbb2903ae05435969b0d9ba
+    image: welance/craft:3.0.5
+    links:
+    - database
+    ports:
+    - 80:80
+    - 443:443
+    volumes:
+    - /var/log
+    - ./craft/conf/apache2/ssl:/etc/apache2/ssl
+    - ./craft/conf/apache2/craft.conf:/etc/apache2/conf.d/craft.conf
+    - ./craft/conf/php/php.ini:/etc/php7/php.ini
+    - ./craft/logs/apache2:/var/log/apache2
+    - ./craft/adminer:/data/adminer
+    - ../config:/data/craft/config
+    - ../templates:/data/craft/templates
+    - ../migrations:/data/craft/migrations
+    - ../web/uploads:/data/craft/web/uploads
+  database:
+    command: mysqld --character-set-server=utf8  --collation-server=utf8_unicode_ci
+      --init-connect='SET NAMES UTF8;'
+    container_name: database_p007-200
+    environment:
+      MYSQL_DATABASE: craft
+      MYSQL_PASSWORD: craft
+      MYSQL_ROOT_PASSWORD: craft
+      MYSQL_USER: craft
+    image: mysql:5.7
+    volumes:
+    - /var/lib/mysql
+version: '2.1'
