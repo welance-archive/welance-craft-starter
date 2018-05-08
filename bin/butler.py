@@ -640,7 +640,7 @@ class Commander(object):
     def cmd_schema_import(self, args=None):
         """import the schema using schematic"""
         self.require_configured(with_containers=True)
-        cmd = f"/data/craft/craft schematic/import --file={args.file}"
+        cmd = f"/data/craft/craft schematic/import --force --file={args.file}"
         self.docker.exec(self.cms_container, cmd)
         print(f"schema import complete")
 
