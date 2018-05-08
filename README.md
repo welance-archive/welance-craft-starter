@@ -23,6 +23,7 @@ The following is the directory layout
       adminer/          - php mysql frontend
       conf/             
         apache2/        - apache2 configuration files for CraftCMS
+        php/            - php configuration file (php.ini)
       logs/
         apache2/        - apache2 logs 
       scripts/          - scripts used to setup/update the container (CMD/ENTYPOINTS)
@@ -41,20 +42,32 @@ the craft cms image is available [here](https://hub.docker.com/r/welance/craft/)
 To publish an updated image of CraftCMS container to docker hub do the folowing:
 
 ```
+make docker-publish TAG=$CRAFT_VERSION
+```
+
+where `$CRAFT_VERSION` is the craft version to publish, for example 
+
+```
+make docker-publish TAG=3.0.5 
+```
+
+will publish the image `welance/craft:3.0.5` to the docker hub registry
+
+Alternatively, the long version is:
+
+```
 # cd into the docker/craft folder of the base project
 cd docker/craft
 # build a new image (this is going to be the 'latest' tag)
-docker build -t welance/craft .
+docker build -t welance/craft:CRAFT_VERSION .
 # list the images and pick up the id of the images just built
 docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
-welance/craft       latest              18cd3db3e7df        About a minute ago   114 MB
+welance/craft       CRAFT_VERSION           18cd3db3e7df        About a minute ago   114 MB
 <none>              <none>              be09b9e54c3d        About an hour ago    113 MB
 ...
 # login to docker hub
 docker login --username=yourhubusername
-# tag your image  (other than 'latest')
-docker tag 18cd3db3e7df welance/craft:2.6
 # push the image
 docker push welance/craft
 ```
@@ -79,39 +92,41 @@ for full reference consult the [docker documentation](https://docs.docker.com/en
 The following is the standard workflow to use with the projects using craft/docker for development
 
 ### Setup
+
+
 ##### Fork the starter project
 create a fork of the latest release of the base repo : [https://github.com/welance/welance-craft-starter](https://github.com/welance/welance-craft-starter)
 
-##### Run the setup script
+
+##### Install python/libs and bash completion 
+
+make sure to have python3 installed, use [virtualenv](https://virtualenv.pypa.io/en/stable/) if necessary. 
+
+run 
+  - `pip install -r bin/requirements.txt` to install the required libraries and 
+  - `source bin/butler.bash-completion` to enable commands autocompletion
+
+
+
+##### Run butler.py setup
 first make sure that you have docker installed and running, you can download docker from [here](https://www.docker.com/community-edition).
 
-run the `bin/setup.sh` script. the script will ask for
+run the `bin/butler.py setup` script. the script will ask for
 
   - customer number
   - project number
   - slack channel
   - site name
   - local host/url 
-  - npm target dir (where npm should run)
+  - database driver (mysql or pgsql)
 
 
 and will generate the following files:
 
 ```
-./bin/config.sh
-./bin/schema-import.sh
-./bin/schema-export.sh
-./bin/seed-import.sh
-./bin/seed-export.sh
-./bin/local-start.sh
-./bin/local-stop.sh
-./bin/local-teardown.sh
+./bin/.env.json
 ./docker/docker-compose.yml
-./bin/staging-start.sh
-./bin/staging-stop.sh
-./bin/staging-teardown.sh
 ./docker/docker-compose-staging.yml
-./bin/make_release.sh
 ```
 
 after the setup is completed the docker environment can be started.
@@ -123,13 +138,18 @@ after the setup is completed the docker environment can be started.
 ##### Commit
 commit the chagnes to the repository, in particular the changes reated to:
 
+```
+./bin/.env.json
+./docker/docker-compose.yml
+./docker/docker-compose-staging.yml
+```
 
 ### Development
 
 During the development here are the most used commands:
 
 ##### Start the docker dev environment
-`bin/local-start.sh` script starts the docker containers and refreshes the schema.yaml
+`bin/butler.py local-start` script starts the docker containers and refreshes the schema.yaml
 > **!!! ATTENTION !!!** 
 > at each restart the `config/schema.yaml` will be reloaded,
 > if you have made any changes to the schema you will have to export
@@ -144,25 +164,25 @@ The default credentials (user/pass) for mysql are `craft`/`craft`.
 
 The development phase of the project will involve 3 main resources:
 - the `templates`folder
-- the `condfig/schema.yaml`
+- the `config/schema.yaml`
 - the `plugins` folder
 
 ##### Stop the docker dev environment
-`bin/local-stop.sh` stops the docker conatiners. It doesn't delete the database or cms data.
+`bin/butler.py local-stop` stops the docker conatiners. It doesn't delete the database or cms data.
 
 ##### Import/Export schema
 To import/export the [craft schema](https://github.com/nerds-and-company/schematic) there is 
 
-- `bin/schema-export.sh`
-- `bin/schema-import.sh`
+- `bin/butler.py schema-export`
+- `bin/butler.py schema-import`
 
 the schema is imported/exported from `config/schema.yml`
 
 ##### Import/Export database seed
 To import/export the dump of the database that it is used to setup/seed the database
 
-- `bin/seed-export.sh`
-- `bin/seed-import.sh`
+- `bin/butler.py seed-export`
+- `bin/butler.py seed-import`
 
 the seed sql file is imported/exported from `config/database-seed.sql`
 
@@ -170,46 +190,50 @@ the seed sql file is imported/exported from `config/database-seed.sql`
 
 ### Staging
 
-The staging enviroment is setup using the technique described [here](https://blog.florianlopes.io/host-multiple-websites-on-single-host-docker/) and the docker image
-from [here](https://github.com/jwilder/nginx-proxy).
+For staging environment are available the commands:
+- `bin/butler.py staging-start`
+- `bin/butler.py staging-stop`
+- `bin/butler.py staging-teardown`
 
-The staging environment is composed by a `nginx-proxy`container that registers automatically the new containers that are started having the environment variable `VIRTUAL_HOST`set. 
+they are used by the [welance clerk](https://github.com/welance/docker-staging) system
 
-To run the proxy crate on the target server a `docker-compose.yml` file with the content posted below, 
-and start it with the command `docker-compose up -d`
-
-Content `docker-compose.yml` for the proxy:
-
-```
-version: '2'
-services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx-proxy
-    network_mode: bridge
-    ports:
-      - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-```
-
-When the proxy is up you can run the containers using the project scripts:
-
-- `bin/staging-start.sh`
-- `bin/staging-stop.sh`
-- `bin/staging-teardown.sh`
-
-
-#### Database backup on Amazon S3 
-
-`// TODO ` 
 
 ### Release
-the script `make-release.sh` can be used to create a zip with all resources required for release
+To create an tar.gz archive of the craft installation use the command
+
+- `bin/butler.py release-package` 
+
+it will create a file `release.tar.gz` file in the root of the project containing
+the craft installation with a **fresh database dump**
 
 ### Project removal
 Once the project is finished to remove the resources associated with the project (containers and data) 
-the `bin/local-teardown.sh`script is provided.
+the `bin/butler.py local-teardown`script is provided.
+
+
+## Applying Craftcms updates
+
+Applying a craftcms update is a sensible activity that has to be performed with extreme care.
+
+Craftcms autoupdate performs 2 actions:
+- runs `composer update` for code 
+- apply changes to the database and records changes in the table `info`:
+  - `info.version` for craft version, ex 3.x
+	- `info.schemaVersion` for the database schema version
+
+it is therefore important that this operation is performed atomically in one machine
+and the result propagated to the other installations. 
+
+The steps to perform an upgrade during development are:
+  - freeze content editing.
+	- obtain a copy of the latest official database seed (ex. from staging)
+	- perform the upgrade locally 
+	- run the `seed-export` and commit the changes to the database
+	- update the `docker/docker-compose.yml` and `docker-compose-staging.yml` with the new version 
+	- commit the result
+
+
+
 
 ## Accessing the database
 Since the database use in the containers is not accessible from outside docker a database web interface
@@ -221,7 +245,7 @@ The urls are:
 - [https://HOST/db](https://localhost/db). 
 
 The parameters to log in are:
-- System: MySQL
+- System: MySQL or PostgreSQL depending on the driver selected
 - Server: database
 - Username: craft
 - Password: craft
@@ -231,7 +255,7 @@ The parameters to log in are:
 The website apache configuration is stored in `./docker/craft/conf/apache2/conf.d/welance.conf`.
 The welance.conf contains all the settings for the installation to work and should be taken as a reference
 for production installation. By default .htaccess is _DISABLED_, [because](https://nystudio107.com/blog/stop-using-htaccess-files-no-really).
-Changes to the apache configuration require to restart the environment (`bin/local-stop.sh`, `bin/local-start.sh`) to be enabled.
+Changes to the apache configuration require to restart the environment (`bin/butler.py local-stop`, `bin/butler.py local-start`) to be enabled.
 
 ## Troubleshooting
 
@@ -243,8 +267,6 @@ and CSRF protection. To solve the issue clear the browser application data and r
 
 **Adminer**: if you log in using HTTPS login with HTTP fails. This has someting to do with sessions
 and CSRF protection. To solve the issue clear the browser application data and retry.
-
-for other enquiries contact _enrico@welance.de_
 
 ## SSL
 
@@ -275,5 +297,5 @@ Email Address []:info@welance.de
 
 ## Acknowledgements
 
-The project (docker/scripts/procedures/etc.) has been realized by [Andrea Giacobino](http://about.almost.cc) 
+The project (docker/scripts/procedures/etc.) has been realized by [Andrea Giacobino](mailto:andrea@welance.com) 
 from a request of [Enrico Icardi](mailto:enrico@welance.de).
