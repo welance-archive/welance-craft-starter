@@ -17,7 +17,7 @@ import webbrowser
 
 config = {
     # configuration version
-    'version': '3.0.0',
+    'version': '0.3.0',
     # name of the project configuration file
     'project_conf_file': ".welance_prj.json",
     'dockerhub_cms_image': "welance/craft",
