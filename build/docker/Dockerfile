@@ -48,7 +48,7 @@ bash \
 # remove xdebug since we'll decide in the php.ini file to enable it or not
 && rm /etc/php7/conf.d/*xdebug.ini  
 
-ADD docker/craft/scripts /data/scripts
+ADD build/docker/craft/scripts /data/scripts
 # fix permissions
 RUN chmod +x /data/scripts/*.sh \
 && chown -R apache:apache /data/craft 
