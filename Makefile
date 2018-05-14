@@ -10,18 +10,18 @@ CURR_CHANGES := $(shell git status --short | wc -l)
 default: docker-build
 
 clean:
-	@echo nothing to do
+	docker rmi $(DOCKERIMAGE)
 
 docker: docker-build
 
 docker-build:
 	@echo build image
-	docker build -t $(DOCKERIMAGE):$(TAG) -f ./build/docker/Dockerfile .
+	docker build --no-cache -t $(DOCKERIMAGE):$(TAG) -f ./build/docker/Dockerfile .
 	@echo done
 
 docker-publish: docker-build
 	@echo push image
-	docker push $(DOCKERIMAGE)
+	docker push $(DOCKERIMAGE):$(TAG)
 	@echo done
 
 pigeons:
