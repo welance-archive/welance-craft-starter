@@ -401,7 +401,7 @@ class Commander(object):
                         "CRAFT_EMAIL": pc["craft_email"],
                         "CRAFT_PASSWORD": pc["craft_password"],
                         "CRAFT_SITENAME": pc['site_name'],
-                        "CRAFT_SITEURL": pc['local_url'],
+                        "CRAFT_SITEURL": f"//{pc['local_url']}",
                         "CRAFT_LOCALE": pc["craft_locale"],
                         "CRAFT_ALLOW_UPDATES": pc["craft_allow_updates"],
                         "CRAFT_DEVMODE": 1,  # enable development mode
