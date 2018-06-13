@@ -383,7 +383,7 @@ class Commander(object):
                         "../config:/data/craft/config",
                         "../templates:/data/craft/templates",
                         "../migrations:/data/craft/migrations",
-                        "../web/uploads:/data/craft/web/uploads",
+                        "../web:/data/craft/web",
                     ],
                     "links": ["database"],
                     "environment": {
@@ -453,6 +453,7 @@ class Commander(object):
         docker_compose["services"]["craft"].pop("ports")
         docker_compose["services"]["craft"]["expose"] = [80, 443]
         docker_compose["services"]["craft"]["network_mode"] = "bridge"
+        docker_compose["services"]["craft"]["environment"]["CRAFT_SITEURL"] = f"//{pc['stage_url']}",
         docker_compose["services"]["craft"]["environment"]["VIRTUAL_HOST"] = pc['stage_url']
         # disable develpment mode
         docker_compose["services"]["craft"]["environment"]["CRAFT_DEVMODE"] = 0
