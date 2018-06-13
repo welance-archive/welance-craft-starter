@@ -453,11 +453,20 @@ class Commander(object):
         docker_compose["services"]["craft"].pop("ports")
         docker_compose["services"]["craft"]["expose"] = [80, 443]
         docker_compose["services"]["craft"]["network_mode"] = "bridge"
-        docker_compose["services"]["craft"]["environment"]["CRAFT_SITEURL"] = f"//{pc['stage_url']}",
+        docker_compose["services"]["craft"]["environment"]["CRAFT_SITEURL"] = f"//{pc['stage_url']}"
         docker_compose["services"]["craft"]["environment"]["VIRTUAL_HOST"] = pc['stage_url']
         # disable develpment mode
         docker_compose["services"]["craft"]["environment"]["CRAFT_DEVMODE"] = 0
         docker_compose["services"]["craft"]["environment"]["CRAFT_ENABLE_CACHE"] = 1
+        # add service for build the frontend
+        docker_compose["services"]["yarn"] = {
+            "image": "kkarczmarczyk/node-yarn:latest",
+            "command": 'sh -c "cd templates && pwd && yarn install && yarn prod"',
+            "volumes": [
+                "./templates:/workspace/templates",
+                "./web:/workspace/web"
+            ]
+        }
 
         # save docker-composer
         self.write_file(self.stage_yml, yaml.dump(docker_compose, default_flow_style=False))
