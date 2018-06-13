@@ -3,3 +3,4 @@ templates/node_modules
 release*.tar.gz
 .vscode
 dist
+bin/py3
