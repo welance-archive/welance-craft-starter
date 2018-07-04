@@ -383,7 +383,7 @@ class Commander(object):
                         "../config:/data/craft/config",
                         "../templates:/data/craft/templates",
                         "../migrations:/data/craft/migrations",
-                        "../web/uploads:/data/craft/web/uploads",
+                        "../web:/data/craft/web",
                     ],
                     "links": ["database"],
                     "environment": {
@@ -453,10 +453,20 @@ class Commander(object):
         docker_compose["services"]["craft"].pop("ports")
         docker_compose["services"]["craft"]["expose"] = [80, 443]
         docker_compose["services"]["craft"]["network_mode"] = "bridge"
+        docker_compose["services"]["craft"]["environment"]["CRAFT_SITEURL"] = f"//{pc['stage_url']}"
         docker_compose["services"]["craft"]["environment"]["VIRTUAL_HOST"] = pc['stage_url']
         # disable develpment mode
         docker_compose["services"]["craft"]["environment"]["CRAFT_DEVMODE"] = 0
         docker_compose["services"]["craft"]["environment"]["CRAFT_ENABLE_CACHE"] = 1
+        # add service for build the frontend
+        docker_compose["services"]["yarn"] = {
+            "image": "kkarczmarczyk/node-yarn:latest",
+            "command": 'sh -c "cd templates && pwd && yarn install && yarn prod"',
+            "volumes": [
+                "./templates:/workspace/templates",
+                "./web:/workspace/web"
+            ]
+        }
 
         # save docker-composer
         self.write_file(self.stage_yml, yaml.dump(docker_compose, default_flow_style=False))
@@ -484,25 +494,36 @@ class Commander(object):
             return
         print("there is nothing to restore, perhaps you want to setup?")
 
-    def cmd_local_start(self, ns=None):
-        """start the local docker environment"""
+    def cmd_start(self, ns=None):
+        """start the docker environment"""
         self.require_configured()
+        if args.staging:
+            self.docker.compose_start(self.stage_yml)
+            self.cmd_schema_import
+            return
+
         self.docker.compose_start(self.local_yml)
         # run the plugin installation in case
         # they are not there yet or anymore
         for p in config['composer_require']:
             self.plugin_install(p)
 
-    def cmd_local_stop(self, ns=None):
-        """stop the local docker environment"""
+    def cmd_stop(self, args=None):
+        """stop the docker environment"""
         self.require_configured()
-        self.docker.compose_stop(self.local_yml)
+        target_yaml = self.local_yml
+        if args.staging:
+            target_yaml = self.stage_yml
+        self.docker.compose_stop(target_yaml)
 
-    def cmd_local_teardown(self, ns=None):
-        """destroy the local docker environment"""
+    def cmd_teardown(self, args=None):
+        """destroy the docker environment"""
         self.require_configured()
+        target_yaml = self.local_yml
+        if args.staging:
+            target_yaml = self.stage_yml
         if self.prompt.ask_yesno('project_teardown'):
-            self.docker.compose_down(self.local_yml)
+            self.docker.compose_down(target_yaml)
 
     def cmd_seed_export(self, ns=None):
         """export the database-seed.sql"""
@@ -693,16 +714,37 @@ if __name__ == '__main__':
             'help': 'print the current project info and version'
         },
         {
-            'name': 'local-start',
-            'help': 'start the local docker environment'
+            'name': 'start',
+            'help': 'start the local docker environment',
+            'args': [
+                {
+                    'names': ['staging'],
+                    'help': 'if to run the start on a stagin environment',
+                    'action': 'store_true'
+                }
+            ]
         },
         {
-            'name': 'local-stop',
-            'help': 'stops the local docker environment'
+            'name': 'stop',
+            'help': 'stops the local docker environment',
+            'args': [
+                {
+                    'names': ['staging'],
+                    'help': 'if to run the start on a stagin environment',
+                    'action': 'store_true'
+                }
+            ]
         },
         {
-            'name': 'local-teardown',
-            'help': 'destroy the local docker environment'
+            'name': 'teardown',
+            'help': 'destroy the local docker environment',
+            'args': [
+                {
+                    'names': ['staging'],
+                    'help': 'if to run the start on a stagin environment',
+                    'action': 'store_true'
+                }
+            ]
         },
         {
             'name': 'restore',

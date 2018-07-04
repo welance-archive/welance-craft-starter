@@ -28,7 +28,7 @@ return [
         // disable updates on dev environment they have to be perforemed with care
         'allowUpdates' => getenv('CRAFT_ALLOW_UPDATES'),
 
-        'environmentVariables' => array(
+        'aliases' => array(
             'baseUrl' => getenv('CRAFT_SITEURL'),
             'assetsBaseUrl' => getenv('CRAFT_SITEURL')+"/assets",
         ),
